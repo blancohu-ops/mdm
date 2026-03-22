@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - "codex/**"
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: mdm_dev
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d mdm_dev"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      MDM_DB_URL: jdbc:postgresql://localhost:5432/mdm_dev
+      MDM_DB_USERNAME: postgres
+      MDM_DB_PASSWORD: postgres
+      MDM_REDIS_HOST: localhost
+      MDM_REDIS_PORT: 6379
+      MDM_REDIS_PASSWORD: ""
+      MDM_STORAGE_ROOT: backend/storage
+      MDM_JWT_SECRET: ci-secret-at-least-32-characters-long
+      MDM_SWAGGER_ENABLED: true
+      PLAYWRIGHT_BASE_URL: http://localhost:5273
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Run backend unit tests
+        run: mvn -f backend/pom.xml test
+
+      - name: Package backend
+        run: mvn -f backend/pom.xml -DskipTests package
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend
+        run: |
+          mkdir -p backend/logs
+          nohup java -jar backend/target/mdm-backend-0.1.0-SNAPSHOT.jar --spring.profiles.active=dev > backend/logs/ci-backend.log 2>&1 &
+
+      - name: Start frontend
+        run: |
+          mkdir -p logs
+          nohup npm run dev -- --host 0.0.0.0 --port 5273 > logs/ci-frontend.log 2>&1 &
+
+      - name: Wait for backend
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://localhost:8083/api/v1/system/ping > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not become ready in time"
+          cat backend/logs/ci-backend.log || true
+          exit 1
+
+      - name: Wait for frontend
+        run: |
+          for i in {1..60}; do
+            if curl -fsS http://localhost:5273 > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Frontend did not become ready in time"
+          cat logs/ci-frontend.log || true
+          exit 1
+
+      - name: Run frontend smoke E2E
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+
+      - name: Upload service logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: service-logs
+          path: |
+            backend/logs/ci-backend.log
+            logs/ci-frontend.log
+          if-no-files-found: ignore

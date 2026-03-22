@@ -1,0 +1,276 @@
+package com.industrial.mdm.modules.file.application;
+
+import com.industrial.mdm.common.exception.BizException;
+import com.industrial.mdm.common.exception.ErrorCode;
+import com.industrial.mdm.common.security.AuthenticatedUser;
+import com.industrial.mdm.common.security.UserRole;
+import com.industrial.mdm.infrastructure.storage.StorageService;
+import com.industrial.mdm.modules.file.domain.FileAccessScope;
+import com.industrial.mdm.modules.file.dto.StoredFileResponse;
+import com.industrial.mdm.modules.file.repository.StoredFileEntity;
+import com.industrial.mdm.modules.file.repository.StoredFileRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service
+public class FileService {
+
+    private static final long MAX_FILE_BYTES = 10 * 1024 * 1024;
+    private static final Set<String> ALLOWED_BUSINESS_TYPES =
+            Set.of(
+                    "enterprise-logo",
+                    "business-license",
+                    "product-image",
+                    "product-attachment",
+                    "import-sheet");
+    private static final Map<String, Set<String>> ALLOWED_EXTENSIONS =
+            Map.of(
+                    "enterprise-logo", Set.of(".png", ".jpg", ".jpeg", ".webp"),
+                    "business-license", Set.of(".pdf", ".png", ".jpg", ".jpeg"),
+                    "product-image", Set.of(".png", ".jpg", ".jpeg", ".webp"),
+                    "product-attachment", Set.of(".pdf", ".doc", ".docx", ".xls", ".xlsx"),
+                    "import-sheet", Set.of(".xlsx", ".csv"));
+
+    private final StorageService storageService;
+    private final StoredFileRepository storedFileRepository;
+
+    public FileService(StorageService storageService, StoredFileRepository storedFileRepository) {
+        this.storageService = storageService;
+        this.storedFileRepository = storedFileRepository;
+    }
+
+    @Transactional
+    public StoredFileResponse upload(
+            AuthenticatedUser currentUser,
+            String businessType,
+            String accessScope,
+            MultipartFile file) {
+        assertAuthenticated(currentUser);
+        if (file == null || file.isEmpty()) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "file is required");
+        }
+        String sanitizedBusinessType = sanitizeBusinessType(businessType);
+        FileAccessScope parsedScope = parseAccessScope(accessScope);
+        String safeOriginalFilename = sanitizeOriginalFilename(file.getOriginalFilename());
+        String extension = extractExtension(safeOriginalFilename);
+        validateUpload(file, sanitizedBusinessType, extension);
+        Path targetPath = null;
+        try {
+            targetPath =
+                    storageService.store(
+                            sanitizedBusinessType,
+                            safeOriginalFilename,
+                            file.getInputStream());
+            StoredFileEntity entity = new StoredFileEntity();
+            entity.setBusinessType(sanitizedBusinessType);
+            entity.setAccessScope(parsedScope);
+            entity.setOriginalFileName(safeOriginalFilename);
+            entity.setStoredFileName(targetPath.getFileName().toString());
+            entity.setMimeType(resolveContentType(targetPath, extension));
+            entity.setExtension(extension);
+            entity.setFileSize(file.getSize());
+            entity.setStoragePath(targetPath.toString());
+            entity.setUploadedBy(currentUser.userId());
+            entity.setEnterpriseId(currentUser.enterpriseId());
+            entity = storedFileRepository.save(entity);
+            return toResponse(entity);
+        } catch (IOException exception) {
+            cleanupStoredFile(targetPath);
+            throw new BizException(ErrorCode.INTERNAL_ERROR, "failed to store file");
+        } catch (RuntimeException exception) {
+            cleanupStoredFile(targetPath);
+            throw exception;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public StoredFileResponse getMetadata(UUID fileId, AuthenticatedUser currentUser) {
+        StoredFileEntity entity = loadAuthorizedFile(fileId, currentUser);
+        return toResponse(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<Resource> download(UUID fileId, AuthenticatedUser currentUser) {
+        StoredFileEntity entity = loadReadableFile(fileId, currentUser);
+        Path path = Path.of(entity.getStoragePath());
+        if (!Files.exists(path)) {
+            throw new BizException(ErrorCode.NOT_FOUND, "stored file not found");
+        }
+        String contentType = resolveContentType(path, entity.getExtension());
+        Resource resource = new PathResource(path);
+        ContentDisposition disposition =
+                contentType.startsWith("image/")
+                        ? ContentDisposition.inline().filename(entity.getOriginalFileName()).build()
+                        : ContentDisposition.attachment().filename(entity.getOriginalFileName()).build();
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        disposition.toString())
+                .contentType(MediaType.parseMediaType(contentType))
+                .contentLength(entity.getFileSize())
+                .body(resource);
+    }
+
+    @Transactional(readOnly = true)
+    public StoredFileEntity loadAuthorizedFile(UUID fileId, AuthenticatedUser currentUser) {
+        StoredFileEntity entity =
+                storedFileRepository
+                        .findById(fileId)
+                        .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "stored file not found"));
+        assertReadable(entity, currentUser, true);
+        return entity;
+    }
+
+    @Transactional(readOnly = true)
+    public StoredFileEntity loadReadableFile(UUID fileId, AuthenticatedUser currentUser) {
+        StoredFileEntity entity =
+                storedFileRepository
+                        .findById(fileId)
+                        .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "stored file not found"));
+        assertReadable(entity, currentUser, false);
+        return entity;
+    }
+
+    private StoredFileResponse toResponse(StoredFileEntity entity) {
+        return new StoredFileResponse(
+                entity.getId(),
+                entity.getBusinessType(),
+                entity.getAccessScope().getCode(),
+                entity.getOriginalFileName(),
+                entity.getMimeType(),
+                entity.getExtension(),
+                entity.getFileSize(),
+                "/api/v1/files/" + entity.getId() + "/download",
+                entity.getCreatedAt());
+    }
+
+    private FileAccessScope parseAccessScope(String accessScope) {
+        if (accessScope == null || accessScope.isBlank() || "private".equalsIgnoreCase(accessScope)) {
+            return FileAccessScope.PRIVATE;
+        }
+        if ("public".equalsIgnoreCase(accessScope)) {
+            return FileAccessScope.PUBLIC;
+        }
+        throw new BizException(ErrorCode.INVALID_REQUEST, "unsupported file access scope");
+    }
+
+    private String sanitizeBusinessType(String businessType) {
+        if (!StringUtils.hasText(businessType)) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "business type is required");
+        }
+        String normalized = businessType.trim().toLowerCase(Locale.ROOT);
+        if (!ALLOWED_BUSINESS_TYPES.contains(normalized)) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "unsupported business type");
+        }
+        return normalized;
+    }
+
+    private String sanitizeOriginalFilename(String originalFileName) {
+        if (!StringUtils.hasText(originalFileName)) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "original file name is required");
+        }
+        String cleaned = org.springframework.util.StringUtils.cleanPath(originalFileName).replace("\\", "/");
+        String baseName = Paths.get(cleaned).getFileName().toString();
+        String sanitized = baseName.replaceAll("[\\r\\n]", "_").replaceAll("[^A-Za-z0-9._() -]", "_");
+        if (sanitized.isBlank()) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "original file name is invalid");
+        }
+        return sanitized;
+    }
+
+    private String extractExtension(String originalFileName) {
+        if (originalFileName == null || !originalFileName.contains(".")) {
+            return "";
+        }
+        return originalFileName.substring(originalFileName.lastIndexOf('.')).toLowerCase(Locale.ROOT);
+    }
+
+    private void validateUpload(MultipartFile file, String businessType, String extension) {
+        if (file.getSize() <= 0) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "file is empty");
+        }
+        if (file.getSize() > MAX_FILE_BYTES) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "file size exceeds 10MB limit");
+        }
+        if (extension.isBlank()) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "file extension is required");
+        }
+        Set<String> allowedExtensions = ALLOWED_EXTENSIONS.getOrDefault(businessType, Set.of());
+        if (!allowedExtensions.contains(extension)) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "file extension is not allowed for business type");
+        }
+    }
+
+    private String resolveContentType(Path path, String extension) {
+        try {
+            String detected = Files.probeContentType(path);
+            if (detected != null && !detected.isBlank()) {
+                return detected;
+            }
+        } catch (IOException ignored) {
+            // Fall back to extension mapping below.
+        }
+        return switch (extension) {
+            case ".png" -> MediaType.IMAGE_PNG_VALUE;
+            case ".jpg", ".jpeg" -> MediaType.IMAGE_JPEG_VALUE;
+            case ".webp" -> "image/webp";
+            case ".pdf" -> MediaType.APPLICATION_PDF_VALUE;
+            case ".csv" -> "text/csv";
+            case ".xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            case ".xls" -> "application/vnd.ms-excel";
+            case ".doc" -> "application/msword";
+            case ".docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            default -> MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        };
+    }
+
+    private void cleanupStoredFile(Path targetPath) {
+        if (targetPath == null) {
+            return;
+        }
+        try {
+            Files.deleteIfExists(targetPath);
+        } catch (IOException ignored) {
+            // Cleanup failure should not override the original exception.
+        }
+    }
+
+    private void assertAuthenticated(AuthenticatedUser currentUser) {
+        if (currentUser == null) {
+            throw new BizException(ErrorCode.UNAUTHORIZED, "authentication is required");
+        }
+    }
+
+    private void assertReadable(
+            StoredFileEntity entity, AuthenticatedUser currentUser, boolean requireAuthentication) {
+        if (entity.getAccessScope() == FileAccessScope.PUBLIC && !requireAuthentication) {
+            return;
+        }
+
+        assertAuthenticated(currentUser);
+        if (currentUser.role() == UserRole.ENTERPRISE_OWNER) {
+            if (currentUser.enterpriseId() == null
+                    || entity.getEnterpriseId() == null
+                    || !currentUser.enterpriseId().equals(entity.getEnterpriseId())) {
+                throw new BizException(
+                        ErrorCode.FORBIDDEN, "stored file does not belong to current enterprise");
+            }
+        }
+    }
+}

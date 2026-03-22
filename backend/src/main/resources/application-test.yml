@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${MDM_TEST_DB_URL:jdbc:postgresql://localhost:5432/mdm_test}
+    username: ${MDM_TEST_DB_USERNAME:postgres}
+    password: ${MDM_TEST_DB_PASSWORD:postgres}
+
+logging:
+  level:
+    root: INFO
+    com.industrial.mdm: INFO

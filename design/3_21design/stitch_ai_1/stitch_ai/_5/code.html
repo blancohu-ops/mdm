@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>工业企业出海主数据平台 - 状态管理</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#8bc5ff",
+              "primary-fixed-dim": "#a6c8ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface-variant": "#424750",
+              "primary": "#00386c",
+              "surface-container-high": "#e6e8eb",
+              "surface-variant": "#e0e3e6",
+              "on-primary-container": "#9bc2ff",
+              "surface-container": "#eceef1",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed-dim": "#afcbd8",
+              "surface-container-low": "#f2f4f7",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-tertiary-fixed-variant": "#004a77",
+              "on-background": "#191c1e",
+              "error": "#ba1a1a",
+              "outline": "#737781",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#001c3b",
+              "tertiary": "#003a60",
+              "primary-container": "#1a4f8b",
+              "on-error": "#ffffff",
+              "surface-dim": "#d8dadd",
+              "tertiary-container": "#005284",
+              "surface-tint": "#2f5f9c",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "background": "#f7f9fc",
+              "secondary-fixed": "#cbe7f5",
+              "primary-fixed": "#d5e3ff",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-surface": "#191c1e",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "on-secondary": "#ffffff",
+              "inverse-on-surface": "#eff1f4",
+              "tertiary-fixed": "#cfe5ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "outline-variant": "#c2c6d1",
+              "surface": "#f7f9fc",
+              "surface-bright": "#f7f9fc",
+              "inverse-surface": "#2d3133"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .industrial-pattern {
+            background-image: radial-gradient(circle at 2px 2px, #c2c6d1 1px, transparent 0);
+            background-size: 24px 24px;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<header class="fixed top-0 w-full z-50 bg-[#f7f9fc] dark:bg-slate-900/80 backdrop-blur-md border-b border-[#c2c6d1]/15 shadow-sm h-16 flex justify-between items-center px-6">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-[#00386c] dark:text-sky-500 font-headline">工业企业出海主数据平台</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium transition-colors duration-200" href="#">数据看板</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium transition-colors duration-200" href="#">HS编码</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium transition-colors duration-200" href="#">企业核查</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium transition-colors duration-200" href="#">下架管理</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 rounded-lg text-slate-500">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 rounded-lg text-slate-500">
+<span class="material-symbols-outlined">help</span>
+</button>
+<img alt="管理员头像" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="Professional avatar for system administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEd6ZwoAYw0uiyoslAlTi6_rhTbyzeCQKWzgHQTYybSdTbHRqQn9ZJlBrU3DXj_XmSOQ1_WLAJx54QvQ51GOE2rohSVu4IjF7KkCHc4MPDwX_lvccgU9Uc9a1uVpTi5s8VZGC9niYorodm4bTFjJPc90Y-o_m_H_Ziev-eHDDf_PNVOC6QlUx6SCaDqVaiLjHPRq-3opS2zVIJaJLfCE0mrPO-wqvzh5LxQYZRyQ5pLyKghCWsl9yMxrYEoa0qAbwUaCv9kQe7r2A"/>
+</div>
+</header>
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-[#eceef1] dark:bg-slate-900 flex flex-col py-6 px-4 gap-2 pt-20">
+<div class="mb-6 px-2">
+<h2 class="font-headline font-bold text-[#00386c] text-lg">管理控制台</h2>
+<p class="text-xs text-slate-500 font-label tracking-wider uppercase">V2.4 稳定版</p>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-3 px-3 py-2.5 bg-[#ffffff] dark:bg-slate-800 text-[#00386c] dark:text-sky-400 rounded-lg shadow-sm cursor-pointer">
+<span class="material-symbols-outlined">database</span>
+<span class="font-medium text-sm">主数据中心</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition-transform duration-200 hover:translate-x-1">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span class="font-medium text-sm">HS推荐引擎</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition-transform duration-200 hover:translate-x-1">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-medium text-sm">合规性审核</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition-transform duration-200 hover:translate-x-1">
+<span class="material-symbols-outlined">public</span>
+<span class="font-medium text-sm">全球化治理</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-lg cursor-pointer transition-transform duration-200 hover:translate-x-1">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-medium text-sm">系统日志</span>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white py-2.5 rounded-lg font-medium text-sm shadow-md active:scale-95 transition-all mb-4">
+                导出全局报告
+            </button>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium text-sm">退出登录</span>
+</div>
+</div>
+</aside>
+<main class="ml-64 pt-24 pb-12 px-10 min-h-screen">
+<div class="max-w-6xl mx-auto space-y-16">
+<section class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-16 shadow-sm border border-outline-variant/5 text-center flex flex-col items-center justify-center">
+<div class="absolute inset-0 industrial-pattern pointer-events-none"></div>
+<div class="relative z-10 space-y-8 max-w-lg">
+<div class="w-24 h-24 bg-surface-container rounded-2xl flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-6xl text-slate-300" style="font-variation-settings: 'wght' 200;">inventory_2</span>
+</div>
+<div>
+<h2 class="text-2xl font-headline font-bold text-on-surface mb-2">产品主库为空</h2>
+<p class="text-on-surface-variant font-body">当前还没有产品，先新增一个产品吧.</p>
+</div>
+<div class="flex items-center justify-center gap-4 pt-4">
+<button class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-semibold shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+                            新增产品
+                        </button>
+<button class="px-8 py-3 bg-surface-container-high text-on-primary-fixed-variant rounded-lg font-semibold hover:bg-surface-variant transition-all">
+                            批量导入
+                        </button>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-surface-container-low rounded-xl p-12 border border-outline-variant/10 flex flex-col items-center text-center justify-center min-h-[400px]">
+<div class="mb-6 relative">
+<div class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-slate-400">mail_outline</span>
+</div>
+<span class="material-symbols-outlined text-8xl text-slate-300" style="font-variation-settings: 'wght' 100;">notifications_off</span>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-2">通知中心</h3>
+<p class="text-on-surface-variant text-sm">暂无消息通知</p>
+</div>
+<div class="bg-surface-container-low rounded-xl p-12 border border-outline-variant/10 flex flex-col items-center text-center justify-center min-h-[400px]">
+<div class="mb-6">
+<div class="w-20 h-20 bg-secondary-container/30 rounded-full flex items-center justify-center mx-auto mb-4">
+<span class="material-symbols-outlined text-4xl text-secondary" style="font-variation-settings: 'wght' 300;">fact_check</span>
+</div>
+</div>
+<h3 class="text-xl font-headline font-bold text-on-surface mb-2">待办审核</h3>
+<p class="text-on-surface-variant text-sm">当前暂无待处理审核内容</p>
+<div class="mt-6 flex gap-2">
+<span class="px-3 py-1 bg-white rounded-full text-[10px] font-label text-slate-400 border border-outline-variant/10 uppercase tracking-widest">System Clear</span>
+</div>
+</div>
+</div>
+<section class="bg-error-container/10 border border-error/10 rounded-xl p-10 flex flex-col md:flex-row items-center gap-10">
+<div class="w-20 h-20 bg-error/5 rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-5xl text-error" style="font-variation-settings: 'wght' 300;">tab_close</span>
+</div>
+<div class="flex-grow space-y-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-error text-white text-[10px] font-bold rounded uppercase">Import Error</span>
+<h2 class="text-xl font-headline font-bold text-on-surface">Excel 数据校验失败</h2>
+</div>
+<p class="text-on-surface-variant">文件校验未通过，请根据错误提示修正后重新上传.</p>
+</div>
+<div class="bg-white/50 border border-error/5 rounded-lg p-4 font-mono text-xs text-error/80 leading-relaxed">
+                        &gt; 错误详情: 第14行[HS编码]格式非法，应为8-10位数字。<br/>
+                        &gt; 错误详情: 第22行[出口目的国]缺失必填项。
+                    </div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 bg-error text-white rounded-lg font-semibold text-sm hover:bg-error/90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-base">download</span>
+                            下载错误报告
+                        </button>
+<button class="px-6 py-2.5 bg-surface-container-highest text-on-surface rounded-lg font-semibold text-sm hover:bg-surface-container-high transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-base">upload_file</span>
+                            重新上传
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="ml-64 py-8 px-10 border-t border-outline-variant/10">
+<div class="max-w-6xl mx-auto flex justify-between items-center opacity-40">
+<span class="text-xs font-label tracking-widest uppercase">© 2024 Industrial Data Sovereignty Platform</span>
+<div class="flex gap-6">
+<span class="text-xs font-label tracking-widest uppercase">Security Level: AA</span>
+<span class="text-xs font-label tracking-widest uppercase">Global Cloud Sync: Active</span>
+</div>
+</div>
+</footer>
+</body></html>

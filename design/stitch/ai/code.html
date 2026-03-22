@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f7f9fc",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#191c1e",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#cbe7f5",
+              "primary-container": "#1a4f8b",
+              "tertiary-fixed": "#cfe5ff",
+              "on-surface-variant": "#424750",
+              "primary-fixed": "#d5e3ff",
+              "on-primary-fixed": "#001c3b",
+              "on-background": "#191c1e",
+              "surface-container-low": "#f2f4f7",
+              "surface-container": "#eceef1",
+              "outline": "#737781",
+              "surface-container-high": "#e6e8eb",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "tertiary-container": "#005284",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-primary-container": "#9bc2ff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed": "#cbe7f5",
+              "background": "#f7f9fc",
+              "tertiary": "#003a60",
+              "on-primary-fixed-variant": "#0c4783",
+              "on-tertiary-fixed-variant": "#004a77",
+              "primary-fixed-dim": "#a6c8ff",
+              "surface-dim": "#d8dadd",
+              "error": "#ba1a1a",
+              "inverse-on-surface": "#eff1f4",
+              "secondary-fixed-dim": "#afcbd8",
+              "on-tertiary-container": "#8bc5ff",
+              "surface-variant": "#e0e3e6",
+              "inverse-surface": "#2d3133",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-error": "#ffffff",
+              "inverse-primary": "#a6c8ff",
+              "primary": "#00386c",
+              "surface-tint": "#2f5f9c",
+              "outline-variant": "#c2c6d1",
+              "on-secondary-container": "#4e6874",
+              "surface-bright": "#f7f9fc"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-industrial-gradient {
+            background: linear-gradient(135deg, #00386c 0%, #1a4f8b 100%);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm h-16 px-6 lg:px-12 flex justify-between items-center max-w-full mx-auto">
+<div class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-headline">工业企业出海主数据平台</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200" href="#">首页</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200" href="#">平台介绍</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200" href="#">企业入驻</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200" href="#">产品展示</a>
+<a class="font-sans text-sm font-medium text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#">AI工具</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200" href="#">政策与补贴</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-sm font-medium text-slate-600 px-4 py-2 hover:bg-surface-container transition-colors">登录</button>
+<button class="bg-industrial-gradient text-white px-5 py-2 rounded-lg text-sm font-medium shadow-sm">注册</button>
+</div>
+</nav>
+<main class="pt-24 pb-20 px-6 lg:px-12 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<header class="mb-16">
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-medium tracking-wide mb-4">
+<span class="material-symbols-outlined text-[14px] mr-1">bolt</span>
+                政府补贴项目 · 智慧出海引擎
+            </div>
+<h1 class="text-4xl md:text-5xl font-headline font-extrabold text-primary mb-6 tracking-tight">AI 全球化产品数字化实验室</h1>
+<p class="text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                利用大规模工业语言模型，为出海企业提供一键式产品数据标准化服务。从中文描述到全球通用的 HS Code 及多语言营销文本，实现零门槛数字化出海。
+            </p>
+</header>
+<!-- Subsidy Banner -->
+<section class="mb-12">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low border border-outline-variant/20 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+<div class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">verified_user</span>
+</div>
+<div class="flex-grow">
+<h3 class="text-lg font-bold text-on-primary-fixed mb-1">政府普惠性 AI 算力补贴通知</h3>
+<p class="text-on-surface-variant text-sm">
+                        根据《工业数字化转型支持办法》，本平台所有 AI 数据处理服务费用均由省级专项补贴全额覆盖。入驻企业每年可享受 10,000 次免费深度解析额度，助力企业降低海外拓展成本。
+                    </p>
+</div>
+<div class="flex-shrink-0">
+<button class="text-primary font-bold text-sm flex items-center gap-2 hover:underline">
+                        查看补贴细则 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Abstract Pattern background decoration -->
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+</section>
+<!-- AI Tool Interactive Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Input -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<label class="font-headline font-bold text-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">edit_note</span>
+                            输入产品原始信息
+                        </label>
+<span class="text-[10px] font-label text-outline uppercase tracking-widest">ZH-CN</span>
+</div>
+<textarea class="w-full h-48 bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-tertiary/20 resize-none" placeholder="请输入中文产品名称或描述，例如：工业级精密传感器，具有高精度测量和抗干扰能力...">工业级精密传感器</textarea>
+<div class="mt-4 flex justify-end">
+<button class="bg-industrial-gradient text-white px-8 py-3 rounded-lg font-bold text-sm flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">auto_awesome</span>
+                            智能生成
+                        </button>
+</div>
+</div>
+<!-- Subtle Processing Indicator (Demo state) -->
+<div class="p-6 rounded-xl bg-surface-container-low border border-dashed border-outline-variant flex items-center gap-4">
+<div class="flex space-x-1">
+<div class="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+<div class="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+<div class="w-2 h-2 bg-primary/30 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+</div>
+<span class="text-xs font-label text-outline uppercase tracking-widest">AI 模型深度解析中...</span>
+</div>
+</div>
+<!-- Right Column: Output Showcase -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-8 rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/10">
+<div class="flex items-center justify-between mb-8 pb-4 border-b border-surface-container">
+<h2 class="font-headline font-bold text-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">dashboard_customize</span>
+                        数字化输出预览
+                    </h2>
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded bg-green-50 text-green-700 text-[10px] font-bold border border-green-100 uppercase tracking-tighter">98.4% Confidence</span>
+<span class="px-2 py-1 rounded bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-100 uppercase tracking-tighter">AI Optimized</span>
+</div>
+</div>
+<div class="space-y-8">
+<!-- English Description -->
+<div class="group">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-label text-outline uppercase tracking-wider">Generated English Description</span>
+<button class="text-primary hover:bg-surface-container-low p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border-l-4 border-primary">
+<p class="text-on-surface font-medium leading-relaxed">Industrial Precision Sensor with High-Accuracy Measurement and EMI Protection.</p>
+</div>
+</div>
+<!-- HS Code & Category -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-lg">category</span>
+<span class="text-xs font-label text-outline uppercase tracking-wider">HS Code Recommendation</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-headline font-extrabold text-on-surface tracking-tight">9026.20</span>
+<span class="text-xs text-on-surface-variant">(精密测量仪器)</span>
+</div>
+<p class="mt-2 text-[11px] text-on-surface-variant leading-tight">适用于测量或检验压力、流量、液位或其他液体、气体参数的仪器及装置。</p>
+</div>
+<div class="p-5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-lg">inventory_2</span>
+<span class="text-xs font-label text-outline uppercase tracking-wider">Suggested Categories</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container text-[11px] font-medium">精密测量</span>
+<span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container text-[11px] font-medium">电子元器件</span>
+<span class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container text-[11px] font-medium">工业自动化</span>
+</div>
+</div>
+</div>
+<!-- Feature Tags -->
+<div class="pt-6 border-t border-surface-container flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-green-600 text-sm" data-weight="fill">check_circle</span>
+                                满足 WCO 标准
+                            </div>
+<div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-green-600 text-sm" data-weight="fill">check_circle</span>
+                                符合多国海关要求
+                            </div>
+</div>
+<button class="bg-surface-container-high text-on-primary-fixed-variant px-5 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all hover:shadow-md">
+                            导出主数据报表
+                            <span class="material-symbols-outlined text-sm">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Highlights Section -->
+<section class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="p-8 rounded-xl bg-surface-container-lowest border border-outline-variant/10 hover:shadow-xl transition-shadow duration-300">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<h4 class="font-headline font-bold text-lg mb-3">毫秒级解析速度</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">采用分布式算力集群，即便处理万级规模的产品目录，也能在分钟级完成精准映射。</p>
+</div>
+<div class="p-8 rounded-xl bg-surface-container-lowest border border-outline-variant/10 hover:shadow-xl transition-shadow duration-300">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<h4 class="font-headline font-bold text-lg mb-3">40+ 语言语义支持</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">内置全球主流出海目的国语种，不仅是翻译，更是符合当地法规与行业习惯的语义对齐。</p>
+</div>
+<div class="p-8 rounded-xl bg-surface-container-lowest border border-outline-variant/10 hover:shadow-xl transition-shadow duration-300">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined">security</span>
+</div>
+<h4 class="font-headline font-bold text-lg mb-3">主数据主权保护</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">采用国密级算法加密，确保企业产品核心技术数据在处理过程中不泄露，保障数据主权。</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-12 pb-8 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 lg:px-12 max-w-7xl mx-auto">
+<div class="md:col-span-1">
+<div class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 font-headline">工业企业出海主数据平台</div>
+<p class="text-xs text-slate-500 leading-relaxed max-w-xs">
+                    专注于为中国工业企业提供全球化的主数据管理与合规出海服务，助力中国制造走向世界。
+                </p>
+</div>
+<div>
+<h5 class="text-sm font-bold text-on-surface mb-4">常用功能</h5>
+<ul class="space-y-2">
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">HS Code查询</a></li>
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">多语言文案</a></li>
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">标准合规库</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-sm font-bold text-on-surface mb-4">服务支持</h5>
+<ul class="space-y-2">
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">服务条款</a></li>
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">隐私政策</a></li>
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">联系我们</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-sm font-bold text-on-surface mb-4">关于我们</h5>
+<ul class="space-y-2">
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">关于我们</a></li>
+<li><a class="text-xs text-slate-500 hover:text-slate-800 transition-colors" href="#">发展历程</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-12 text-center text-xs text-slate-500 font-label tracking-wide border-t border-slate-200/50 pt-8">
+            © 2024 工业企业出海主数据平台 版权所有
+        </div>
+</footer>
+</body></html>

@@ -1,0 +1,8 @@
+logging:
+  level:
+    root: INFO
+    com.industrial.mdm: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: true

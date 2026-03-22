@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>企业入驻 - 工业企业出海主数据平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f7f9fc",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#191c1e",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#cbe7f5",
+              "primary-container": "#1a4f8b",
+              "tertiary-fixed": "#cfe5ff",
+              "on-surface-variant": "#424750",
+              "primary-fixed": "#d5e3ff",
+              "on-primary-fixed": "#001c3b",
+              "on-background": "#191c1e",
+              "surface-container-low": "#f2f4f7",
+              "surface-container": "#eceef1",
+              "outline": "#737781",
+              "surface-container-high": "#e6e8eb",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "tertiary-container": "#005284",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-primary-container": "#9bc2ff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed": "#cbe7f5",
+              "background": "#f7f9fc",
+              "tertiary": "#003a60",
+              "on-primary-fixed-variant": "#0c4783",
+              "on-tertiary-fixed-variant": "#004a77",
+              "primary-fixed-dim": "#a6c8ff",
+              "surface-dim": "#d8dadd",
+              "error": "#ba1a1a",
+              "inverse-on-surface": "#eff1f4",
+              "secondary-fixed-dim": "#afcbd8",
+              "on-tertiary-container": "#8bc5ff",
+              "surface-variant": "#e0e3e6",
+              "inverse-surface": "#2d3133",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-error": "#ffffff",
+              "inverse-primary": "#a6c8ff",
+              "primary": "#00386c",
+              "surface-tint": "#2f5f9c",
+              "outline-variant": "#c2c6d1",
+              "on-secondary-container": "#4e6874",
+              "surface-bright": "#f7f9fc"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .industrial-gradient {
+            background: linear-gradient(135deg, #00386c 0%, #1a4f8b 100%);
+        }
+        .ghost-border {
+            border: 1px solid rgba(194, 198, 209, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-center h-16 px-6 lg:px-12 max-w-full mx-auto">
+<div class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                工业企业出海主数据平台
+            </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">首页</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">平台介绍</a>
+<a class="font-sans text-sm font-medium text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1" href="#">企业入驻</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">产品展示</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">AI工具</a>
+<a class="font-sans text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">政策与补贴</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">登录</button>
+<button class="bg-primary text-white px-5 py-2 rounded-lg text-sm font-medium industrial-gradient hover:opacity-90 transition-opacity">注册</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<!-- Header Section -->
+<div class="mb-16">
+<span class="text-xs font-bold tracking-[0.05em] text-primary uppercase mb-4 block">Merchant Onboarding</span>
+<h1 class="text-5xl font-extrabold text-on-surface leading-tight mb-6">开启全球工业数字化新征程</h1>
+<p class="text-lg text-on-surface-variant max-w-2xl leading-relaxed">
+                    加入国家级工业出海数据生态，利用AI技术与政策扶持，加速您的全球业务扩张。
+                </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Value & Process -->
+<div class="lg:col-span-7 space-y-16">
+<!-- 入驻价值说明 -->
+<section>
+<h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+<span class="w-8 h-1 bg-primary inline-block"></span>
+                            为什么选择入驻
+                        </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border border-transparent hover:border-outline-variant/30 transition-all">
+<span class="material-symbols-outlined text-primary mb-4 text-3xl" data-icon="policy">policy</span>
+<h3 class="text-lg font-bold mb-2">政策扶持与补贴</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">对接国家级数字化转型专项补贴，降低企业出海合规与运营成本。</p>
+</div>
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border border-transparent hover:border-outline-variant/30 transition-all">
+<span class="material-symbols-outlined text-primary mb-4 text-3xl" data-icon="precision_manufacturing">precision_manufacturing</span>
+<h3 class="text-lg font-bold mb-2">数字化赋能</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">标准化的主数据管理工具，帮助制造业实现从生产到营销的全链路数字化。</p>
+</div>
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border border-transparent hover:border-outline-variant/30 transition-all">
+<span class="material-symbols-outlined text-primary mb-4 text-3xl" data-icon="psychology">psychology</span>
+<h3 class="text-lg font-bold mb-2">AI 效率提升</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">集成工业AI大模型，自动化生成多语言产品手册与全球市场分析报告。</p>
+</div>
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border border-transparent hover:border-outline-variant/30 transition-all">
+<span class="material-symbols-outlined text-primary mb-4 text-3xl" data-icon="public">public</span>
+<h3 class="text-lg font-bold mb-2">全球市场触达</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">入驻即进入全球供应链推荐名录，直接对接海外大型基建与工业采购商。</p>
+</div>
+</div>
+</section>
+<!-- 入驻流程 (Stepper) -->
+<section>
+<h2 class="text-2xl font-bold mb-10">入驻流程</h2>
+<div class="relative flex justify-between items-start">
+<!-- Progress Line -->
+<div class="absolute top-6 left-0 w-full h-[2px] bg-surface-container-highest z-0"></div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-[120px]">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold mb-4">1</div>
+<span class="text-sm font-bold mb-1">账号注册</span>
+<span class="text-xs text-on-surface-variant">完成实名手机验证</span>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-[120px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold mb-4">2</div>
+<span class="text-sm font-bold mb-1">提交资料</span>
+<span class="text-xs text-on-surface-variant">上传营业执照信息</span>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-[120px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold mb-4">3</div>
+<span class="text-sm font-bold mb-1">资质审核</span>
+<span class="text-xs text-on-surface-variant">1-3个工作日反馈</span>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-[120px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold mb-4">4</div>
+<span class="text-sm font-bold mb-1">入驻成功</span>
+<span class="text-xs text-on-surface-variant">开启出海主航道</span>
+</div>
+</div>
+</section>
+<!-- 常见问题 -->
+<section>
+<h2 class="text-2xl font-bold mb-6">常见问题</h2>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center cursor-pointer">
+<span class="font-semibold text-sm">审核周期需要多久？</span>
+<span class="material-symbols-outlined text-outline">expand_more</span>
+</div>
+<p class="mt-3 text-sm text-on-surface-variant leading-relaxed">通常在提交完整资料后的 1-3 个工作日内完成。如需加急处理，可联系在线客服。</p>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center cursor-pointer">
+<span class="font-semibold text-sm">入驻是否产生费用？</span>
+<span class="material-symbols-outlined text-outline">expand_more</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center cursor-pointer">
+<span class="font-semibold text-sm">平台是否支持原有产品数据批量导入？</span>
+<span class="material-symbols-outlined text-outline">expand_more</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg">
+<div class="flex justify-between items-center cursor-pointer">
+<span class="font-semibold text-sm">企业是否可以直接在平台申请 AI 转型补贴？</span>
+<span class="material-symbols-outlined text-outline">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Form Area -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 bg-surface-container-lowest p-10 rounded-xl shadow-xl border border-outline-variant/10">
+<h3 class="text-2xl font-bold mb-2">申请入驻</h3>
+<p class="text-sm text-on-surface-variant mb-8">请填写以下信息，我们的行业专家将与您取得联系。</p>
+<form class="space-y-6">
+<div>
+<label class="block text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">企业名称</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="请输入完整的企业全称" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">联系人姓名</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="您的姓名" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">手机号码</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="138 **** ****" type="tel"/>
+</div>
+<div>
+<label class="block text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">电子邮箱</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary transition-all" placeholder="work@company.com" type="email"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold tracking-wider text-on-surface-variant uppercase mb-2">所属行业</label>
+<select class="w-full bg-surface-container-highest border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary transition-all">
+<option>请选择行业领域</option>
+<option>装备制造</option>
+<option>电子信息</option>
+<option>新材料</option>
+<option>汽车零部件</option>
+<option>能源环保</option>
+</select>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-xs text-on-surface-variant leading-relaxed">我已阅读并同意 <a class="text-primary underline" href="#">《入驻协议》</a> 与 <a class="text-primary underline" href="#">《个人信息保护政策》</a></span>
+</div>
+<button class="w-full industrial-gradient text-white py-4 rounded-lg font-bold shadow-lg hover:shadow-primary-container/20 transition-all flex items-center justify-center gap-2" type="button">
+                                提交入驻申请
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<div class="pt-6 border-t border-surface-container mt-8 text-center">
+<p class="text-xs text-on-surface-variant">已经入驻？ <a class="text-primary font-bold" href="#">立即登录管理后台</a></p>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 w-full pt-12 pb-8 border-t border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 lg:px-12 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">
+                    工业企业出海主数据平台
+                </div>
+<p class="text-xs lg:text-sm text-slate-500 leading-relaxed">
+                    助力中国制造业在全球市场实现数字化腾飞，连接全球工业价值。
+                </p>
+</div>
+<div>
+<h4 class="text-sm font-bold mb-4 uppercase tracking-widest text-slate-900">产品服务</h4>
+<ul class="space-y-2">
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">AI 智能翻译</a></li>
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">全球数据分析</a></li>
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">供应链匹配</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold mb-4 uppercase tracking-widest text-slate-900">帮助与支持</h4>
+<ul class="space-y-2">
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">联系我们</a></li>
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">隐私政策</a></li>
+<li><a class="text-xs lg:text-sm text-slate-500 hover:text-slate-800 transition-colors" href="#">服务条款</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-sm font-bold mb-4 uppercase tracking-widest text-slate-900">关注我们</h4>
+<div class="flex gap-4">
+<div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code">qr_code</span>
+</div>
+<div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="mail">mail</span>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 mt-12 pt-8 border-t border-slate-200">
+<p class="text-xs text-slate-500 text-center">© 2024 工业企业出海主数据平台 版权所有</p>
+</div>
+</footer>
+</body></html>

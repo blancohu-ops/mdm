@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>工业企业出海主数据平台 - HS编码推荐与文件预览</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#8bc5ff",
+              "primary-fixed-dim": "#a6c8ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface-variant": "#424750",
+              "primary": "#00386c",
+              "surface-container-high": "#e6e8eb",
+              "surface-variant": "#e0e3e6",
+              "on-primary-container": "#9bc2ff",
+              "surface-container": "#eceef1",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed-dim": "#afcbd8",
+              "surface-container-low": "#f2f4f7",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-tertiary-fixed-variant": "#004a77",
+              "on-background": "#191c1e",
+              "error": "#ba1a1a",
+              "outline": "#737781",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#001c3b",
+              "tertiary": "#003a60",
+              "primary-container": "#1a4f8b",
+              "on-error": "#ffffff",
+              "surface-dim": "#d8dadd",
+              "tertiary-container": "#005284",
+              "surface-tint": "#2f5f9c",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "background": "#f7f9fc",
+              "secondary-fixed": "#cbe7f5",
+              "primary-fixed": "#d5e3ff",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-surface": "#191c1e",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "on-secondary": "#ffffff",
+              "inverse-on-surface": "#eff1f4",
+              "tertiary-fixed": "#cfe5ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "outline-variant": "#c2c6d1",
+              "surface": "#f7f9fc",
+              "surface-bright": "#f7f9fc",
+              "inverse-surface": "#2d3133"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(12px);
+        background-color: rgba(236, 238, 241, 0.8);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-hidden">
+<header class="fixed top-0 w-full z-50 bg-[#f7f9fc] dark:bg-slate-900/80 backdrop-blur-md border-b border-[#c2c6d1]/15 shadow-sm flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-[#00386c] dark:text-sky-500 font-headline">工业企业出海主数据平台</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium" href="#">数据看板</a>
+<a class="text-[#00386c] dark:text-sky-400 font-semibold border-b-2 border-[#00386c] dark:border-sky-400 pb-1 font-inter text-sm" href="#">HS编码</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium" href="#">企业核查</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-inter text-sm font-medium" href="#">下架管理</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-outline">notifications</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-outline">help</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden ml-2">
+<img alt="管理员头像" data-alt="User profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXS2i2NaspgBWYnlax3TjcTMXHAsGYBookCD85Pc-_-s663klpS9lxnTKd-_QgLnqjiHLUBe1KMD1Btx1uyeuAOkFnX74hUugwe-8AHREzSFxx-s4F3DCDoU9gIGbY1Gwpd71V97oLYsum_5Rxp0FldVYlWLBraWSXqIxyFQWezCpoqwMP-nT2pydWMhSWL3zHfjmcZpK9h5WNo8wrNxafChCemKkl3DJdYlT1K7U8GgAmi-biARL-G2LuRh8uGIZZn-tLHgXhnpE"/>
+</div>
+</div>
+</header>
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 bg-[#eceef1] dark:bg-slate-900 flex flex-col py-6 px-4 gap-2 pt-20">
+<div class="mb-6 px-2">
+<h2 class="font-manrope font-bold text-[#00386c] text-lg">管理控制台</h2>
+<p class="text-xs text-slate-500">V2.4 稳定版</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 py-3 px-4 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer rounded-lg font-inter text-sm font-medium">
+<span class="material-symbols-outlined">database</span>
+<span>主数据中心</span>
+</div>
+<div class="flex items-center gap-3 py-3 px-4 bg-[#ffffff] dark:bg-slate-800 text-[#00386c] dark:text-sky-400 rounded-lg shadow-sm font-inter text-sm font-medium">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span>HS推荐引擎</span>
+</div>
+<div class="flex items-center gap-3 py-3 px-4 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer rounded-lg font-inter text-sm font-medium">
+<span class="material-symbols-outlined">verified_user</span>
+<span>合规性审核</span>
+</div>
+<div class="flex items-center gap-3 py-3 px-4 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer rounded-lg font-inter text-sm font-medium">
+<span class="material-symbols-outlined">public</span>
+<span>全球化治理</span>
+</div>
+<div class="flex items-center gap-3 py-3 px-4 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:translate-x-1 transition-transform duration-200 cursor-pointer rounded-lg font-inter text-sm font-medium">
+<span class="material-symbols-outlined">history_edu</span>
+<span>系统日志</span>
+</div>
+</nav>
+<button class="mt-auto bg-gradient-to-br from-primary to-primary-container text-white py-2.5 rounded-lg text-sm font-semibold shadow-md active:scale-95 transition-all">
+            导出全局报告
+        </button>
+<div class="mt-4 pt-4 border-t border-outline-variant/15">
+<div class="flex items-center gap-3 py-3 px-4 text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 cursor-pointer rounded-lg font-inter text-sm font-medium">
+<span class="material-symbols-outlined">logout</span>
+<span>退出登录</span>
+</div>
+</div>
+</aside>
+<main class="ml-64 pt-16 min-h-screen">
+<div class="p-8 max-w-6xl mx-auto">
+<header class="mb-10">
+<h1 class="text-2xl font-bold font-headline text-on-surface mb-2">产品主数据编辑</h1>
+<p class="text-on-surface-variant text-sm tracking-wide">编辑企业核心出口产品数据，确保HS编码合规性。</p>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<div class="col-span-8 space-y-8">
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/15">
+<h3 class="text-lg font-bold font-headline mb-6">基础物料信息</h3>
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">物料名称</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-secondary-container transition-all" type="text" value="高压脉冲控制阀门"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">物料编号</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm" type="text" value="MAT-2023-X99"/>
+</div>
+<div class="col-span-2 space-y-2">
+<label class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">规格描述</label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-lg px-4 py-3 text-sm" rows="3">工业级不锈钢材质，耐压10MPa，适用于流体自动化控制系统。</textarea>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/15">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold font-headline">出口合规附件</h3>
+<button class="text-primary text-sm font-medium flex items-center gap-1 hover:bg-surface-container-low px-3 py-1.5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">add</span> 上传新附件
+                            </button>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="group relative aspect-square bg-surface-container rounded-lg overflow-hidden border border-outline-variant/10 cursor-pointer">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Technical product photograph of industrial valve" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7FtNTSBiJEaaLVp3f8TGMrPBuAguObbqyY9jSC8mLIvg6KF8892RP1P8zUowRbyj-yGjWKQReAS6HkXQR8L5nN_IpF40OadpgX6LMcW1kpF9Yt2x8eD7T2jhpVZNhfjWrnw-0JhUByyAm0EBowhvQHzUMg-oltrDes5uElpFjF8tkm5YM_Ax_jCEu9IBRMATt4YOMM967bnIRbqvlsHVtGtgSPvEe-Lcl0km3_W7kOxVfYnSusEgTFwllZeY5zSCc7SrsGDMP8vs"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="bg-white text-primary px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">预览照片</span>
+</div>
+</div>
+<div class="flex flex-col justify-center items-center bg-surface-container-low p-4 rounded-lg border border-dashed border-outline-variant/30 hover:border-primary/40 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-3xl text-outline mb-2">picture_as_pdf</span>
+<span class="text-xs font-medium text-on-surface">营业执照.pdf</span>
+<span class="text-[10px] text-outline mt-1 uppercase">2.4 MB</span>
+</div>
+<div class="flex flex-col justify-center items-center bg-surface-container-low p-4 rounded-lg border border-dashed border-outline-variant/30 hover:border-primary/40 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-3xl text-outline mb-2">image</span>
+<span class="text-xs font-medium text-on-surface">生产车间实拍.jpg</span>
+<span class="text-[10px] text-outline mt-1 uppercase">1.1 MB</span>
+</div>
+</div>
+</section>
+</div>
+<div class="col-span-4 space-y-6">
+<div class="bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-xs font-bold tracking-widest uppercase opacity-70 mb-4">当前HS编码状态</h4>
+<div class="text-3xl font-manrope font-extrabold mb-1">未核准</div>
+<p class="text-xs opacity-80 leading-relaxed mb-6">系统检测到物料描述可能存在多种匹配编码，请通过推荐引擎进行校准。</p>
+<button class="w-full bg-white text-primary py-3 rounded-lg font-bold text-sm shadow-sm hover:shadow-lg transition-all active:scale-[0.98]">
+                                获取 AI 推荐编码
+                            </button>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-9xl">verified</span>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-xl space-y-4">
+<h4 class="text-xs font-bold tracking-widest text-on-surface-variant uppercase">操作日志</h4>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim mt-1.5"></div>
+<div>
+<div class="text-xs font-bold">系统导入数据</div>
+<div class="text-[10px] text-outline mt-0.5">2023-11-24 14:20:05</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
+<div>
+<div class="text-xs font-bold text-primary">等待编码审核</div>
+<div class="text-[10px] text-outline mt-0.5">当前状态</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed inset-0 bg-on-background/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest w-full max-w-4xl max-h-[921px] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+<header class="p-6 border-b border-outline-variant/15 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">description</span>
+<h2 class="text-lg font-bold font-headline">文件预览 - 营业执照副本.pdf</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest rounded-lg text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-sm">download</span> 下载
+                    </button>
+<button class="p-2 hover:bg-error/10 hover:text-error rounded-lg transition-colors text-outline">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</header>
+<div class="flex-1 bg-surface-container overflow-auto p-12 flex justify-center">
+<div class="w-full max-w-2xl bg-white aspect-[1/1.414] shadow-lg p-16 flex flex-col gap-8 relative">
+<div class="border-4 border-primary/20 p-4 h-full flex flex-col items-center">
+<div class="w-24 h-24 border-2 border-primary/40 rounded-full flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-5xl text-primary/40">verified_user</span>
+</div>
+<div class="space-y-6 w-full">
+<div class="h-8 bg-surface-container rounded w-3/4 mx-auto"></div>
+<div class="h-4 bg-surface-container-low rounded w-full"></div>
+<div class="h-4 bg-surface-container-low rounded w-5/6"></div>
+<div class="h-4 bg-surface-container-low rounded w-1/2"></div>
+<div class="mt-20 flex justify-end">
+<div class="w-32 h-32 rounded-full border-4 border-red-500/20 flex items-center justify-center text-red-500/20 font-bold rotate-12">
+<span class="text-center text-[10px]">CERTIFIED<br/>OFFICIAL SEAL</span>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 overflow-hidden">
+<span class="text-6xl font-black rotate-45 select-none whitespace-nowrap">PREVIEW ONLY • 工业数据平台 • CONFIDENTIAL</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 bg-on-background/20 z-[70]">
+<div class="absolute right-0 top-0 h-full w-[420px] bg-surface shadow-2xl flex flex-col border-l border-outline-variant/15">
+<header class="p-6 h-24 flex flex-col justify-center border-b border-outline-variant/10">
+<div class="flex justify-between items-center mb-1">
+<h2 class="text-xl font-bold font-headline text-primary">HS编码推荐引擎</h2>
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors text-outline">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<p class="text-xs text-on-surface-variant font-medium tracking-wide">基于深度学习的物料分类匹配结果</p>
+</header>
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<div class="bg-primary-container/10 p-5 rounded-xl border border-primary/10 relative">
+<div class="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">最优匹配</div>
+<div class="mb-4">
+<label class="text-[10px] font-bold text-primary tracking-widest uppercase mb-1 block">推荐编码</label>
+<div class="text-2xl font-manrope font-extrabold text-primary tracking-tight">8481.8040.90</div>
+</div>
+<div class="mb-4">
+<label class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1 block">编码名称</label>
+<div class="text-sm font-bold text-on-surface">其他用于油压或气压传动的阀</div>
+</div>
+<div>
+<label class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase mb-1 block">匹配说明</label>
+<p class="text-xs leading-relaxed text-on-surface-variant">该物料描述中提及“高压脉冲”及“流体自动化控制”，属于典型的液压/气压传动控制组件。根据《税则》第84章注释，该类精密控制阀门应归入此子目。</p>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-[10px] font-bold text-outline tracking-widest uppercase">备选参考 (2)</h4>
+<div class="p-4 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="text-sm font-bold font-manrope text-on-surface group-hover:text-primary transition-colors">8481.2010.00</span>
+<span class="text-[10px] font-bold text-outline">匹配度 78%</span>
+</div>
+<div class="text-xs text-on-surface-variant line-clamp-1 mb-2">用于液压传动的减压阀</div>
+<div class="text-[10px] text-outline italic">根据物料“耐压10MPa”特征推断</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="text-sm font-bold font-manrope text-on-surface group-hover:text-primary transition-colors">8481.4000.00</span>
+<span class="text-[10px] font-bold text-outline">匹配度 45%</span>
+</div>
+<div class="text-xs text-on-surface-variant line-clamp-1 mb-2">安全阀或溢流阀</div>
+<div class="text-[10px] text-outline italic">低概率匹配，建议核对功能描述</div>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/10">
+<div class="bg-secondary-container/30 p-4 rounded-lg flex gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">info</span>
+<p class="text-[11px] leading-tight text-on-secondary-container">HS编码的准确性直接影响出口退税率与通关效率。建议由报关员对 AI 推荐结果进行最终核实。</p>
+</div>
+</div>
+</div>
+<footer class="p-6 bg-surface-container-low border-t border-outline-variant/15 flex gap-3">
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-container text-white py-3 rounded-lg text-sm font-bold shadow-md hover:shadow-lg active:scale-95 transition-all">
+                    使用此编码
+                </button>
+<button class="px-6 py-3 bg-white text-on-surface border border-outline-variant/30 rounded-lg text-sm font-bold hover:bg-surface-container-high transition-colors">
+                    关闭
+                </button>
+</footer>
+</div>
+</div>
+</body></html>

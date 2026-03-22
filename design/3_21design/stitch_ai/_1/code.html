@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>工业企业出海主数据平台 - 消息与设置</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#cfe5ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface": "#191c1e",
+              "surface-container": "#eceef1",
+              "tertiary-container": "#005284",
+              "on-primary-container": "#9bc2ff",
+              "primary-container": "#1a4f8b",
+              "inverse-on-surface": "#eff1f4",
+              "error": "#ba1a1a",
+              "surface-dim": "#d8dadd",
+              "on-background": "#191c1e",
+              "background": "#f7f9fc",
+              "surface-container-highest": "#e0e3e6",
+              "on-surface-variant": "#424750",
+              "on-tertiary-fixed-variant": "#004a77",
+              "surface-variant": "#e0e3e6",
+              "surface-tint": "#2f5f9c",
+              "surface": "#f7f9fc",
+              "on-secondary-fixed": "#021f29",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "tertiary": "#003a60",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary-fixed": "#d5e3ff",
+              "primary": "#00386c",
+              "on-primary-fixed": "#001c3b",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "secondary-fixed": "#cbe7f5",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#8bc5ff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#a6c8ff",
+              "inverse-surface": "#2d3133",
+              "secondary": "#48626e",
+              "on-tertiary-fixed": "#001d33",
+              "surface-container-low": "#f2f4f7",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c2c6d1",
+              "surface-container-high": "#e6e8eb",
+              "outline": "#737781",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f7f9fc",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-transparent bg-[#eceef1] dark:bg-slate-950 flex flex-col py-6 space-y-1 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-black text-[#00386c] dark:text-white">Industrial Hub</h1>
+<p class="text-xs text-slate-500 tracking-wider">Enterprise Export v2.0</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-manrope text-sm font-medium">Dashboard</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-manrope text-sm font-medium">Enterprise Info</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-manrope text-sm font-medium">Product Management</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="font-manrope text-sm font-medium">Bulk Import</span>
+</a>
+<!-- Active State: Message Center -->
+<a class="bg-white dark:bg-[#1a4f8b] text-[#00386c] dark:text-white shadow-sm rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="mail" style="font-variation-settings: 'FILL' 1;">mail</span>
+<span class="font-manrope text-sm font-medium">Message Center</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
+<span class="font-manrope text-sm font-medium">Account Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 bg-surface-container-high py-3 rounded-lg text-primary font-semibold text-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="help_center">help_center</span>
+                Support Center
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="bg-[#f7f9fc]/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40 flex justify-between items-center px-8 py-4 w-full border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-[#00386c] dark:text-blue-400 tracking-tight">工业企业出海主数据平台</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="bg-surface-container-highest/50 border-none rounded-full py-2 pl-10 pr-4 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search data..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-600">
+<button class="hover:bg-[#e6e8eb] p-2 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="hover:bg-[#e6e8eb] p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<button class="hover:bg-[#e6e8eb] p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar in business attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMVCWyE13J29yCFHjEsjoVU2f5dLnVGax9O8Dp1MBucz8l-xzSQQsF3wDMhuE6cSa3isWaucUWUuzg0PV4QochLOKjj9_gNiXME7TwfdtVcEUGEYti2_EQcZQ7VFLr6I5ipE1xoF2Y0m41HUgW3AnxCvZhJrO6o29SLeq8o5C86yAHbOnG4WX5Vc2RjXb58lQE_-mGlxo0JpQ4IywyjDiLSzhZUofeghoJ8xYtjQ_pgYugQQBFMK7w4acKDKWQ1SN4XvNe6i84EmE"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Message Center Section -->
+<section class="p-8 max-w-6xl mx-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">Message Center</h2>
+<p class="text-on-surface-variant text-sm font-body">Manage system alerts and operational notifications.</p>
+</div>
+<button class="bg-primary hover:primary-container text-white px-6 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="done_all">done_all</span>
+                    Mark All Read
+                </button>
+</div>
+<!-- Custom Tabs -->
+<div class="flex gap-8 border-b border-outline-variant/30 mb-8">
+<button class="pb-4 text-[#00386c] font-bold border-b-2 border-[#00386c] text-sm tracking-wide transition-all">
+                    System Notifications
+                </button>
+<button class="pb-4 text-slate-500 hover:text-primary font-medium text-sm tracking-wide transition-all">
+                    Audit Notifications
+                </button>
+</div>
+<!-- Notification List -->
+<div class="space-y-4">
+<!-- Message Card (Unread) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl flex items-start gap-6 border-l-4 border-primary shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-lg flex-shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-lg text-on-surface">Data Sync Successful</h3>
+<span class="text-xs font-label uppercase tracking-widest text-primary font-bold bg-primary-fixed px-2 py-1 rounded">System</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">The weekly export data synchronization for Southeast Asian markets has been completed successfully. 12,403 records updated.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs text-outline font-label">2023-10-24 14:30:05</span>
+<div class="flex gap-3">
+<button class="text-sm font-semibold text-primary px-3 py-1.5 hover:bg-surface-container-low rounded-lg transition-colors">Mark as Read</button>
+<button class="bg-surface-container-high text-on-primary-fixed-variant px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-surface-container-highest transition-colors">View Detail</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Card (Unread) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl flex items-start gap-6 border-l-4 border-error shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-error-container flex items-center justify-center rounded-lg flex-shrink-0">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-lg text-on-surface">Security Alert: Abnormal Login</h3>
+<span class="text-xs font-label uppercase tracking-widest text-error font-bold bg-error-container px-2 py-1 rounded">Security</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">A login attempt from an unrecognized IP address (192.168.1.XX) was detected for your account in Frankfurt, Germany.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs text-outline font-label">2023-10-24 09:15:22</span>
+<div class="flex gap-3">
+<button class="text-sm font-semibold text-primary px-3 py-1.5 hover:bg-surface-container-low rounded-lg transition-colors">Mark as Read</button>
+<button class="bg-surface-container-high text-on-primary-fixed-variant px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-surface-container-highest transition-colors">View Detail</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Message Card (Read) -->
+<div class="bg-surface-container-low p-6 rounded-xl flex items-start gap-6 shadow-none opacity-80 hover:opacity-100 transition-opacity">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center rounded-lg flex-shrink-0">
+<span class="material-symbols-outlined text-outline" data-icon="cloud_done">cloud_done</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-semibold text-lg text-on-surface-variant">Maintenance Completed</h3>
+<span class="text-xs font-label uppercase tracking-widest text-on-secondary-container bg-secondary-container px-2 py-1 rounded">Platform</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">Scheduled platform maintenance for v2.0 update is now complete. All services are operational.</p>
+<div class="flex items-center justify-between">
+<span class="text-xs text-outline font-label">2023-10-22 04:00:00</span>
+<div class="flex gap-3">
+<button class="bg-white/50 text-on-primary-fixed-variant px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-white transition-colors">View Detail</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Divider with Architectural Depth -->
+<div class="h-24 bg-gradient-to-b from-transparent to-surface-container-low mt-12"></div>
+<!-- Account Settings Section -->
+<section class="p-8 max-w-4xl mx-auto bg-surface-container-low/50 rounded-3xl mb-12">
+<div class="mb-12">
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">Account Settings</h2>
+<p class="text-on-surface-variant text-sm font-body">Secure your profile and manage system credentials.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Sidebar Context for Settings -->
+<div class="space-y-6">
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/20">
+<div class="w-20 h-20 bg-primary-fixed rounded-full mb-4 mx-auto overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close-up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrkkmKW-O3yFmea12rIHDy1EDJZQAOhmdLkELxRo-8hcSNPIs3W5AsRIpJEju3gBhjc8umlhGG4gySNMaPYJOHNPqZygtYbMH8Wz6UM8KusBnW1v8XPe6w36n1wIRy1NMj_OmWSvTl_X8VPP08rKJaQyYsDKwvNmhCk6O8eR-4LKcaOAIR7DIMttB9Q4dGq__j0wQmLl7ConGSCC7W6mGxcqyb7CTTge3W9ghzwBT48kBXnvnEjXJzfbd7jwDIq3o4vIo0gbnaWU0"/>
+</div>
+<div class="text-center">
+<p class="font-bold text-on-surface">Admin User</p>
+<p class="text-xs text-outline font-label mt-1">Industrial Export Dept.</p>
+</div>
+</div>
+<nav class="space-y-1">
+<button class="w-full text-left px-4 py-3 bg-primary-container text-white rounded-lg text-sm font-semibold">Security Info</button>
+<button class="w-full text-left px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg text-sm font-medium transition-colors">Preferences</button>
+<button class="w-full text-left px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg text-sm font-medium transition-colors">Login History</button>
+</nav>
+</div>
+<!-- Settings Form -->
+<div class="md:col-span-2 space-y-8">
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/10">
+<h3 class="text-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="lock">lock</span>
+                            Authentication Details
+                        </h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-outline font-label">Phone / Email</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-body" type="text" value="admin@industrial-hub.com"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-outline font-label">Current Password</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-body" placeholder="••••••••••••" type="password"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-outline font-label">New Password</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-body" placeholder="Min. 8 characters" type="password"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-outline font-label">Confirm New Password</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-3 px-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-body" placeholder="Repeat password" type="password"/>
+</div>
+</div>
+<div class="pt-6 flex items-center justify-between border-t border-outline-variant/20">
+<button class="text-error font-bold text-sm flex items-center gap-2 hover:bg-error-container/20 px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+                                    Logout
+                                </button>
+<div class="flex gap-4">
+<button class="px-6 py-2.5 rounded-lg text-sm font-semibold text-primary bg-surface-container-high hover:bg-surface-container-highest transition-colors">Reset</button>
+<button class="px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-br from-primary to-primary-container shadow-md hover:shadow-lg transition-all active:scale-95">Save Changes</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Security Card -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="shield">shield</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-sm">Two-Factor Authentication</h4>
+<p class="text-xs text-outline">Add an extra layer of security to your account.</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary bg-primary-fixed px-3 py-1.5 rounded-full">Enable Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-20 py-12 px-8 bg-surface-container-highest/30 border-t border-outline-variant/20">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col gap-2">
+<span class="text-lg font-bold text-primary tracking-tight">Industrial Hub</span>
+<p class="text-xs text-outline font-label">© 2023 Enterprise Export Platform. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-xs font-label uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-xs font-label uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-xs font-label uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors" href="#">Audit Protocol</a>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

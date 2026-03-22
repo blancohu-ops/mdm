@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>平台介绍与政策补贴 - 工业企业出海主数据平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f7f9fc",
+              "surface-container-lowest": "#ffffff",
+              "on-surface": "#191c1e",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#cbe7f5",
+              "primary-container": "#1a4f8b",
+              "tertiary-fixed": "#cfe5ff",
+              "on-surface-variant": "#424750",
+              "primary-fixed": "#d5e3ff",
+              "on-primary-fixed": "#001c3b",
+              "on-background": "#191c1e",
+              "surface-container-low": "#f2f4f7",
+              "surface-container": "#eceef1",
+              "outline": "#737781",
+              "surface-container-high": "#e6e8eb",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "tertiary-container": "#005284",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-primary-container": "#9bc2ff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed": "#cbe7f5",
+              "background": "#f7f9fc",
+              "tertiary": "#003a60",
+              "on-primary-fixed-variant": "#0c4783",
+              "on-tertiary-fixed-variant": "#004a77",
+              "primary-fixed-dim": "#a6c8ff",
+              "surface-dim": "#d8dadd",
+              "error": "#ba1a1a",
+              "inverse-on-surface": "#eff1f4",
+              "secondary-fixed-dim": "#afcbd8",
+              "on-tertiary-container": "#8bc5ff",
+              "surface-variant": "#e0e3e6",
+              "inverse-surface": "#2d3133",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-error": "#ffffff",
+              "inverse-primary": "#a6c8ff",
+              "primary": "#00386c",
+              "surface-tint": "#2f5f9c",
+              "outline-variant": "#c2c6d1",
+              "on-secondary-container": "#4e6874",
+              "surface-bright": "#f7f9fc"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .ghost-border {
+            border: 1px solid rgba(194, 198, 209, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-center h-16 px-6 lg:px-12 max-w-full mx-auto">
+<div class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-headline">
+                工业企业出海主数据平台
+            </div>
+<div class="hidden md:flex items-center space-x-8 font-sans text-sm font-medium">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">首页</a>
+<a class="text-blue-700 dark:text-blue-400 border-b-2 border-blue-700 dark:border-blue-400 pb-1 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">平台介绍</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">企业入驻</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">产品展示</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">AI工具</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors duration-200 ease-in-out" href="#">政策与补贴</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">登录</button>
+<button class="px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity">注册</button>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative h-[480px] flex items-center overflow-hidden bg-primary">
+<div class="absolute inset-0 opacity-40">
+<img alt="Modern industrial infrastructure" class="w-full h-full object-cover" data-alt="Modern architectural glass building reflecting sunlight in a clean industrial park" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKqicwIbUDTa_3hK77mfuYbE-BnSL6_Qj8Di8XtGbFEw12NJXFAn8e3QLBLZOaxdK0CJrkEVTPjAJNYC0sbNDVYmcbPWseQdCKPR8_q8V6mJhaxAVxemC0rWIIIp9ob05yp5slTCVjhRYRswquJUyWAr0v1VfHcg_rVA75z9viTUde8muYlPPeytHb-qNJ5CLWOKX4rznwWbMCV27jsZmPAkjnomfe7_MyOVcFbzJNGiklL9DY6qhtS4KthaTi7ny-rqJezjlqPVs"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"></div>
+<div class="relative max-w-7xl mx-auto px-6 lg:px-12 w-full">
+<div class="max-w-3xl">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] uppercase tracking-[0.15em] font-bold mb-6 rounded-full">Official Government Portal</span>
+<h1 class="text-white font-headline text-4xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                        赋能工业企业<br/><span class="text-primary-fixed">步入全球化数字新纪元</span>
+</h1>
+<p class="text-on-primary-container text-lg max-w-2xl leading-relaxed font-light">
+                        响应国家数字化转型战略，构建全球领先的工业主数据支撑体系，为中国制造出海提供全方位的政策、数据与技术赋能。
+                    </p>
+</div>
+</div>
+</section>
+<!-- Platform Background -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+<div class="lg:col-span-4">
+<div class="sticky top-24">
+<h2 class="font-headline text-3xl font-bold text-primary mb-6">平台背景</h2>
+<div class="w-12 h-1 bg-primary mb-8"></div>
+<p class="text-on-surface-variant leading-loose mb-6">
+                                工业企业出海主数据平台是由政府主导的战略级数字化工程。旨在解决工业企业在出海过程中面临的信息不对称、数据标准不统一及合规性挑战。
+                            </p>
+</div>
+</div>
+<div class="lg:col-span-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border-l-4 border-primary">
+<h3 class="font-headline text-xl font-bold mb-4">政府引领</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                    依托国家部委指导，整合省级工信资源，确立平台在工业数据领域的权威性与公信力，确保企业出海数据的安全性与合法性。
+                                </p>
+</div>
+<div class="p-8 bg-surface-container-lowest rounded-xl shadow-sm border-l-4 border-tertiary-container">
+<h3 class="font-headline text-xl font-bold mb-4">数字化增长</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                                    通过统一的数据标准体系，加速工业企业从生产制造向数字贸易的转型，构建具备国际竞争力的智能供应链模型。
+                                </p>
+</div>
+</div>
+<div class="mt-8 relative rounded-xl overflow-hidden h-[300px] shadow-lg">
+<img alt="Tech team working" class="w-full h-full object-cover" data-alt="Modern high-tech command center with data visualizations on large screens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmk_Be5KA-w63x3uR5xZROlDWNFxQQB-dFl7KJqvQI_9Ihrj0B1yAa4krCjuHIjyVqIuql513v4MLlwwIWMn5HXt75lG4I6dd77yHWqwnLDZPmgEgFANB0heTtinSIswYTIavW6o09_7qtPEvm3zq2iyej__79pGmU-CXPZ3_mqUeXVd7ozhdsx44in6UyqaJD3glRUE1d6bsC42UDTsIjUm9oRjpnS132-KZokQyDXL4Lc3DzPZxkRXZ8WQuF3RwgUonBYkFxpGE"/>
+<div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission & Vision - Asymmetric Bento Grid -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="text-center mb-16">
+<h2 class="font-headline text-3xl font-bold text-on-surface">使命与愿景</h2>
+<p class="text-on-surface-variant mt-4">引领中国制造，定义全球标准</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-6 gap-6">
+<div class="md:col-span-3 p-10 bg-primary-container rounded-xl flex flex-col justify-between group">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-8">rocket_launch</span>
+<div>
+<h3 class="text-2xl font-bold text-white mb-4">核心使命</h3>
+<p class="text-on-primary-container leading-relaxed">
+                                致力于消除跨境贸易中的数字壁垒，为每一家出海工业企业提供标准化的主数据支撑，让中国制造在全球市场更具品牌溢价。
+                            </p>
+</div>
+</div>
+<div class="md:col-span-3 p-10 bg-surface-container-lowest rounded-xl flex flex-col justify-between shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-tertiary text-4xl mb-8">visibility</span>
+<div>
+<h3 class="text-2xl font-bold text-on-surface mb-4">远景规划</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                                成为全球工业数据的核心节点，建立中国工业品在海外市场的“数字身份证”标准，构建万物互联的国际贸易新生态。
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Service Scope - Editorial Layout -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="flex flex-col md:flex-row gap-16 items-center mb-20">
+<div class="w-full md:w-1/2">
+<h2 class="font-headline text-4xl font-extrabold text-primary mb-8 tracking-tight">服务范围</h2>
+<div class="space-y-12">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-primary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">database</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">主数据管理 (MDM)</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">提供多语言、多标准的产品、供应商及物料主数据管理，确保全球分销体系的数据唯一性与一致性。</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-secondary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">smart_toy</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">AI 出海全链路赋能</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">集成AI智能翻译、合规性风险预警及全球竞品分析，大幅降低企业出海的技术门槛与人力成本。</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-tertiary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">language</span>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-2">全球化品牌推广</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">通过平台国际版渠道，将优质中国制造直达海外采购商，提供精准的需求匹配与线索转化服务。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/2 relative px-4">
+<div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+<img alt="Data infrastructure" class="w-full h-[500px] object-cover" data-alt="Sleek silver servers in a futuristic blue-lit data center environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcXAHHyb756Wy3kZr3bIz60nL7VPLJXPMUIaq4tEdBrW789rNA2k2ixUhz-szWISPejqOmhMoqQMYxyL2RsWsLFpMbTt1Gd1xSTIPGTAuGbJOIJ0m7MwEYtCAZRHtpBhN2MnOdYu0EoAfiqFyHJUWIsECcMu7Q8k7Jo8eInKOzTlMkoz__WqHh-cdJkxfmQ0HuGws6HhPavjH9L9lI2SylD5kiN3PSHg3QSVsqfcXml7OJSXF-0Klnjl6h-EfAeE40Q217DivWQqo"/>
+</div>
+<div class="absolute -top-6 -right-6 w-full h-full bg-primary-fixed -z-10 rounded-2xl"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Policy & Subsidy Logic -->
+<section class="py-24 bg-surface-container">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<span class="text-primary font-bold tracking-widest text-xs uppercase">Policy Support</span>
+<h2 class="font-headline text-4xl font-bold mt-4">AI 补贴机制详解</h2>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</div>
+<h3 class="text-xl font-bold">资质初审</h3>
+</div>
+<p class="text-on-surface-variant leading-relaxed">
+                                入驻平台且完成主体认证的工业企业均可申请。我们将重点评估企业的数字化基础及出海项目的可行性。
+                            </p>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">2</div>
+<h3 class="text-xl font-bold">AI 工具额度配发</h3>
+</div>
+<p class="text-on-surface-variant leading-relaxed">
+                                审核通过后，平台将按季度配发 AI 工具专用积分（Sub-Points）。积分可用于抵扣 AI 翻译、自动化报关及市场预测分析等服务费用。
+                            </p>
+<div class="mt-6 flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-medium rounded-full">翻译服务 100% 抵扣</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-medium rounded-full">风险预警 80% 补贴</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">3</div>
+<h3 class="text-xl font-bold">成果评估与续补</h3>
+</div>
+<p class="text-on-surface-variant leading-relaxed">
+                                每季度对企业出海数据及业务增长情况进行闭环评估，表现优异的企业可申请“数字领航员”计划，获得更高比例的专项资金补贴。
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA / Application Entrance -->
+<section class="py-24 bg-primary relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/2 h-full">
+<img alt="Global business meeting" class="w-full h-full object-cover opacity-20" data-alt="Abstract overlapping blue and grey geometric patterns representing global connectivity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ0Vd7Wit6jigUmK7dDgsjvy2DgOYRmDBLPqO07Nofh9oQrZNREktwdQbQy6vUZkTsLYvjQTVYzx4rL3Qhv7fGdYdAFHqtlLPy1TRvQkBRJ4CgMxdqWfd8NyydB1gUbCd4Fmwz3WI2bMKQY7SBsxS0tyyiK-3nwadM1-XFLmUBPqNzNJbuux1tns9urcqiyspgWNM-u_KH1nCk676YasGfLuWT_IrAwC18AAlQgAL9SlhTz2hKWSKQhVHPhFbgcsqgOqDNurSArz0"/>
+</div>
+<div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+<div class="max-w-2xl">
+<h2 class="text-white font-headline text-3xl font-bold mb-6">开启您的全球化数字化旅程</h2>
+<p class="text-on-primary-container mb-10 text-lg leading-relaxed">
+                        现在入驻平台，立享年度 AI 工具补贴额度，让数据成为企业出海的最强助推力。
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="px-8 py-4 bg-primary-fixed text-on-primary-fixed font-bold rounded-lg shadow-lg hover:bg-white transition-all text-center">立即申请入驻</button>
+<button class="px-8 py-4 border border-primary-fixed text-primary-fixed font-bold rounded-lg hover:bg-primary-fixed/10 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                            下载政策白皮书
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Info -->
+<section class="py-16 bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-12">
+<div>
+<h4 class="font-bold text-primary mb-4">联系我们</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                        地址：北京市经济技术开发区工业数字化中心 8 层<br/>
+                        热线：400-000-8888 (工作日 9:00 - 18:00)
+                    </p>
+</div>
+<div>
+<h4 class="font-bold text-primary mb-4">技术咨询</h4>
+<p class="text-sm text-on-surface-variant">
+                        邮箱：support@industry-global.gov.cn<br/>
+                        在线客服：点击右侧悬浮窗口
+                    </p>
+</div>
+<div>
+<h4 class="font-bold text-primary mb-4">政府监督</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                        工业和信息化部数字化转型指导小组<br/>
+                        投诉举报：complaint@miit.gov.cn
+                    </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-12 pb-8 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 lg:px-12 max-w-7xl mx-auto">
+<div class="md:col-span-1">
+<div class="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4">工业企业出海主数据平台</div>
+<p class="text-xs lg:text-sm text-slate-500 leading-relaxed">构建数字丝绸之路，赋能中国制造出海。</p>
+</div>
+<div class="flex flex-col space-y-3">
+<h5 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">快速链接</h5>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">服务条款</a>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">隐私政策</a>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">联系我们</a>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">关于我们</a>
+</div>
+<div class="flex flex-col space-y-3">
+<h5 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">资源中心</h5>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">操作指南</a>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">API文档</a>
+<a class="text-xs lg:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 transition-colors" href="#">行业白皮书</a>
+</div>
+<div class="flex flex-col space-y-4">
+<h5 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">关注我们</h5>
+<div class="flex space-x-4">
+<span class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center"><span class="material-symbols-outlined text-sm">share</span></span>
+<span class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center"><span class="material-symbols-outlined text-sm">alternate_email</span></span>
+</div>
+</div>
+</div>
+<div class="mt-12 text-center text-[10px] text-slate-400 border-t border-slate-100 pt-8">
+            © 2024 工业企业出海主数据平台 版权所有
+        </div>
+</footer>
+</body></html>

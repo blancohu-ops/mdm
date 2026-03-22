@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>企业入驻 - 工业企业出海主数据平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#cfe5ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface": "#191c1e",
+              "surface-container": "#eceef1",
+              "tertiary-container": "#005284",
+              "on-primary-container": "#9bc2ff",
+              "primary-container": "#1a4f8b",
+              "inverse-on-surface": "#eff1f4",
+              "error": "#ba1a1a",
+              "surface-dim": "#d8dadd",
+              "on-background": "#191c1e",
+              "background": "#f7f9fc",
+              "surface-container-highest": "#e0e3e6",
+              "on-surface-variant": "#424750",
+              "on-tertiary-fixed-variant": "#004a77",
+              "surface-variant": "#e0e3e6",
+              "surface-tint": "#2f5f9c",
+              "surface": "#f7f9fc",
+              "on-secondary-fixed": "#021f29",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "tertiary": "#003a60",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary-fixed": "#d5e3ff",
+              "primary": "#00386c",
+              "on-primary-fixed": "#001c3b",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "secondary-fixed": "#cbe7f5",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#8bc5ff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#a6c8ff",
+              "inverse-surface": "#2d3133",
+              "secondary": "#48626e",
+              "on-tertiary-fixed": "#001d33",
+              "surface-container-low": "#f2f4f7",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c2c6d1",
+              "surface-container-high": "#e6e8eb",
+              "outline": "#737781",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f7f9fc",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .bg-industrial-gradient {
+        background: linear-gradient(135deg, #00386c 0%, #1a4f8b 100%);
+      }
+      .glass-effect {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-40 w-full flex justify-between items-center px-6 py-3 border-b border-slate-200/50 bg-[#f7f9fc]/80 backdrop-blur-md shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold text-[#00386c] tracking-tight">工业企业出海主数据平台</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-slate-600 font-manrope text-sm tracking-wide hover:bg-[#e6e8eb] transition-colors px-2 py-1 rounded" href="#">首页</a>
+<a class="text-[#00386c] font-bold border-b-2 border-[#00386c] font-manrope text-sm tracking-wide px-2 py-1" href="#">企业入驻</a>
+<a class="text-slate-600 font-manrope text-sm tracking-wide hover:bg-[#e6e8eb] transition-colors px-2 py-1 rounded" href="#">政策指南</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 hover:bg-[#e6e8eb] rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-[#e6e8eb] rounded-full transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img alt="User Profile" data-alt="User avatar placeholder with a minimalist icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJsCYVqEbIrU0ojpcOY-kqHLiVzCBGX_Wun8VfuThgt0Y8lDPcvV6aTIFWtcKyjq3eMHKvsURqjYVWNmpQhr1m8nGuNiDCFXG0rfpR5EsN-0xK8wqvLJQxn-S9z8SD8m0_tkNMXfTeMtUIgKeM-_Z9fHoZeKh9w0lX5toMLb0a02yYqIgz0uiL-Gsiz3DyWkcNtDsfloaRwyQepOd1f9FskrcLpIVlS87SnrVQFE67O_UlHXtoLvVOTvidPsPKw63cbMQBM1fBDSI"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-20 px-4 md:px-0 max-w-5xl mx-auto">
+<!-- Wizard Status / Stepper -->
+<div class="mb-12">
+<div class="flex items-center justify-between relative px-4">
+<!-- Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-surface-container-highest -z-10 -translate-y-1/2"></div>
+<!-- Step 1: Completed -->
+<div class="flex flex-col items-center gap-2 bg-surface px-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center border-2 border-primary/20">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-xs font-semibold text-on-surface-variant font-label tracking-wider">1. 基础信息</span>
+</div>
+<!-- Step 2: Active -->
+<div class="flex flex-col items-center gap-2 bg-surface px-4">
+<div class="w-10 h-10 rounded-full bg-industrial-gradient text-on-primary flex items-center justify-center shadow-lg shadow-primary/20 ring-4 ring-primary-fixed">
+<span class="text-sm font-bold">02</span>
+</div>
+<span class="text-xs font-bold text-primary font-label tracking-wider">2. 资质与联系人</span>
+</div>
+<!-- Step 3: Pending -->
+<div class="flex flex-col items-center gap-2 bg-surface px-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center">
+<span class="text-sm font-bold">03</span>
+</div>
+<span class="text-xs font-medium text-outline font-label tracking-wider">3. 审核确认</span>
+</div>
+</div>
+</div>
+<!-- Content Canvas -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Main Form Section -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Qualification Section -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h2 class="text-xl font-headline font-bold text-on-surface">企业资质证明</h2>
+</div>
+<div class="space-y-6">
+<label class="block">
+<span class="text-sm font-semibold text-on-surface-variant mb-2 flex items-center gap-1">
+                                营业执照扫描件 <span class="text-error">*</span>
+</span>
+<div class="mt-2 flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl p-8 bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-16 h-16 mb-4 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="text-sm font-medium text-on-surface">点击或将文件拖拽至此处上传</p>
+<p class="text-xs text-outline mt-1">支持 JPG, PNG, PDF 格式，文件小于 10MB</p>
+</div>
+</div>
+</label>
+<!-- Preview Mockup -->
+<div class="relative p-4 bg-surface-container-highest/50 rounded-lg flex items-center gap-4">
+<div class="w-16 h-20 bg-white rounded shadow-inner flex items-center justify-center border border-outline-variant/30 overflow-hidden">
+<img alt="Business License Preview" class="object-cover w-full h-full opacity-60" data-alt="Official document scan placeholder with blue government stamp" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0u3X6jjF41u2swbhgrSB7_fpTPo74WluMHth9BNwhE7IIgzfYSIVsAz0FuxSKAteXs1Y2wrc7VwNVzo0w194xLZXwf8E3wqiSY_X9O19N_aQtU3OHOX0nxX1_tRXwUyLxYFxuBR0m3_1lavLbB3NkLLBNs9msv1nQWSxPMpU7lgo_kEva6FELhEOFdMw2lHaTx9dXJuP2oeRew2W16Wy6-bvpy_B3jMQPlPoExWVjd65K6ynL0O2CgEnN2KPO88lEET7Ulrql7g8"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium text-on-surface">营业执照_2024.jpg</p>
+<p class="text-xs text-outline">1.2 MB • 上传成功</p>
+</div>
+<button class="text-error hover:bg-error-container/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-1 h-6 bg-primary rounded-full"></div>
+<h2 class="text-xl font-headline font-bold text-on-surface">联系人信息</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Name -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-on-surface-variant flex items-center gap-1">
+                                联系人姓名 <span class="text-error">*</span>
+</label>
+<input class="w-full h-12 px-4 bg-surface-container-highest border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="请输入姓名" type="text"/>
+<label class="flex items-center gap-2 mt-2">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant" type="checkbox"/>
+<span class="text-xs text-on-surface-variant font-label tracking-wide">Show contact in public</span>
+</label>
+</div>
+<!-- Position -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-on-surface-variant flex items-center gap-1">
+                                职位/部门 <span class="text-error">*</span>
+</label>
+<input class="w-full h-12 px-4 bg-surface-container-highest border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="例如：外贸经理" type="text"/>
+</div>
+<!-- Phone -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-on-surface-variant flex items-center gap-1">
+                                移动电话 <span class="text-error">*</span>
+</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-outline text-sm font-medium">+86</span>
+<input class="w-full h-12 pl-14 pr-4 bg-surface-container-highest border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="请输入手机号码" type="tel"/>
+</div>
+<label class="flex items-center gap-2 mt-2">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant" type="checkbox"/>
+<span class="text-xs text-on-surface-variant font-label tracking-wide">Show phone in public</span>
+</label>
+</div>
+<!-- Email -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-on-surface-variant flex items-center gap-1">
+                                联系邮箱 <span class="text-error">*</span>
+</label>
+<input class="w-full h-12 px-4 bg-surface-container-highest border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-white transition-all outline-none" placeholder="example@enterprise.com" type="email"/>
+<label class="flex items-center gap-2 mt-2">
+<input class="rounded text-primary focus:ring-primary h-4 w-4 border-outline-variant" type="checkbox"/>
+<span class="text-xs text-on-surface-variant font-label tracking-wide">Show email in public</span>
+</label>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<div class="flex items-center justify-between pt-4">
+<button class="px-8 h-12 rounded-lg font-bold text-on-primary-fixed-variant bg-surface-container-high hover:bg-surface-container-highest transition-colors flex items-center gap-2 group">
+<span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                        上一步
+                    </button>
+<div class="flex items-center gap-4">
+<button class="px-8 h-12 rounded-lg font-bold text-on-primary-fixed-variant hover:bg-surface-container-high transition-colors">
+                            保存草稿
+                        </button>
+<button class="px-10 h-12 rounded-lg font-bold text-on-primary bg-industrial-gradient shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 group">
+                            下一步
+                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Sidebar Guidance / Bento Elements -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Instruction Card -->
+<div class="bg-primary text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-4xl mb-4">info</span>
+<h3 class="text-lg font-headline font-bold mb-2">填报说明</h3>
+<p class="text-sm text-tertiary-fixed opacity-90 leading-relaxed mb-4">
+                            请确保上传的营业执照内容清晰可见，联系人信息真实有效。该信息将用于后期出海资质核验与平台重要通知。
+                        </p>
+<div class="bg-white/10 p-3 rounded-lg border border-white/10 backdrop-blur-sm">
+<p class="text-xs font-label">
+<strong class="text-tertiary-fixed-dim">注：</strong>公共展示勾选项将决定该信息是否出现在国际采购目录中。
+                            </p>
+</div>
+</div>
+<!-- Abstract Background Pattern -->
+<div class="absolute -bottom-8 -right-8 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+<div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
+</div>
+<!-- Assistance Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/20">
+<h3 class="text-sm font-bold text-on-surface mb-4">需要帮助？</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+</div>
+<div>
+<p class="text-xs font-bold">在线客服</p>
+<p class="text-[10px] text-outline">响应时间 &lt; 5分钟</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+</div>
+<div>
+<p class="text-xs font-bold">查看示例</p>
+<p class="text-[10px] text-outline">常见资质填报规范</p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Health Check -->
+<div class="bg-white p-6 rounded-xl border border-outline-variant/10 flex items-center justify-between">
+<div>
+<p class="text-[10px] font-bold text-outline tracking-widest uppercase">Encryption Status</p>
+<p class="text-sm font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">lock</span>
+                            Secure TLS 1.3
+                        </p>
+</div>
+<div class="h-10 w-1 bg-primary/10 rounded-full"></div>
+<div class="text-right">
+<p class="text-[10px] font-bold text-outline tracking-widest uppercase">Auto Save</p>
+<p class="text-sm font-bold text-on-surface">3 min ago</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden xl:flex flex-col h-screen w-64 fixed left-0 top-0 bg-[#eceef1] py-6 space-y-1 z-30">
+<div class="px-6 mb-10 mt-14">
+<h1 class="text-lg font-black text-[#00386c] tracking-tight">Industrial Hub</h1>
+<p class="text-[10px] text-slate-500 font-medium uppercase tracking-[0.2em]">Enterprise Export v2.0</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium">Dashboard</span>
+</a>
+<a class="bg-white text-[#00386c] shadow-sm rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-manrope text-sm font-medium">Enterprise Info</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-manrope text-sm font-medium">Product Management</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="font-manrope text-sm font-medium">Bulk Import</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-manrope text-sm font-medium">Message Center</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">manage_accounts</span>
+<span class="font-manrope text-sm font-medium">Account Settings</span>
+</a>
+</nav>
+<div class="px-4 pb-4">
+<button class="w-full bg-[#f2f4f7] text-[#00386c] text-xs font-bold py-3 rounded-lg border border-transparent hover:border-primary/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+                Support Center
+            </button>
+</div>
+</aside>
+</body></html>

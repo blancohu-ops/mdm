@@ -1,0 +1,14 @@
+:root {
+  --color-surface: #f5f7fb;
+  --color-surface-low: #ebeff4;
+  --color-surface-card: #ffffff;
+  --color-surface-muted: #dfe5ed;
+  --color-line: rgba(116, 125, 143, 0.18);
+  --color-primary: #1d4f8d;
+  --color-primary-strong: #082b57;
+  --color-accent: #9cd7ff;
+  --color-ink: #111827;
+  --color-ink-muted: #4b5563;
+  --color-chip-bg: #d5ecfb;
+  --color-chip-text: #385a72;
+}

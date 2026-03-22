@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>产品管理 - 工业企业出海主数据平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#cfe5ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface": "#191c1e",
+              "surface-container": "#eceef1",
+              "tertiary-container": "#005284",
+              "on-primary-container": "#9bc2ff",
+              "primary-container": "#1a4f8b",
+              "inverse-on-surface": "#eff1f4",
+              "error": "#ba1a1a",
+              "surface-dim": "#d8dadd",
+              "on-background": "#191c1e",
+              "background": "#f7f9fc",
+              "surface-container-highest": "#e0e3e6",
+              "on-surface-variant": "#424750",
+              "on-tertiary-fixed-variant": "#004a77",
+              "surface-variant": "#e0e3e6",
+              "surface-tint": "#2f5f9c",
+              "surface": "#f7f9fc",
+              "on-secondary-fixed": "#021f29",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "tertiary": "#003a60",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary-fixed": "#d5e3ff",
+              "primary": "#00386c",
+              "on-primary-fixed": "#001c3b",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "secondary-fixed": "#cbe7f5",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#8bc5ff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#a6c8ff",
+              "inverse-surface": "#2d3133",
+              "secondary": "#48626e",
+              "on-tertiary-fixed": "#001d33",
+              "surface-container-low": "#f2f4f7",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c2c6d1",
+              "surface-container-high": "#e6e8eb",
+              "outline": "#737781",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f7f9fc",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-header {
+        background: rgba(247, 249, 252, 0.8);
+        backdrop-filter: blur(12px);
+      }
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #c2c6d1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-transparent bg-[#eceef1] flex flex-col py-6 space-y-1 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-black text-[#00386c] tracking-tight">Industrial Hub</h1>
+<p class="text-[10px] font-label tracking-[0.1em] text-slate-500 uppercase mt-1">Enterprise Export v2.0</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-manrope text-sm font-medium">Dashboard</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-manrope text-sm font-medium">Enterprise Info</span>
+</a>
+<!-- Active Tab: Product Management -->
+<a class="bg-white text-[#00386c] shadow-sm rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 font-manrope text-sm font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>Product Management</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="font-manrope text-sm font-medium">Bulk Import</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-manrope text-sm font-medium">Message Center</span>
+</a>
+<a class="text-slate-500 hover:text-[#00386c] px-4 py-3 mx-2 flex items-center gap-3 hover:bg-[#e0e3e6] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">manage_accounts</span>
+<span class="font-manrope text-sm font-medium">Account Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-surface-container-high rounded-lg text-primary text-sm font-bold hover:bg-outline-variant/20 transition-colors">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+                Support Center
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="glass-header docked full-width top-0 z-40 flex justify-between items-center px-8 py-4 w-full border-b border-slate-200/50 sticky">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold text-[#00386c] tracking-tight">工业企业出海主数据平台</h2>
+<div class="h-4 w-[1px] bg-slate-300"></div>
+<nav class="flex gap-6 text-sm font-manrope tracking-wide">
+<a class="text-[#00386c] font-bold border-b-2 border-[#00386c] pb-1" href="#">产品管理</a>
+<a class="text-slate-600 hover:text-primary transition-colors" href="#">数据分析</a>
+<a class="text-slate-600 hover:text-primary transition-colors" href="#">合规自检</a>
+</nav>
+</div>
+<div class="flex items-center gap-5">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-surface-container-highest/50 border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="全局搜索" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-600 hover:bg-[#e6e8eb] rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-[#e6e8eb] rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold ml-2">
+                        Admin
+                    </div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-8 space-y-6">
+<!-- Header Actions -->
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-2xl font-bold font-headline text-on-surface">产品主数据库</h3>
+<p class="text-sm text-on-surface-variant mt-1">管理并监控所有已登记的工业出口产品数据</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-primary-fixed-variant text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                        下载模板
+                    </button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-primary-fixed-variant text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">upload</span>
+                        批量导入
+                    </button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-primary-fixed-variant text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">ios_share</span>
+                        导出产品
+                    </button>
+<button class="px-6 py-2 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white text-sm font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                        新增产品
+                    </button>
+</div>
+</div>
+<!-- Filter Section -->
+<section class="bg-surface-container-low rounded-xl p-5 flex flex-wrap gap-4 items-end">
+<div class="flex-1 min-w-[240px]">
+<label class="block text-[10px] font-label font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">搜索名称或型号</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" placeholder="输入产品名称、SKU或规格型号" type="text"/>
+</div>
+</div>
+<div class="w-44">
+<label class="block text-[10px] font-label font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">审核状态</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20">
+<option>全部状态</option>
+<option>草稿 (Draft)</option>
+<option>待审核 (Pending)</option>
+<option>已发布 (Online)</option>
+<option>已驳回 (Rejected)</option>
+<option>已下架 (Offline)</option>
+</select>
+</div>
+<div class="w-44">
+<label class="block text-[10px] font-label font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">产品类目</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20">
+<option>所有类别</option>
+<option>机械制造</option>
+<option>电子元器件</option>
+<option>原材料</option>
+</select>
+</div>
+<div class="w-56">
+<label class="block text-[10px] font-label font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">更新时间范围</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20" type="date"/>
+</div>
+</div>
+<button class="bg-primary text-white p-2.5 rounded-lg hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined block">filter_list</span>
+</button>
+</section>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/50 border-b border-outline-variant/10">
+<tr>
+<th class="py-4 px-6 w-10">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">产品展示</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">基本信息</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">产品类目</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">HS编码</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">当前状态</th>
+<th class="py-4 px-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">更新时间</th>
+<th class="py-4 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-widest text-right">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1: Online -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-5 px-6">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="py-5 px-4">
+<div class="w-16 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Industrial robot arm detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDflSy3gUSJnSusBR18ByqXWgALMkzInFDI2vOGtybWFqHjQH-HjgPYVl86SUgpCkK6kS6Wi2szu6TZ_vgnQQborcw0J9DuXCwdUj01SfjOPMjwoItRHkHrjYnVz1XpEJG8fdCM4nAxLVGBvR12SvH1NhcV3PxeL9Spwp9tOf2LwYSgB5H2cw9zZ4eiwUPZPPFq0XDroLG6JDXofsIRk5Ye9qE24O-bl1LAjpTagHOYJ1anEpwU_Bafg98fzzjdUVVFOx8vdiVNwnE"/>
+</div>
+</td>
+<td class="py-5 px-4">
+<div class="font-bold text-primary">高精度数控磨床</div>
+<div class="text-xs text-slate-400 mt-1">SKU-2023-A982</div>
+</td>
+<td class="py-5 px-4 text-sm font-medium">重型机械</td>
+<td class="py-5 px-4 font-mono text-xs">8460.12.00</td>
+<td class="py-5 px-4">
+<span class="px-2 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase">Online</span>
+</td>
+<td class="py-5 px-4 text-xs text-slate-500">2023-11-24 14:20</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary" title="查看"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary" title="下架"><span class="material-symbols-outlined text-lg">pause_circle</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Pending -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-5 px-6">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="py-5 px-4">
+<div class="w-16 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Microchip component macro" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUs2Q5wP-qjRCKcQU8k2KnGTgnEg1wRshlYk3YOhKUoT-gZWhCa_kST_zUwF2D5YvZB2nrGoZvSe7OT1M6l7-c4_j-Qf5hw73A5JSEcIifDOHenEbkPLF3dwk5X1SRkvRaCqTTxZEOSDU7y9eYEam8FtQoJaHKd9PfP6ga43HqopBjdNjliCHur5RaPMcZ44whDQeSUqIt3YVd5uqUbL3QAO6JFZnizzikfGl4CKMGmAOBhYv_x9MAnE6OCG38D4tv9rhoBiSAveQ"/>
+</div>
+</td>
+<td class="py-5 px-4">
+<div class="font-bold text-primary">工业级光电传感器</div>
+<div class="text-xs text-slate-400 mt-1">SN-OPT-V5</div>
+</td>
+<td class="py-5 px-4 text-sm font-medium">电子元器件</td>
+<td class="py-5 px-4 font-mono text-xs">8541.40.90</td>
+<td class="py-5 px-4">
+<span class="px-2 py-1 rounded-full bg-primary-fixed text-primary text-[10px] font-bold uppercase">Pending</span>
+</td>
+<td class="py-5 px-4 text-xs text-slate-500">2023-11-23 09:15</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary"><span class="material-symbols-outlined text-lg">fact_check</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Rejected -->
+<tr class="hover:bg-surface-container-low/30 transition-colors group">
+<td class="py-5 px-6">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="py-5 px-4">
+<div class="w-16 h-12 rounded bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Steel pipe stack" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCktyh6KuiuOrZSoI2Jn57nkGBzDbgsqduZDoxkZLfN2cDN8wMTqrCYWuiwaVQNKpQf7xqHEIllY0YeGEmiD-2Gs6dVlKOHE-sI_AyLccqHxqOqbySoNVg0DYWsUSJXlI-Vii5EDgWAaOqstKOYsYGdx0nUol-WazEkUlDbGDedtwMrhyoVxHesJzQCHYvS4G1NZm0yZE_RfJ01wZkoQJXOYa8oz2xHW_YrM4q0h8E7EtefLioDrFClHb6dp8ZXAQV55smiiIjumqE"/>
+</div>
+</td>
+<td class="py-5 px-4">
+<div class="font-bold text-primary">合金钢无缝钢管</div>
+<div class="text-xs text-slate-400 mt-1">PIPE-SS-021</div>
+</td>
+<td class="py-5 px-4 text-sm font-medium">原材料</td>
+<td class="py-5 px-4 font-mono text-xs">7304.41.00</td>
+<td class="py-5 px-4">
+<span class="px-2 py-1 rounded-full bg-error-container text-error text-[10px] font-bold uppercase">Rejected</span>
+</td>
+<td class="py-5 px-4 text-xs text-slate-500">2023-11-22 17:45</td>
+<td class="py-5 px-6 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-1.5 hover:bg-primary-fixed rounded text-primary"><span class="material-symbols-outlined text-lg">feedback</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Bottom Bulk Actions Bar -->
+<div class="px-8 py-4 bg-surface-container-high/30 border-t border-outline-variant/10 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="text-xs font-medium text-slate-500">已选中 0 项数据</span>
+<div class="flex gap-2">
+<button class="text-[11px] font-bold text-primary uppercase hover:underline disabled:opacity-40" disabled="">批量审核</button>
+<button class="text-[11px] font-bold text-primary uppercase hover:underline disabled:opacity-40" disabled="">批量导出</button>
+<button class="text-[11px] font-bold text-error uppercase hover:underline disabled:opacity-40" disabled="">批量删除</button>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-slate-400 hover:text-primary disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-xs font-bold transition-colors">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-xs font-bold transition-colors">3</button>
+<span class="px-1 self-end mb-2 text-slate-400">...</span>
+<button class="w-8 h-8 rounded hover:bg-surface-container text-xs font-bold transition-colors">12</button>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+<select class="ml-4 bg-transparent border-none text-xs font-bold text-slate-500 focus:ring-0">
+<option>10 条/页</option>
+<option>20 条/页</option>
+<option>50 条/页</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Empty State (Optional Visibility - Hidden for Demo) -->
+<div class="hidden flex-col items-center justify-center py-20 bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant/30">
+<div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl text-slate-300">inventory_2</span>
+</div>
+<h4 class="text-lg font-bold text-slate-600">暂无相关产品数据</h4>
+<p class="text-slate-400 text-sm mt-2 max-w-sm text-center">当前条件下未检索到产品，请尝试调整过滤条件或开始录入新产品。</p>
+<button class="mt-8 px-8 py-2.5 rounded-lg bg-primary text-white font-bold text-sm shadow-md">立即新增产品</button>
+</div>
+</div>
+<!-- Footer Info -->
+<footer class="mt-auto px-8 py-6 flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-widest border-t border-slate-100">
+<div>© 2024 Industrial Export Data Platform. All rights reserved.</div>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">User Agreement</a>
+<a class="hover:text-primary transition-colors" href="#">Data Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">API Documentation</a>
+</div>
+</footer>
+</main>
+</body></html>

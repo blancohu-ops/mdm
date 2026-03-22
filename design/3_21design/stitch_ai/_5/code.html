@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>企业入驻申请 - 工业企业出海主数据平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#cfe5ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface": "#191c1e",
+              "surface-container": "#eceef1",
+              "tertiary-container": "#005284",
+              "on-primary-container": "#9bc2ff",
+              "primary-container": "#1a4f8b",
+              "inverse-on-surface": "#eff1f4",
+              "error": "#ba1a1a",
+              "surface-dim": "#d8dadd",
+              "on-background": "#191c1e",
+              "background": "#f7f9fc",
+              "surface-container-highest": "#e0e3e6",
+              "on-surface-variant": "#424750",
+              "on-tertiary-fixed-variant": "#004a77",
+              "surface-variant": "#e0e3e6",
+              "surface-tint": "#2f5f9c",
+              "surface": "#f7f9fc",
+              "on-secondary-fixed": "#021f29",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "tertiary": "#003a60",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary-fixed": "#d5e3ff",
+              "primary": "#00386c",
+              "on-primary-fixed": "#001c3b",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "secondary-fixed": "#cbe7f5",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#8bc5ff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#a6c8ff",
+              "inverse-surface": "#2d3133",
+              "secondary": "#48626e",
+              "on-tertiary-fixed": "#001d33",
+              "surface-container-low": "#f2f4f7",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c2c6d1",
+              "surface-container-high": "#e6e8eb",
+              "outline": "#737781",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f7f9fc",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-industrial-gradient {
+            background: linear-gradient(135deg, #00386c 0%, #1a4f8b 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Top Navigation Anchor (Non-Global for focused onboarding) -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-surface-container-highest flex justify-between items-center px-8 py-4">
+<div class="flex items-center gap-3">
+<span class="text-xl font-bold font-headline text-primary tracking-tight">工业企业出海主数据平台</span>
+<div class="h-4 w-[1px] bg-outline-variant/30 mx-2"></div>
+<span class="text-sm font-medium text-secondary">企业入驻申请</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-sm font-medium text-outline hover:text-primary transition-colors">帮助中心</button>
+<button class="text-sm font-medium text-outline hover:text-primary transition-colors">退出</button>
+</div>
+</header>
+<main class="max-w-5xl mx-auto py-12 px-6">
+<!-- Wizard Progress Section -->
+<div class="mb-12">
+<div class="flex items-center justify-between relative">
+<!-- Progress Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-surface-container-highest -translate-y-1/2 z-0"></div>
+<div class="absolute top-1/2 left-0 w-2/3 h-[2px] bg-primary -translate-y-1/2 z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'wght' 600;">check</span>
+</div>
+<span class="text-xs font-bold tracking-wider text-primary font-headline">主体信息</span>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'wght' 600;">check</span>
+</div>
+<span class="text-xs font-bold tracking-wider text-primary font-headline">业务详情</span>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary ring-4 ring-primary/10 flex items-center justify-center text-white">
+<span class="text-sm font-bold">3</span>
+</div>
+<span class="text-xs font-bold tracking-wider text-primary font-headline">确认并提交</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Summary Data -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Enterprise Info Section -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold font-headline text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">domain</span>
+                            企业基本信息
+                        </h2>
+<button class="text-xs font-medium text-primary-container bg-primary-fixed hover:bg-primary-fixed-dim px-3 py-1 rounded-full transition-colors">编辑修改</button>
+</div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-8">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">企业名称 (中文)</p>
+<p class="text-sm font-semibold text-on-surface">上海拓界工业自动化有限公司</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">统一社会信用代码</p>
+<p class="text-sm font-semibold text-on-surface">91310115MA1K3B4X2G</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">所属行业</p>
+<p class="text-sm font-semibold text-on-surface">高端装备制造 / 工业自动化</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">企业规模</p>
+<p class="text-sm font-semibold text-on-surface">100-499人</p>
+</div>
+<div class="col-span-2">
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">注册地址</p>
+<p class="text-sm font-semibold text-on-surface">上海市浦东新区张江高科技园区科苑路88号3号楼</p>
+</div>
+</div>
+</section>
+<!-- Contact Info Section -->
+<section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold font-headline text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">contact_page</span>
+                            联系人信息
+                        </h2>
+<button class="text-xs font-medium text-primary-container bg-primary-fixed hover:bg-primary-fixed-dim px-3 py-1 rounded-full transition-colors">编辑修改</button>
+</div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-8">
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">姓名</p>
+<p class="text-sm font-semibold text-on-surface">李明远</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">职务</p>
+<p class="text-sm font-semibold text-on-surface">运营总监</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">联系电话</p>
+<p class="text-sm font-semibold text-on-surface">+86 138-xxxx-8888</p>
+</div>
+<div>
+<p class="text-[11px] uppercase tracking-widest text-outline mb-1 font-label">电子邮箱</p>
+<p class="text-sm font-semibold text-on-surface">li.mingyuan@tuojie-auto.com</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Document Preview & Actions -->
+<div class="lg:col-span-4 space-y-6">
+<!-- License Preview -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/10">
+<h2 class="text-sm font-bold font-headline text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+                        营业执照副本预览
+                    </h2>
+<div class="aspect-[3/4] rounded-lg bg-surface-container-high relative overflow-hidden group">
+<img alt="Business License Preview" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A professional scanned document of a business license with official stamps" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD03kusvF1k7uGWh0O0aPDudd9b2hHNGl3zZ8w02RtYA8Em_vuYQxV-DHsWz4NRGhJEKkqOPdZtMGMdcEAEkDUZjQ2gdz9M8JPYwEf4Y0YpHDTTwhLie5p7tpTWws8eFG1Raxkj5DaviJynO0ikO_TR-EOyo-ksB81i3pq1zGTjgcQ1mXGtDBnmHcDta2uKwivkNAaj_nf9Qm0tlCvlOsIblCCrzDliWebLvN-5RpgNpqY4vLGx8KmbcTcNtKJxjjuh4eHnbdx3y08"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-white/90 backdrop-blur text-primary px-4 py-2 rounded-lg text-xs font-bold shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+                                点击查看大图
+                            </button>
+</div>
+</div>
+<div class="mt-4 p-3 bg-secondary-container/30 rounded-lg">
+<div class="flex gap-2 items-start">
+<span class="material-symbols-outlined text-on-secondary-container text-sm mt-0.5">info</span>
+<p class="text-xs text-on-secondary-container leading-relaxed">
+                                已通过AI预审。系统已自动提取企业名称、法定代表人及经营范围。
+                            </p>
+</div>
+</div>
+</section>
+<!-- Submission Reminder -->
+<div class="bg-primary/5 rounded-xl p-6 border border-primary/10">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-lg">schedule</span>
+</div>
+<p class="text-sm font-bold text-primary font-headline">审核时效提醒</p>
+</div>
+<p class="text-xs text-secondary leading-relaxed">
+                        您的入驻申请将在提交后进入人工审核流程。预计审核周期为 <span class="font-bold text-primary">1-3 个工作日</span>。审核结果将通过短信及邮件同步告知。
+                    </p>
+</div>
+<!-- Global Actions -->
+<div class="flex flex-col gap-3 pt-4">
+<button class="bg-industrial-gradient text-white py-4 rounded-xl font-bold text-sm shadow-xl shadow-primary/20 hover:shadow-primary/40 active:scale-[0.98] transition-all">
+                        提交审核
+                    </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high text-on-primary-fixed-variant py-3 rounded-xl font-semibold text-xs hover:bg-surface-container-highest transition-colors">
+                            保存草稿
+                        </button>
+<button class="bg-surface-container-high text-on-primary-fixed-variant py-3 rounded-xl font-semibold text-xs hover:bg-surface-container-highest transition-colors">
+                            上一步
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal Success Overlay (Initially Hidden - Demonstration of state) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-on-surface/40 backdrop-blur-sm hidden">
+<div class="bg-surface rounded-2xl max-w-md w-full p-10 shadow-2xl flex flex-col items-center text-center">
+<div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-5xl text-green-600" style="font-variation-settings: 'wght' 600;">check_circle</span>
+</div>
+<h3 class="text-2xl font-black font-headline text-on-surface mb-2 tracking-tight">申请已成功提交</h3>
+<p class="text-sm text-secondary mb-10 leading-relaxed">
+                您的入驻申请正进入平台主数据审核环节。您可以随时在工作台中查看实时审核进度。
+            </p>
+<div class="w-full flex flex-col gap-3">
+<button class="w-full bg-industrial-gradient text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-primary/20">
+                    返回工作台
+                </button>
+<button class="w-full bg-surface-container-high text-primary py-3.5 rounded-xl font-bold text-sm">
+                    查看申请详情
+                </button>
+</div>
+</div>
+</div>
+<!-- Background Pattern Decorative Element -->
+<div class="fixed top-0 right-0 -z-10 w-1/2 h-full opacity-[0.03] pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<pattern height="10" id="grid" patternunits="userSpaceOnUse" width="10">
+<path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+</pattern>
+<rect fill="url(#grid)" height="100" width="100"></rect>
+</svg>
+</div>
+</body></html>

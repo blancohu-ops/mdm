@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed": "#cfe5ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface": "#191c1e",
+              "surface-container": "#eceef1",
+              "tertiary-container": "#005284",
+              "on-primary-container": "#9bc2ff",
+              "primary-container": "#1a4f8b",
+              "inverse-on-surface": "#eff1f4",
+              "error": "#ba1a1a",
+              "surface-dim": "#d8dadd",
+              "on-background": "#191c1e",
+              "background": "#f7f9fc",
+              "surface-container-highest": "#e0e3e6",
+              "on-surface-variant": "#424750",
+              "on-tertiary-fixed-variant": "#004a77",
+              "surface-variant": "#e0e3e6",
+              "surface-tint": "#2f5f9c",
+              "surface": "#f7f9fc",
+              "on-secondary-fixed": "#021f29",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#98cbff",
+              "tertiary": "#003a60",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary-fixed": "#d5e3ff",
+              "primary": "#00386c",
+              "on-primary-fixed": "#001c3b",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "secondary-fixed": "#cbe7f5",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-primary": "#ffffff",
+              "on-tertiary-container": "#8bc5ff",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#a6c8ff",
+              "inverse-surface": "#2d3133",
+              "secondary": "#48626e",
+              "on-tertiary-fixed": "#001d33",
+              "surface-container-low": "#f2f4f7",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c2c6d1",
+              "surface-container-high": "#e6e8eb",
+              "outline": "#737781",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f7f9fc",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-transparent bg-[#eceef1] dark:bg-slate-950 z-50">
+<div class="flex flex-col h-full py-6 space-y-1">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-[#00386c] dark:text-white leading-tight">Industrial Hub</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Enterprise Export v2.0</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard Active Tab -->
+<a class="bg-white dark:bg-[#1a4f8b] text-[#00386c] dark:text-white shadow-sm rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-manrope text-sm font-medium">Dashboard</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg px-4 py-3 mx-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="domain">domain</span>
+<span class="font-manrope text-sm font-medium">Enterprise Info</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg px-4 py-3 mx-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-manrope text-sm font-medium">Product Management</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg px-4 py-3 mx-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="font-manrope text-sm font-medium">Bulk Import</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg px-4 py-3 mx-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+<span class="font-manrope text-sm font-medium">Message Center</span>
+</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#00386c] dark:hover:text-white hover:bg-[#e0e3e6] dark:hover:bg-slate-800 rounded-lg px-4 py-3 mx-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="manage_accounts">manage_accounts</span>
+<span class="font-manrope text-sm font-medium">Account Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full bg-surface-container-high hover:bg-surface-container-highest text-on-primary-fixed-variant flex items-center justify-center gap-2 py-3 rounded-xl transition-all font-medium text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="contact_support">contact_support</span>
+                    Support Center
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 bg-[#f7f9fc]/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none w-full flex justify-between items-center px-8 py-3 border-b border-slate-200/50 dark:border-slate-800/50">
+<div class="flex items-center gap-8">
+<h2 class="text-xl font-bold text-[#00386c] dark:text-blue-400 tracking-tight font-headline">工业企业出海主数据平台</h2>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#00386c] font-bold border-b-2 border-[#00386c] py-1 text-sm tracking-wide font-manrope" href="#">工作台</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-[#00386c] transition-colors py-1 text-sm tracking-wide font-manrope" href="#">全球市场</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-[#00386c] transition-colors py-1 text-sm tracking-wide font-manrope" href="#">政策解读</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" data-icon="search">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="搜索产品或指令..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-[#e6e8eb] dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-[#e6e8eb] dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-[#e6e8eb] dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3 pl-2">
+<img class="w-9 h-9 rounded-full border-2 border-white shadow-sm object-cover" data-alt="Corporate Executive User Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOFDSEGsVEBzz_Q7U_CltoSnF34mH4ITZuNr_4cYNgr20Z0qHKgI3ksCr8HYEXdfJZ-Z9lXBeZFZzKUvbr1Xrc_2hasGJlR5ISU-t_nV2da0b3v8O6jr_w-EbMq8dTF5mhnwjLstNa4TOOgeEtvtlkNxSqzv-aeZXSVbJIpkFIqD96FXrIMTBbg49nIL9pFlTOG-8YVmbbo3dUK_Mn7fcciYofHIkO_kXQkpfKzJoW5hmkn5dMVdWV0N_hLeHpBO3rrdtpxFTIy7w"/>
+<div class="hidden sm:block">
+<p class="text-xs font-bold text-on-surface">张建国</p>
+<p class="text-[10px] text-slate-500 uppercase font-medium">中航重工</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Hero Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 ml-1">
+<div>
+<h1 class="text-3xl font-extrabold font-headline text-on-surface tracking-tight">企业数字化工作台</h1>
+<p class="text-slate-500 mt-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        2024年10月24日 · 星期四 · 欢迎回来
+                    </p>
+</div>
+<div class="flex gap-3">
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+                        发布新产品
+                    </button>
+<button class="bg-surface-container-high text-on-primary-fixed-variant px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="upload">upload</span>
+                        批量导入
+                    </button>
+</div>
+</div>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<span class="text-[10px] font-bold px-2 py-1 rounded bg-green-50 text-green-600 border border-green-100 uppercase tracking-tighter">Verified</span>
+</div>
+<div class="mt-6">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Certification Status</p>
+<h3 class="text-2xl font-bold font-headline mt-1">AAA 级企业</h3>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant">
+<span class="material-symbols-outlined" data-icon="inventory">inventory</span>
+</div>
+</div>
+<div class="mt-6">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Products</p>
+<h3 class="text-2xl font-bold font-headline mt-1">1,284</h3>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="w-12 h-12 rounded-xl bg-error-container flex items-center justify-center text-on-error-container">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+</div>
+<span class="flex h-2 w-2 rounded-full bg-error animate-pulse"></span>
+</div>
+<div class="mt-6">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Pending Audit</p>
+<h3 class="text-2xl font-bold font-headline mt-1">12 <span class="text-xs font-normal text-slate-400">Items</span></h3>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined" data-icon="cloud_done">cloud_done</span>
+</div>
+</div>
+<div class="mt-6">
+<p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Online Products</p>
+<h3 class="text-2xl font-bold font-headline mt-1">1,056</h3>
+</div>
+</div>
+</div>
+<!-- Middle Section: Recent Activity & Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Table Section -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center justify-between px-1">
+<h4 class="text-lg font-bold font-headline flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="list_alt">list_alt</span>
+                            最近发布的产品
+                        </h4>
+<button class="text-primary text-xs font-bold hover:underline">查看全部</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-slate-100/50">
+<tr>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">产品名称 / 型号</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest text-center">状态</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest">最后更新</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-500 uppercase tracking-widest text-right">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">重型液压泵</p>
+<p class="text-[11px] text-slate-400 font-mono">HYD-9000-XT</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1 h-1 rounded-full bg-primary mr-1.5"></span>
+                                            已上线
+                                        </span>
+</td>
+<td class="px-6 py-5 text-xs text-slate-500 font-medium">
+                                        2024-10-23 14:20
+                                    </td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary p-2 hover:bg-primary-fixed rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+</button>
+<button class="text-slate-400 p-2 hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">高压断路器</p>
+<p class="text-[11px] text-slate-400 font-mono">VCB-A400</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-surface-container-high text-slate-500">
+                                            审核中
+                                        </span>
+</td>
+<td class="px-6 py-5 text-xs text-slate-500 font-medium">
+                                        2024-10-22 09:45
+                                    </td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary p-2 hover:bg-primary-fixed rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+</button>
+<button class="text-slate-400 p-2 hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">工业控制器 V3</p>
+<p class="text-[11px] text-slate-400 font-mono">PLC-MASTER-88</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1 h-1 rounded-full bg-primary mr-1.5"></span>
+                                            已上线
+                                        </span>
+</td>
+<td class="px-6 py-5 text-xs text-slate-500 font-medium">
+                                        2024-10-21 16:30
+                                    </td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary p-2 hover:bg-primary-fixed rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="edit">edit</span>
+</button>
+<button class="text-slate-400 p-2 hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Quick Actions & Notifications Sidebar -->
+<div class="space-y-6">
+<div>
+<h4 class="text-sm font-bold font-headline text-slate-400 uppercase tracking-widest mb-4 px-1">快速入口</h4>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-slate-100/50 rounded-xl hover:bg-primary-fixed group transition-all">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform" data-icon="edit_note">edit_note</span>
+<span class="text-xs font-bold text-on-surface">信息变更</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-slate-100/50 rounded-xl hover:bg-primary-fixed group transition-all">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform" data-icon="forum">forum</span>
+<span class="text-xs font-bold text-on-surface">系统消息</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-error"></span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-slate-100/50 rounded-xl hover:bg-primary-fixed group transition-all">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform" data-icon="analytics">analytics</span>
+<span class="text-xs font-bold text-on-surface">数据报表</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-slate-100/50 rounded-xl hover:bg-primary-fixed group transition-all">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform" data-icon="shield">shield</span>
+<span class="text-xs font-bold text-on-surface">资质管理</span>
+</button>
+</div>
+</div>
+<div class="bg-gradient-to-br from-primary to-primary-container p-6 rounded-xl text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10">
+<h5 class="font-bold text-lg leading-tight">出口贸易指南 2024</h5>
+<p class="text-white/70 text-xs mt-2">获取最新的全球贸易法规和工业品出口指南。</p>
+<button class="mt-4 bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-bold transition-all">
+                                立即下载 PDF
+                            </button>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-white/10 text-8xl rotate-12" data-icon="menu_book">menu_book</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50">
+<div class="flex items-center justify-between mb-4">
+<h5 class="text-sm font-bold font-headline">近期系统公告</h5>
+<span class="material-symbols-outlined text-slate-300" data-icon="campaign">campaign</span>
+</div>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0"></div>
+<div>
+<p class="text-xs font-bold leading-tight">关于《数据出境管理规定》的更新通告</p>
+<p class="text-[10px] text-slate-400 mt-1">2小时前</p>
+</div>
+</li>
+<li class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-slate-300 mt-1.5 shrink-0"></div>
+<div>
+<p class="text-xs font-medium text-slate-600 leading-tight">平台将于本周末进行例行维护</p>
+<p class="text-[10px] text-slate-400 mt-1">昨天 18:00</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

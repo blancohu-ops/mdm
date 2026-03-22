@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>工业企业出海主数据平台 - 管理控制台</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#8bc5ff",
+              "primary-fixed-dim": "#a6c8ff",
+              "secondary-container": "#cbe7f5",
+              "on-surface-variant": "#424750",
+              "primary": "#00386c",
+              "surface-container-high": "#e6e8eb",
+              "surface-variant": "#e0e3e6",
+              "on-primary-container": "#9bc2ff",
+              "surface-container": "#eceef1",
+              "on-primary": "#ffffff",
+              "on-secondary-fixed": "#021f29",
+              "secondary-fixed-dim": "#afcbd8",
+              "surface-container-low": "#f2f4f7",
+              "tertiary-fixed-dim": "#98cbff",
+              "on-tertiary-fixed-variant": "#004a77",
+              "on-background": "#191c1e",
+              "error": "#ba1a1a",
+              "outline": "#737781",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#001c3b",
+              "tertiary": "#003a60",
+              "primary-container": "#1a4f8b",
+              "on-error": "#ffffff",
+              "surface-dim": "#d8dadd",
+              "tertiary-container": "#005284",
+              "surface-tint": "#2f5f9c",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#001d33",
+              "on-secondary-fixed-variant": "#304a55",
+              "background": "#f7f9fc",
+              "secondary-fixed": "#cbe7f5",
+              "primary-fixed": "#d5e3ff",
+              "on-secondary-container": "#4e6874",
+              "inverse-primary": "#a6c8ff",
+              "on-surface": "#191c1e",
+              "surface-container-highest": "#e0e3e6",
+              "secondary": "#48626e",
+              "on-secondary": "#ffffff",
+              "inverse-on-surface": "#eff1f4",
+              "tertiary-fixed": "#cfe5ff",
+              "on-primary-fixed-variant": "#0c4783",
+              "outline-variant": "#c2c6d1",
+              "surface": "#f7f9fc",
+              "surface-bright": "#f7f9fc",
+              "inverse-surface": "#2d3133"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden">
+<!-- Background Dashboard (Blurred) -->
+<div class="fixed inset-0 z-0 flex blur-md saturate-50 opacity-40 select-none pointer-events-none">
+<!-- SideNavBar Mockup -->
+<aside class="w-64 bg-surface-container flex flex-col py-6 px-4 gap-2">
+<div class="flex items-center gap-3 px-2 mb-8">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-primary leading-tight">管理控制台</h2>
+<p class="text-[10px] text-outline">V2.4 稳定版</p>
+</div>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-lowest text-primary p-3 rounded-lg shadow-sm flex items-center gap-3">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-medium">主数据中心</span>
+</div>
+<div class="p-3 text-on-surface-variant flex items-center gap-3">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="text-sm font-medium">合规性审核</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Mockup -->
+<main class="flex-1 p-10 bg-surface">
+<header class="flex justify-between items-end mb-12">
+<div>
+<h1 class="font-headline text-3xl font-extrabold text-primary tracking-tight">主数据管理</h1>
+<p class="text-on-surface-variant mt-2">查看并管理企业出海相关核心资产数据</p>
+</div>
+</header>
+<div class="grid grid-cols-3 gap-6">
+<div class="col-span-2 h-64 bg-surface-container-lowest rounded-xl shadow-sm"></div>
+<div class="h-64 bg-surface-container-lowest rounded-xl shadow-sm"></div>
+<div class="col-span-3 h-96 bg-surface-container-lowest rounded-xl shadow-sm"></div>
+</div>
+</main>
+</div>
+<!-- Modal Grid Overlay -->
+<div class="fixed inset-0 z-50 overflow-y-auto bg-primary/5 backdrop-blur-sm p-8">
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start py-12">
+<!-- 1. Confirm Submission Modal -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/15 overflow-hidden">
+<div class="p-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">send</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">确认提交吗？</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">提交后将进入平台审核，审核通过后才会对外展示。确认提交吗？</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 flex justify-end gap-3">
+<button class="px-5 py-2 text-sm font-medium text-primary hover:bg-surface-container-high rounded-lg transition-colors duration-200">取消</button>
+<button class="px-5 py-2 text-sm font-medium text-on-primary bg-gradient-to-br from-primary to-primary-container rounded-lg shadow-sm hover:shadow-md active:scale-95 transition-all duration-200">确认提交</button>
+</div>
+</div>
+<!-- 2. Rejection Modal -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/15 overflow-hidden">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+<h3 class="font-headline text-xl font-bold text-on-surface">驳回审核申请</h3>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-bold text-on-surface-variant tracking-wider mb-2 uppercase">驳回原因</label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-outline/50 resize-none p-4" placeholder="请输入具体驳回原因，以便企业修改..." rows="4"></textarea>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 flex justify-end gap-3">
+<button class="px-5 py-2 text-sm font-medium text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200">取消</button>
+<button class="px-5 py-2 text-sm font-medium text-on-error bg-error rounded-lg shadow-sm hover:bg-error/90 active:scale-95 transition-all duration-200">确认驳回</button>
+</div>
+</div>
+<!-- 3. Delete Confirmation Modal -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/15 overflow-hidden">
+<div class="p-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">delete_forever</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">确认删除该产品吗？</h3>
+<div class="inline-flex items-center px-2 py-1 bg-error-container/50 text-error text-[10px] font-bold rounded mb-3 tracking-tight">危险操作</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">删除后不可恢复，系统将永久移除该工业品的主数据记录及相关联的供应链文档。</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 flex justify-end gap-3">
+<button class="px-5 py-2 text-sm font-medium text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200">取消</button>
+<button class="px-5 py-2 text-sm font-medium text-on-error bg-error rounded-lg shadow-sm hover:bg-error/90 active:scale-95 transition-all duration-200">确认删除</button>
+</div>
+</div>
+<!-- 4. Takedown Modal -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,30,0.06)] border border-outline-variant/15 overflow-hidden">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">content_cut</span>
+<h3 class="font-headline text-xl font-bold text-on-surface">申请产品下架</h3>
+</div>
+<div class="space-y-5">
+<div class="bg-secondary-container/30 p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-on-secondary-container text-lg">info</span>
+<p class="text-xs text-on-secondary-container leading-relaxed">下架后，该产品将不再出现在全球门户搜索结果中，但数据仍保留在主数据库以备查验。</p>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-variant tracking-wider mb-2 uppercase">下架原因</label>
+<select class="w-full bg-surface-container-highest border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 p-3">
+<option>HS编码变更</option>
+<option>产品停产</option>
+<option>合规合规性合规性撤销</option>
+<option>信息更正</option>
+<option>其他原因</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-on-surface-variant tracking-wider mb-2 uppercase">详细说明 (选填)</label>
+<input class="w-full bg-surface-container-highest border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 p-3" placeholder="请输入具体的下架场景说明" type="text"/>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 flex justify-end gap-3">
+<button class="px-5 py-2 text-sm font-medium text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors duration-200">取消</button>
+<button class="px-5 py-2 text-sm font-medium text-on-tertiary bg-tertiary rounded-lg shadow-sm hover:bg-tertiary-container active:scale-95 transition-all duration-200">确认下架</button>
+</div>
+</div>
+</div>
+<!-- System Branding Footer (Internal Tool Aesthetic) -->
+<footer class="mt-12 text-center pb-12">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-surface-container-high/50 rounded-full border border-outline-variant/10">
+<span class="material-symbols-outlined text-outline text-sm">security</span>
+<span class="text-[10px] text-outline font-label tracking-[0.1em] uppercase">Secure Administrative Environment</span>
+</div>
+</footer>
+</div>
+</body></html>

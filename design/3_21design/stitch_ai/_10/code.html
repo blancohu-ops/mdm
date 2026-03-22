@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>企业审核管理 - 工业企业出海主数据平台</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#424750",
+                        "on-tertiary-container": "#8bc5ff",
+                        "surface-container-low": "#f2f4f7",
+                        "primary-container": "#1a4f8b",
+                        "tertiary-fixed": "#cfe5ff",
+                        "background": "#f7f9fc",
+                        "surface-tint": "#2f5f9c",
+                        "on-primary-fixed-variant": "#0c4783",
+                        "surface-dim": "#d8dadd",
+                        "on-secondary-container": "#4e6874",
+                        "on-tertiary-fixed-variant": "#004a77",
+                        "secondary-fixed": "#cbe7f5",
+                        "surface-bright": "#f7f9fc",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#304a55",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-variant": "#e0e3e6",
+                        "inverse-primary": "#a6c8ff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#001c3b",
+                        "secondary-container": "#cbe7f5",
+                        "inverse-on-surface": "#eff1f4",
+                        "tertiary-container": "#005284",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#98cbff",
+                        "secondary-fixed-dim": "#afcbd8",
+                        "secondary": "#48626e",
+                        "outline-variant": "#c2c6d1",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eceef1",
+                        "outline": "#737781",
+                        "on-secondary-fixed": "#021f29",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "primary": "#00386c",
+                        "on-tertiary-fixed": "#001d33",
+                        "tertiary": "#003a60",
+                        "surface-container-high": "#e6e8eb",
+                        "primary-fixed-dim": "#a6c8ff",
+                        "surface-container-highest": "#e0e3e6",
+                        "surface": "#f7f9fc",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-container": "#9bc2ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-border {
+            box-shadow: inset -4px 0 0 0 #00386c;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c2c6d1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col w-64 bg-slate-50 dark:bg-slate-900 font-manrope antialiased tracking-tight shadow-none border-r-0">
+<div class="p-6 flex items-center space-x-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="factory">factory</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-[#00386c] dark:text-[#ffffff] leading-none">工业出海主数据</h1>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-semibold">企业端控制台</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-6 space-y-1">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium">工作台</span>
+</a>
+<!-- Active Tab: 企业信息 (Based on User Context for Enterprise Review) -->
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-[#00386c] dark:text-[#ffffff] bg-[#ffffff] dark:bg-[#0c4783] font-semibold border-r-4 border-[#00386c] translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+<span class="font-medium">企业信息</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-medium">产品管理</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span class="font-medium">批量导入</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-medium">消息中心</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">账号设置</span>
+</a>
+</nav>
+<div class="p-6 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center space-x-3">
+<img alt="User Profile" class="w-8 h-8 rounded-full bg-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1WbJ_JEivLrioldmPV4x6TVDFaexrW38TYZZapXvd4v3h8IWU22PsWIJyFDgtl7wibn4CNBD91t30fzl0CCMKGVJRSRuniUgy60ULoe_Ot9h5fn31rDqx0CsXzM-czoXj7wDEPFmxuvZ2P47bQYQMOYFOhme0xe_0kxUzgbG7Wu6WCeX0sGVUcZ6yWiu-ed4gioHm1NWaJm0OqBYtBcN1Z3EPDL_Em9KAZ4uiMxeiRz1WGpxbKk7hXiQdhTI8zh7qES8em2mUYGc"/>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold truncate text-on-surface">Admin User</p>
+<p class="text-xs text-slate-500 truncate">超级管理员</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Content Wrapper -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="sticky top-0 right-0 z-30 h-16 w-full flex items-center justify-between px-8 bg-[#ffffff]/80 dark:bg-[#191c1e]/80 backdrop-blur-md border-b border-[#c2c6d1]/15">
+<div class="flex items-center flex-1">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="搜索企业名称或统一信用代码..." type="text"/>
+</div>
+<nav class="ml-10 flex space-x-8">
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-medium transition-all text-sm" href="#">首页概览</a>
+<a class="text-[#00386c] dark:text-[#ffffff] border-b-2 border-[#00386c] pb-5 font-semibold text-sm" href="#">企业审核</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-[#1a4f8b] font-medium transition-all text-sm" href="#">产品审核</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-slate-500 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/30 mx-2"></div>
+<img alt="Admin" class="w-8 h-8 rounded-full ring-2 ring-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8FU-SGq1lhMjRf9YN2k9wbRjilrG0dqtEPOEHpIb_N4dhsohowUq89pCRCTuNS_uCUwTkDQvDkJ9Sh5nNdv56W-hovB5r7lWqV4k5ngCaS424DkDK5F4pc04uW51v8bdSxWe-kCgQY9KR3B8F3bawMpebXpikBlSsDA5IVGh_I5cGK2R3nC02TNsOSu-e6KpgeEYqzMw3AxQoeX0dqc8ae4TmHy5QChVDkQawmCEMYAPoRwbRGOKOxNG8HXD7WLBqr3nFMOh6TU8"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<div class="p-8 space-y-8">
+<!-- Header Section -->
+<div class="flex items-end justify-between">
+<div>
+<h2 class="font-headline text-3xl font-extrabold text-on-surface tracking-tight">企业审核列表</h2>
+<p class="text-on-surface-variant mt-1">管理平台入驻企业资质审核及状态管控</p>
+</div>
+<div class="flex space-x-3">
+<button class="flex items-center space-x-2 px-4 py-2 bg-surface-container-high text-on-primary-fixed-variant font-medium rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+<span>导出名单</span>
+</button>
+</div>
+</div>
+<!-- Filter Section (Bento Grid Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<div class="space-y-2">
+<label class="block text-xs font-bold text-outline tracking-widest uppercase">企业名称</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none" placeholder="输入关键字搜索" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold text-outline tracking-widest uppercase">入驻时间</label>
+<div class="flex items-center space-x-2">
+<input class="w-full bg-surface-container-low border-none rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none" type="date"/>
+<span class="text-outline">至</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none" type="date"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold text-outline tracking-widest uppercase">审核状态</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none appearance-none">
+<option>全部状态</option>
+<option>待审核</option>
+<option>审核通过</option>
+<option>驳回待修改</option>
+<option>已冻结</option>
+</select>
+</div>
+<div class="flex items-end space-x-2">
+<button class="flex-1 bg-gradient-to-br from-primary to-primary-container text-white font-semibold rounded-lg py-2.5 hover:shadow-lg transition-all active:scale-95">
+                        查询
+                    </button>
+<button class="px-4 py-2.5 bg-surface-container-high text-on-surface rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined leading-none align-middle" data-icon="restart_alt">restart_alt</span>
+</button>
+</div>
+</div>
+<!-- Data Table Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase">企业全称</th>
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase">统一社会信用代码</th>
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase">联系人 / 手机号</th>
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase">注册时间</th>
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase">当前状态</th>
+<th class="px-6 py-4 text-xs font-bold text-outline tracking-wider uppercase text-right">管理操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1: Pending -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-primary-fixed flex items-center justify-center rounded-lg text-primary font-bold">
+                                            重
+                                        </div>
+<div>
+<p class="font-semibold text-on-surface">重庆川仪自动化股份有限公司</p>
+<p class="text-xs text-outline">高新技术企业 | 制造业</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">91500000203012345X</td>
+<td class="px-6 py-5">
+<p class="text-sm font-medium">张建国</p>
+<p class="text-xs text-outline">138****9012</p>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">2024-05-20</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-fixed-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mr-1.5 animate-pulse"></span>
+                                        待审核
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end space-x-2">
+<button class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded hover:shadow-md transition-shadow">审核</button>
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button>
+<button class="p-1.5 text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg" data-icon="block">block</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Approved -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-secondary-fixed flex items-center justify-center rounded-lg text-secondary font-bold">
+                                            精
+                                        </div>
+<div>
+<p class="font-semibold text-on-surface">上海精密科学仪器有限公司</p>
+<p class="text-xs text-outline">外贸型企业 | 仪器仪表</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">91310000701056789A</td>
+<td class="px-6 py-5">
+<p class="text-sm font-medium">李晓梅</p>
+<p class="text-xs text-outline">156****4321</p>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">2024-05-15</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5"></span>
+                                        审核通过
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end space-x-2">
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button>
+<button class="p-1.5 text-error hover:bg-error/10 rounded transition-colors"><span class="material-symbols-outlined text-lg" data-icon="pause_circle">pause_circle</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Rejected -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-error-container flex items-center justify-center rounded-lg text-error font-bold">
+                                            苏
+                                        </div>
+<div>
+<p class="font-semibold text-on-surface">苏州金龙联合汽车工业有限公司</p>
+<p class="text-xs text-outline">国有企业 | 汽车制造</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">91320500123000012K</td>
+<td class="px-6 py-5">
+<p class="text-sm font-medium">王强</p>
+<p class="text-xs text-outline">188****8888</p>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant">2024-05-10</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
+                                        驳回待修改
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end space-x-2">
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button>
+<button class="p-1.5 text-outline hover:text-error transition-colors"><span class="material-symbols-outlined text-lg" data-icon="block">block</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Frozen -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-5 opacity-60">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-surface-dim flex items-center justify-center rounded-lg text-on-surface-variant font-bold">
+                                            通
+                                        </div>
+<div>
+<p class="font-semibold text-on-surface line-through">通用电气（中国）有限公司</p>
+<p class="text-xs text-outline">跨国企业 | 能源服务</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant opacity-60">91110000600010101C</td>
+<td class="px-6 py-5 opacity-60">
+<p class="text-sm font-medium">David Chen</p>
+<p class="text-xs text-outline">130****1122</p>
+</td>
+<td class="px-6 py-5 text-sm text-on-surface-variant opacity-60">2024-04-28</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-variant text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-outline mr-1.5"></span>
+                                        已冻结
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end space-x-2">
+<button class="p-1.5 text-outline hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button>
+<button class="px-3 py-1.5 bg-secondary-container text-on-secondary-fixed-variant text-xs font-bold rounded hover:shadow-sm transition-shadow">激活</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between bg-surface-container-low/30 border-t border-outline-variant/10">
+<p class="text-xs text-outline font-medium uppercase tracking-wider">显示 1 到 4 共 128 条记录</p>
+<div class="flex space-x-1">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high transition-colors text-outline">
+<span class="material-symbols-outlined text-lg" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high transition-colors text-xs font-medium text-on-surface">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high transition-colors text-xs font-medium text-on-surface">3</button>
+<span class="w-8 h-8 flex items-center justify-center text-outline text-xs">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high transition-colors text-xs font-medium text-on-surface">12</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-container-high transition-colors text-outline">
+<span class="material-symbols-outlined text-lg" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stats Overlay (Asymmetric Element) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<div class="p-5 bg-gradient-to-br from-primary to-primary-container rounded-xl text-white relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-sm opacity-80 font-medium">今日新增入驻</p>
+<h4 class="text-4xl font-headline font-extrabold mt-2">14 <span class="text-lg font-normal opacity-60">家</span></h4>
+<div class="mt-4 flex items-center text-xs bg-white/10 w-fit px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm mr-1" data-icon="trending_up">trending_up</span>
+                            环比昨日 +12%
+                        </div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl opacity-10 group-hover:scale-110 transition-transform duration-500" data-icon="storefront">storefront</span>
+</div>
+<div class="p-5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl relative overflow-hidden">
+<p class="text-sm text-outline font-medium">当前待审核队列</p>
+<h4 class="text-4xl font-headline font-extrabold mt-2 text-primary">27 <span class="text-lg font-normal text-outline">个</span></h4>
+<p class="text-xs text-on-surface-variant mt-4">平均审核时效: <span class="font-bold">4.2 小时</span></p>
+</div>
+<div class="p-5 bg-surface-container-lowest border border-outline-variant/10 rounded-xl relative overflow-hidden">
+<p class="text-sm text-outline font-medium">累计入驻总数</p>
+<h4 class="text-4xl font-headline font-extrabold mt-2 text-on-surface">1,892 <span class="text-lg font-normal text-outline">家</span></h4>
+<div class="flex -space-x-2 mt-4">
+<img alt="u1" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE4ScGyw8QqcoSMqHF36lds8L8zJGuaST3kGEtoZrl1bv6Q_IBfjLOPKFBTOWY4fkzWjYUZFsxhBVrcqpHwRuQYF0p5c5w-gH8T9hzrvOjleCzn0GVJsx0z7IYOYzal6g9fOGqkEDmjAsiEi4fXJBmg9TUi2zg7ZF7GixJ8geSGYd-2LxAssuluZWYi0MgJ0JrFHiS_OfAjHtVsc96KZFYlVp_HZMF32z7oR_m6eweGTqhO9-atbjPmtOWmJuNQAwjkCLsv0aslAg"/>
+<img alt="u2" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_2N0mQzh8wSu1eMuDMC_X8yALTW-JlfTnxilLFjcRLMJIHN7zWwX_TdnONUAaA4-hVTk0EUhYOQ0L950yrefwaCdAIO7UcrgizQ5cy5d6sbKfunNT8nQOEj72fkgHjGIE8n0r5pd59vST2uFn_IZdlOdWCAG_YTHcyY4aqLGDC2BfgFARl06gMsrOqvCN5RdlTE4wpwRIiXl4C2ltUB_fLhEeJ8k6XY9rkRzjNBC4eo6DHXD1IPgnVjT97fzz6x2vssmrps50CKY"/>
+<img alt="u3" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyeRm8X7IyObhhFydoAf3y0nuPU0osLnUjomhQ0jwOZ_N8a3ZtNRBlJBkOOI4UFdAL7x31bU16q61Kc_91BKTGXQtYKvPMQBsL9T9pIZcAbM3KWl8LF9RWSfqIZNxSidGYuyK0ouK_M6D4X9b_wP5H-_-bctKhlPCm4PGS1AKq2bnPXSmXHRWbyGgJvQK2OZ4gsvqgF7DCDea5Z0enwweBdlx8_sI6W3Jw5wHj20yZaIeDNsZD63D36hpE9ZhEKXcDgS19A-QvFYo"/>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[8px] font-bold text-outline">+23</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto py-6 px-8 flex justify-between items-center text-xs text-outline border-t border-outline-variant/10 bg-surface/50">
+<p>© 2024 工业企业出海主数据平台. 国家部委主管 权威发布.</p>
+<div class="flex space-x-6">
+<a class="hover:text-primary transition-colors" href="#">技术支持</a>
+<a class="hover:text-primary transition-colors" href="#">隐私政策</a>
+<a class="hover:text-primary transition-colors" href="#">联系我们</a>
+</div>
+</footer>
+</main>
+</body></html>
