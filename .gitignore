@@ -8,12 +8,14 @@ test-results/
 backend/target/
 backend/logs/
 backend/storage/
+backend/temp/
 
 *.tsbuildinfo
 *.class
 *.log
 
 tmp-import-*.csv
+agents.txt
 
 vite.config.js
 vite.config.d.ts
