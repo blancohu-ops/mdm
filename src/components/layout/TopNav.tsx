@@ -44,9 +44,9 @@ export function TopNav() {
           </Link>
           <Link
             className="rounded-full bg-industrial-gradient px-5 py-2.5 text-sm font-semibold text-white shadow-soft"
-            to="/auth/register"
+            to="/onboarding"
           >
-            注册
+            申请入驻
           </Link>
         </div>
 
@@ -88,10 +88,10 @@ export function TopNav() {
               </Link>
               <Link
                 className="rounded-2xl bg-industrial-gradient px-4 py-3 text-center text-sm font-semibold text-white"
-                to="/auth/register"
+                to="/onboarding"
                 onClick={() => setOpen(false)}
               >
-                注册
+                申请入驻
               </Link>
             </div>
           </div>

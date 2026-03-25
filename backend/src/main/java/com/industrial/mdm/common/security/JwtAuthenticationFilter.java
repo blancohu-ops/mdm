@@ -36,6 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 userRepository
                         .findById(user.userId())
                         .filter(entity -> entity.getStatus().isActive())
+                        .filter(
+                                entity ->
+                                        user.authzVersion()
+                                                == normalizeAuthzVersion(entity.getAuthzVersion()))
                         .ifPresent(
                                 entity -> {
                                     UsernamePasswordAuthenticationToken authentication =
@@ -57,5 +61,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return Optional.empty();
         }
         return Optional.of(authorization.substring(7));
+    }
+
+    private int normalizeAuthzVersion(Integer authzVersion) {
+        return authzVersion == null ? 0 : authzVersion;
     }
 }

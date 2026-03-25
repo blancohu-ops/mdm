@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { CtaBanner } from "@/components/common/CtaBanner";
+import { Chip } from "@/components/common/Chip";
 import { FeatureCard } from "@/components/common/FeatureCard";
 import { SectionHeader } from "@/components/common/SectionHeader";
-import { Chip } from "@/components/common/Chip";
 import { PageHero } from "@/components/layout/PageHero";
-import { globalCta } from "@/mocks/site";
 import {
   homeCapabilities,
   homeHero,
@@ -15,13 +14,14 @@ import {
   homeToolPreview,
   homeValuePoints,
 } from "@/mocks/home";
+import { globalCta } from "@/mocks/site";
 
 export function HomePage() {
   return (
     <>
       <PageHero {...homeHero} stats={homeStats} />
 
-      <section className="-mt-14 pb-8">
+      <section className="relative z-10 -mt-6 pb-8 lg:-mt-10">
         <div className="shell-container">
           <div className="grid gap-4 lg:grid-cols-3">
             {homePortalEntries.map((item, index) => (
@@ -81,29 +81,31 @@ export function HomePage() {
               <img
                 className="h-52 w-full rounded-[1.75rem] object-cover shadow-soft"
                 src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
-                alt="工业数据看板"
+                alt="工业企业协同交流"
               />
               <div className="industrial-card p-6">
-                <div className="font-display text-3xl font-extrabold text-primary">90%</div>
-                <div className="mt-1 text-sm text-ink-muted">需求、数据结构与页面流程已完成一期前端串联</div>
+                <div className="font-display text-3xl font-extrabold text-primary">36+</div>
+                <div className="mt-1 text-sm text-ink-muted">
+                  覆盖机械设备、电气电子、建材、化工等重点工业方向
+                </div>
               </div>
             </div>
             <div className="space-y-4">
               <div className="industrial-card p-6">
-                <div className="font-display text-3xl font-extrabold text-primary">Mock API</div>
+                <div className="font-display text-3xl font-extrabold text-primary">政策与补贴</div>
                 <div className="mt-1 text-sm text-ink-muted">
-                  已抽离 service 与 contract，方便继续扩展到后端联调
+                  汇集地方扶持政策、专项补贴与平台服务信息，帮助企业更快找到适配资源
                 </div>
               </div>
               <img
                 className="h-72 w-full rounded-[1.75rem] object-cover shadow-soft"
                 src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80"
-                alt="工业园区"
+                alt="工业园区空间"
               />
             </div>
           </div>
           <div>
-            <SectionHeader title="一期不仅是官网，也是后台系统的统一入口" />
+            <SectionHeader title="一个面向工业企业出海的综合服务门户" />
             <div className="mt-10 space-y-6">
               {homeValuePoints.map((item) => (
                 <div key={item} className="flex gap-4">
@@ -123,7 +125,7 @@ export function HomePage() {
           <SectionHeader
             align="center"
             title="AI 工具辅助出海资料生成"
-            description="围绕工业产品多语言表达、类目建议与主数据结构化输出，构建可演示的一期 AI 工具体验。"
+            description="围绕工业产品多语言表达、类目建议与主数据结构化输出，帮助企业更高效整理出海资料。"
           />
           <div className="industrial-card mt-12 overflow-hidden">
             <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
@@ -176,7 +178,10 @@ export function HomePage() {
       <section className="section-spacing bg-surface-low/70">
         <div className="shell-container">
           <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeader title="正在连接全球市场的工业企业" description="展示企业入驻、产品结构化与平台审核后的门户成品形态。" />
+            <SectionHeader
+              title="正在连接全球市场的工业企业"
+              description="展示企业入驻、产品结构化与平台服务支撑下的对外展示形态。"
+            />
             <Link className="text-sm font-bold text-primary" to="/products">
               查看全部
             </Link>
@@ -198,22 +203,22 @@ export function HomePage() {
               </article>
             ))}
             <div className="rounded-[2rem] bg-industrial-gradient p-8 text-white shadow-panel">
-              <h3 className="font-display text-3xl font-bold">门户、企业后台、审核端已经互通</h3>
+              <h3 className="font-display text-3xl font-bold">连接企业、产品与服务资源</h3>
               <p className="mt-5 text-sm leading-8 text-white/75">
-                你可以从门户首页直接进入企业登录、企业工作台和平台审核端，形成从官网到后台的完整演示链路。
+                平台帮助工业企业沉淀可信资料、展示重点产品，并与政策服务、审核协同和数字工具形成联动。
               </p>
               <div className="mt-8 flex flex-col gap-3">
                 <Link
                   className="inline-flex rounded-2xl bg-white px-6 py-3 text-sm font-bold text-primary-strong"
-                  to="/auth/login"
+                  to="/onboarding"
                 >
-                  企业账号登录
+                  了解企业服务
                 </Link>
                 <Link
                   className="inline-flex rounded-2xl border border-white/20 px-6 py-3 text-sm font-bold text-white"
-                  to="/admin/overview"
+                  to="/products"
                 >
-                  进入平台审核端
+                  查看产品展示
                 </Link>
               </div>
             </div>

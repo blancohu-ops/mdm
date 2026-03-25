@@ -22,6 +22,8 @@ import com.industrial.mdm.modules.enterpriseReview.repository.EnterpriseSubmissi
 import com.industrial.mdm.modules.enterpriseReview.repository.EnterpriseSubmissionRecordRepository;
 import com.industrial.mdm.modules.enterpriseReview.repository.EnterpriseSubmissionSnapshotEntity;
 import com.industrial.mdm.modules.enterpriseReview.repository.EnterpriseSubmissionSnapshotRepository;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.domain.permission.PermissionCode;
 import com.industrial.mdm.modules.product.repository.ProductRepository;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -43,6 +45,7 @@ public class EnterpriseService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ObjectMapper objectMapper;
+    private final AuthorizationService authorizationService;
 
     public EnterpriseService(
             EnterpriseRepository enterpriseRepository,
@@ -51,7 +54,8 @@ public class EnterpriseService {
             EnterpriseSubmissionSnapshotRepository enterpriseSubmissionSnapshotRepository,
             UserRepository userRepository,
             ProductRepository productRepository,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            AuthorizationService authorizationService) {
         this.enterpriseRepository = enterpriseRepository;
         this.enterpriseProfileRepository = enterpriseProfileRepository;
         this.enterpriseSubmissionRecordRepository = enterpriseSubmissionRecordRepository;
@@ -59,11 +63,16 @@ public class EnterpriseService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.objectMapper = objectMapper;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional(readOnly = true)
     public EnterpriseProfileResponse getCurrentProfile(AuthenticatedUser currentUser) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.ENTERPRISE_PROFILE_READ,
+                        "current account is not enterprise owner");
         EnterpriseProfileEntity profile = resolveProfileForView(enterprise);
         return new EnterpriseProfileResponse(toCompanyProfileResponse(enterprise, profile));
     }
@@ -71,7 +80,11 @@ public class EnterpriseService {
     @Transactional
     public EnterpriseProfileResponse saveProfile(
             AuthenticatedUser currentUser, EnterpriseProfileSaveRequest request) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.ENTERPRISE_PROFILE_UPDATE,
+                        "current account is not enterprise owner");
         if (!enterprise.getStatus().canEdit() || enterprise.getStatus() == EnterpriseStatus.FROZEN) {
             throw new BizException(ErrorCode.FORBIDDEN, "当前状态不允许编辑企业资料");
         }
@@ -93,7 +106,11 @@ public class EnterpriseService {
 
     @Transactional
     public EnterpriseLatestSubmissionResponse submitForReview(AuthenticatedUser currentUser) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.ENTERPRISE_APPLICATION_SUBMIT,
+                        "current account is not enterprise owner");
         if (!enterprise.getStatus().canSubmit() || enterprise.getStatus() == EnterpriseStatus.FROZEN) {
             throw new BizException(ErrorCode.FORBIDDEN, "当前状态不允许提交审核");
         }
@@ -143,7 +160,11 @@ public class EnterpriseService {
 
     @Transactional(readOnly = true)
     public EnterpriseLatestSubmissionResponse getLatestSubmission(AuthenticatedUser currentUser) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.ENTERPRISE_PROFILE_READ,
+                        "current account is not enterprise owner");
         return enterpriseSubmissionRecordRepository
                 .findTopByEnterpriseIdOrderBySubmittedAtDesc(enterprise.getId())
                 .map(
@@ -157,14 +178,18 @@ public class EnterpriseService {
                 .orElse(null);
     }
 
-    private EnterpriseEntity findEnterpriseOfCurrentUser(AuthenticatedUser currentUser) {
+    private EnterpriseEntity findEnterpriseOfCurrentUser(
+            AuthenticatedUser currentUser, PermissionCode permission, String forbiddenMessage) {
+        UUID enterpriseId =
+                authorizationService.assertCurrentEnterprisePermission(
+                        currentUser, permission, forbiddenMessage);
         if (currentUser == null
                 || currentUser.role() != UserRole.ENTERPRISE_OWNER
                 || currentUser.enterpriseId() == null) {
             throw new BizException(ErrorCode.FORBIDDEN, "当前账号不属于企业主账号");
         }
         return enterpriseRepository
-                .findById(currentUser.enterpriseId())
+                .findById(enterpriseId)
                 .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "企业不存在"));
     }
 

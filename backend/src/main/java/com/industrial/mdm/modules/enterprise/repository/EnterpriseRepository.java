@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EnterpriseRepository extends JpaRepository<EnterpriseEntity, UUID> {
 
+    List<EnterpriseEntity> findAllByOrderByNameAsc();
+
     Page<EnterpriseEntity> findByStatusIn(List<EnterpriseStatus> statuses, Pageable pageable);
 
     Page<EnterpriseEntity> findByNameContainingIgnoreCaseAndStatusIn(

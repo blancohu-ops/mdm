@@ -34,7 +34,7 @@ export function PageHero({
             <img className="h-full w-full object-cover" src={image} alt="" />
           </div>
         ) : null}
-        <div className="relative shell-container grid min-h-[32rem] items-center gap-12 py-20 lg:grid-cols-[1.2fr_0.8fr] lg:py-24">
+        <div className="relative shell-container grid min-h-[38rem] items-center gap-12 pt-24 pb-28 lg:min-h-[44rem] lg:grid-cols-[1.2fr_0.8fr] lg:pt-28 lg:pb-36">
           <div className="max-w-3xl">
             {eyebrow ? <p className="industrial-badge">{eyebrow}</p> : null}
             <h1 className="mt-6 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-7xl">

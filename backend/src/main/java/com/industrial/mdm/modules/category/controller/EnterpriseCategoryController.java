@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/enterprise/categories")
 @Tag(name = "Enterprise / Categories")
-@PreAuthorize("hasAuthority('enterprise_owner')")
 public class EnterpriseCategoryController {
 
     private final CategoryService categoryService;
@@ -27,6 +26,7 @@ public class EnterpriseCategoryController {
 
     @GetMapping("/tree")
     @Operation(summary = "Get enabled category tree")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'category:read')")
     public ApiResponse<CategoryTreeResponse> tree() {
         return ApiResponse.success(
                 categoryService.getEnterpriseTree(), MDC.get(RequestIdFilter.REQUEST_ID));
@@ -34,6 +34,7 @@ public class EnterpriseCategoryController {
 
     @GetMapping("/leaf-options")
     @Operation(summary = "Get enabled leaf category options")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'category:read')")
     public ApiResponse<CategoryLeafOptionsResponse> leafOptions() {
         return ApiResponse.success(
                 categoryService.getLeafOptions(), MDC.get(RequestIdFilter.REQUEST_ID));

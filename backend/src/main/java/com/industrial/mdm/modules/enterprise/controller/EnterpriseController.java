@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/enterprise")
-@Tag(name = "企业端-企业资料")
-@PreAuthorize("hasAuthority('enterprise_owner')")
+@Tag(name = "Enterprise / Profile")
 public class EnterpriseController {
 
     private final EnterpriseService enterpriseService;
@@ -33,7 +32,8 @@ public class EnterpriseController {
     }
 
     @GetMapping("/profile")
-    @Operation(summary = "获取企业资料")
+    @Operation(summary = "Get enterprise profile")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'enterprise_profile:read')")
     public ApiResponse<EnterpriseProfileResponse> getProfile(
             @AuthenticationPrincipal AuthenticatedUser currentUser) {
         return ApiResponse.success(
@@ -41,7 +41,8 @@ public class EnterpriseController {
     }
 
     @PutMapping("/profile")
-    @Operation(summary = "保存企业资料草稿")
+    @Operation(summary = "Save enterprise profile draft")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'enterprise_profile:update')")
     public ApiResponse<EnterpriseProfileResponse> saveProfile(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @Valid @RequestBody EnterpriseProfileSaveRequest request) {
@@ -51,7 +52,8 @@ public class EnterpriseController {
     }
 
     @PostMapping("/submissions")
-    @Operation(summary = "提交企业资料审核")
+    @Operation(summary = "Submit enterprise profile for review")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'enterprise_application:submit')")
     public ApiResponse<EnterpriseLatestSubmissionResponse> submitForReview(
             @AuthenticationPrincipal AuthenticatedUser currentUser) {
         return ApiResponse.success(
@@ -59,7 +61,8 @@ public class EnterpriseController {
     }
 
     @GetMapping("/submissions/latest")
-    @Operation(summary = "查询最近一次企业提交记录")
+    @Operation(summary = "Get latest enterprise submission")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'enterprise_profile:read')")
     public ApiResponse<EnterpriseLatestSubmissionResponse> latestSubmission(
             @AuthenticationPrincipal AuthenticatedUser currentUser) {
         return ApiResponse.success(

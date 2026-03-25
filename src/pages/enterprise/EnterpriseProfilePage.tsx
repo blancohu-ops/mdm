@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Dialog } from "@/components/backoffice/BackofficeOverlays";
+import { FilePreviewDialog } from "@/components/backoffice/FilePreviewDialog";
 import {
   BackofficeButton,
   BackofficePageHeader,
@@ -40,6 +41,7 @@ export function EnterpriseProfilePage() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const loadProfile = async () => {
     setLoading(true);
@@ -441,7 +443,7 @@ export function EnterpriseProfilePage() {
                       disabled={!form.licensePreviewUrl}
                       onClick={() =>
                         form.licensePreviewUrl
-                          ? void enterpriseService.openFilePreview(form.licensePreviewUrl)
+                          ? setPreviewOpen(true)
                           : undefined
                       }
                     >
@@ -540,6 +542,15 @@ export function EnterpriseProfilePage() {
             : "当前页面没有未保存变更，确认后会直接提交审核。"}
         </div>
       </Dialog>
+
+      <FilePreviewDialog
+        open={previewOpen}
+        title="营业执照预览"
+        description="在当前页面快速查看企业上传的营业执照文件。"
+        filePath={form.licensePreviewUrl}
+        suggestedFileName={form.licenseFileName || undefined}
+        onClose={() => setPreviewOpen(false)}
+      />
     </div>
   );
 }

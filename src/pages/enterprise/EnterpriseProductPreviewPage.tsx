@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "@/components/backoffice/BackofficeOverlays";
+import { FilePreviewDialog } from "@/components/backoffice/FilePreviewDialog";
 import {
   BackofficeButton,
   BackofficePageHeader,
@@ -22,6 +23,7 @@ export function EnterpriseProductPreviewPage() {
   const [offlineReason, setOfflineReason] = useState("");
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
+  const [previewTarget, setPreviewTarget] = useState<{ path: string; name?: string } | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -221,7 +223,12 @@ export function EnterpriseProductPreviewPage() {
                     <button
                       className="text-left text-primary"
                       type="button"
-                      onClick={() => void enterpriseService.openFilePreview(item)}
+                      onClick={() =>
+                        setPreviewTarget({
+                          path: item,
+                          name: `附件 ${index + 1}`,
+                        })
+                      }
                     >
                       附件 {index + 1}
                     </button>
@@ -253,6 +260,15 @@ export function EnterpriseProductPreviewPage() {
           </SectionCard>
         </div>
       </div>
+
+      <FilePreviewDialog
+        open={Boolean(previewTarget)}
+        title={previewTarget?.name ?? "附件预览"}
+        description="在当前页面快速查看产品附件。"
+        filePath={previewTarget?.path}
+        suggestedFileName={previewTarget?.name}
+        onClose={() => setPreviewTarget(null)}
+      />
 
       <Dialog
         open={submitOpen}

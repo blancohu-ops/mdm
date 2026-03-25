@@ -12,7 +12,8 @@ public record AuthenticatedUser(
         UserRole role,
         UUID enterpriseId,
         String displayName,
-        String organization)
+        String organization,
+        int authzVersion)
         implements Principal {
 
     @Override

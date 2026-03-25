@@ -48,7 +48,7 @@ public class EnterpriseSubmissionRecordEntity extends AuditableEntity {
     @Column(name = "submission_contact_phone", nullable = false, length = 32)
     private String submissionContactPhone;
 
-    @Column(name = "submitted_by", nullable = false)
+    @Column(name = "submitted_by")
     private UUID submittedBy;
 
     @Column(name = "submitted_at", nullable = false)

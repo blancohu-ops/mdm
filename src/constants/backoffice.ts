@@ -6,6 +6,7 @@ import type {
   ProductStatus,
   UserRole,
 } from "@/types/backoffice";
+import { getEffectivePermissions } from "@/services/utils/permissions";
 
 export const enterpriseNavItems: BackofficeNavItem[] = [
   { label: "工作台", path: "/enterprise/dashboard", icon: "dashboard" },
@@ -16,34 +17,85 @@ export const enterpriseNavItems: BackofficeNavItem[] = [
   { label: "账号设置", path: "/enterprise/settings", icon: "manage_accounts" },
 ];
 
-const adminReviewerNavItems: BackofficeNavItem[] = [
-  { label: "首页概览", path: "/admin/overview", icon: "space_dashboard" },
-  { label: "企业审核", path: "/admin/reviews/companies", icon: "fact_check" },
-  { label: "产品审核", path: "/admin/reviews/products", icon: "rule" },
-];
-
-const adminOperationsNavItems: BackofficeNavItem[] = [
-  ...adminReviewerNavItems,
-  { label: "企业管理", path: "/admin/companies", icon: "apartment" },
-  { label: "产品管理", path: "/admin/products", icon: "inventory" },
-  { label: "基础类目配置", path: "/admin/categories", icon: "account_tree" },
+const adminNavItems: BackofficeNavItem[] = [
+  {
+    label: "首页概览",
+    path: "/admin/overview",
+    icon: "space_dashboard",
+    requiredPermissions: ["admin_overview:read"],
+  },
+  {
+    label: "用户管理",
+    path: "/admin/users",
+    icon: "group",
+    requiredPermissions: ["user_manage:list"],
+  },
+  {
+    label: "企业审核",
+    path: "/admin/reviews/companies",
+    icon: "fact_check",
+    requiredPermissions: ["company_review:list"],
+  },
+  {
+    label: "产品审核",
+    path: "/admin/reviews/products",
+    icon: "rule",
+    requiredPermissions: ["product_review:list"],
+  },
+  {
+    label: "临时授权",
+    path: "/admin/iam/access-grant-requests",
+    icon: "admin_panel_settings",
+    requiredPermissions: ["access_grant_request:submit", "access_grant_request:approve"],
+  },
+  {
+    label: "企业管理",
+    path: "/admin/companies",
+    icon: "apartment",
+    requiredPermissions: ["company_manage:list"],
+  },
+  {
+    label: "产品管理",
+    path: "/admin/products",
+    icon: "inventory",
+    requiredPermissions: ["product_manage:list"],
+  },
+  {
+    label: "审核域分配",
+    path: "/admin/iam/review-domains",
+    icon: "policy",
+    requiredPermissions: ["review_domain_assignment:manage"],
+  },
+  {
+    label: "基础类目配置",
+    path: "/admin/categories",
+    icon: "account_tree",
+    requiredPermissions: ["category:read"],
+  },
 ];
 
 export function getBackofficeNavItems(
   scope: "enterprise" | "admin",
   role: UserRole,
+  permissions: string[] = [],
 ): BackofficeNavItem[] {
   if (scope === "enterprise") {
     return enterpriseNavItems;
   }
 
-  return role === "operations_admin" ? adminOperationsNavItems : adminReviewerNavItems;
+  const effectivePermissions = getEffectivePermissions(role, permissions);
+  return adminNavItems.filter((item) => {
+    if (!item.requiredPermissions?.length) {
+      return true;
+    }
+    return item.requiredPermissions.some((permission) => effectivePermissions.includes(permission));
+  });
 }
 
 export const authHighlights = [
-  "统一沉淀企业资料、产品主数据和审核流程，形成可持续扩展的出海数据底座。",
-  "企业端与平台端共享稳定的角色和状态模型，后续接入真实权限与工作流成本更低。",
-  "一期优先打通高频业务链路，后续可平滑扩展到消息通知、自动化校验和更多后台模块。",
+  "统一沉淀企业资料、产品主数据和审核流程，形成可持续扩展的工业出海数据底座。",
+  "企业端与平台端共享稳定的角色、权限和状态模型，后续接入更多业务流程成本更低。",
+  "一期优先打通高频链路，后续可平滑扩展到消息通知、自动校验和更多后台模块。",
 ];
 
 export const companyTypeOptions = [

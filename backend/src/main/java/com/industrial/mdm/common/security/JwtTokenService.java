@@ -18,6 +18,7 @@ public class JwtTokenService {
     public static final String CLAIM_ENTERPRISE_ID = "enterpriseId";
     public static final String CLAIM_DISPLAY_NAME = "displayName";
     public static final String CLAIM_ORGANIZATION = "organization";
+    public static final String CLAIM_AUTHZ_VERSION = "authzVersion";
     public static final String CLAIM_TOKEN_TYPE = "tokenType";
 
     private final JwtProperties jwtProperties;
@@ -64,6 +65,7 @@ public class JwtTokenService {
                         user.enterpriseId() == null ? null : user.enterpriseId().toString())
                 .claim(CLAIM_DISPLAY_NAME, user.displayName())
                 .claim(CLAIM_ORGANIZATION, user.organization())
+                .claim(CLAIM_AUTHZ_VERSION, user.authzVersion())
                 .claim(CLAIM_TOKEN_TYPE, tokenType)
                 .issuedAt(new Date())
                 .expiration(Date.from(expiresAt.toInstant()))
@@ -86,7 +88,10 @@ public class JwtTokenService {
                         ? null
                         : UUID.fromString(enterpriseId),
                 claims.get(CLAIM_DISPLAY_NAME, String.class),
-                claims.get(CLAIM_ORGANIZATION, String.class));
+                claims.get(CLAIM_ORGANIZATION, String.class),
+                claims.get(CLAIM_AUTHZ_VERSION, Integer.class) == null
+                        ? 0
+                        : claims.get(CLAIM_AUTHZ_VERSION, Integer.class));
     }
 
     public record TokenPair(

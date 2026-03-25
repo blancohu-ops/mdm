@@ -8,16 +8,20 @@ import { OnboardingPage } from "@/pages/OnboardingPage";
 import { ProductsPage } from "@/pages/ProductsPage";
 import { AiToolsPage } from "@/pages/AiToolsPage";
 import { ForgotPasswordPage } from "@/pages/auth/ForgotPasswordPage";
+import { ActivateAccountPage } from "@/pages/auth/ActivateAccountPage";
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
 import { AdminCategoryConfigPage } from "@/pages/admin/AdminCategoryConfigPage";
 import { AdminCompanyManagementPage } from "@/pages/admin/AdminCompanyManagementPage";
 import { AdminCompanyReviewDetailPage } from "@/pages/admin/AdminCompanyReviewDetailPage";
 import { AdminCompanyReviewListPage } from "@/pages/admin/AdminCompanyReviewListPage";
+import { AdminAccessGrantRequestsPage } from "@/pages/admin/AdminAccessGrantRequestsPage";
 import { AdminOverviewPage } from "@/pages/admin/AdminOverviewPage";
 import { AdminProductManagementPage } from "@/pages/admin/AdminProductManagementPage";
 import { AdminProductReviewDetailPage } from "@/pages/admin/AdminProductReviewDetailPage";
 import { AdminProductReviewListPage } from "@/pages/admin/AdminProductReviewListPage";
+import { AdminReviewDomainAssignmentsPage } from "@/pages/admin/AdminReviewDomainAssignmentsPage";
+import { AdminUserManagementPage } from "@/pages/admin/AdminUserManagementPage";
 import { EnterpriseDashboardPage } from "@/pages/enterprise/EnterpriseDashboardPage";
 import { EnterpriseImportPage } from "@/pages/enterprise/EnterpriseImportPage";
 import { EnterpriseMessagesPage } from "@/pages/enterprise/EnterpriseMessagesPage";
@@ -48,6 +52,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate replace to="/auth/login" /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "activate", element: <ActivateAccountPage /> },
       { path: "forgot-password", element: <ForgotPasswordPage /> },
     ],
   },
@@ -75,12 +80,15 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate replace to="/admin/overview" /> },
       { path: "overview", element: <AdminOverviewPage /> },
+      { path: "users", element: <AdminUserManagementPage /> },
       { path: "reviews/companies", element: <AdminCompanyReviewListPage /> },
       { path: "reviews/companies/:id", element: <AdminCompanyReviewDetailPage /> },
       { path: "companies", element: <AdminCompanyManagementPage /> },
       { path: "reviews/products", element: <AdminProductReviewListPage /> },
       { path: "reviews/products/:id", element: <AdminProductReviewDetailPage /> },
       { path: "products", element: <AdminProductManagementPage /> },
+      { path: "iam/access-grant-requests", element: <AdminAccessGrantRequestsPage /> },
+      { path: "iam/review-domains", element: <AdminReviewDomainAssignmentsPage /> },
       { path: "categories", element: <AdminCategoryConfigPage /> },
     ],
   },

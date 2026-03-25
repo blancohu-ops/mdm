@@ -6,12 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.industrial.mdm.common.exception.BizException;
 import com.industrial.mdm.common.exception.ErrorCode;
 import com.industrial.mdm.common.security.AuthenticatedUser;
-import com.industrial.mdm.common.security.UserRole;
 import com.industrial.mdm.modules.category.application.CategoryService;
 import com.industrial.mdm.modules.enterprise.domain.EnterpriseStatus;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseEntity;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseProfileRepository;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseRepository;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.domain.permission.PermissionCode;
 import com.industrial.mdm.modules.product.domain.ProductStatus;
 import com.industrial.mdm.modules.product.dto.EnterpriseProductEditorResponse;
 import com.industrial.mdm.modules.product.dto.EnterpriseProductListResponse;
@@ -75,6 +76,7 @@ public class ProductService {
     private final EnterpriseProfileRepository enterpriseProfileRepository;
     private final CategoryService categoryService;
     private final ObjectMapper objectMapper;
+    private final AuthorizationService authorizationService;
 
     public ProductService(
             ProductRepository productRepository,
@@ -85,7 +87,8 @@ public class ProductService {
             EnterpriseRepository enterpriseRepository,
             EnterpriseProfileRepository enterpriseProfileRepository,
             CategoryService categoryService,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            AuthorizationService authorizationService) {
         this.productRepository = productRepository;
         this.productListQueryRepository = productListQueryRepository;
         this.productProfileRepository = productProfileRepository;
@@ -95,6 +98,7 @@ public class ProductService {
         this.enterpriseProfileRepository = enterpriseProfileRepository;
         this.categoryService = categoryService;
         this.objectMapper = objectMapper;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional(readOnly = true)
@@ -105,7 +109,11 @@ public class ProductService {
             String category,
             int page,
             int pageSize) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_READ,
+                        "current account is not enterprise owner");
         var pageResult =
                 productListQueryRepository.findEnterpriseProductIds(
                         enterprise.getId(), keyword, status, category, page, pageSize);
@@ -118,7 +126,12 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductResponse getProduct(AuthenticatedUser currentUser, UUID productId) {
-        ProductEntity product = findProductForEnterprise(currentUser, productId);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_READ,
+                        "current account is not enterprise owner");
+        ProductEntity product = findProductForEnterprise(enterprise.getId(), productId);
         return toEnterpriseView(product);
     }
 
@@ -140,7 +153,11 @@ public class ProductService {
     @Transactional
     public ProductResponse createProduct(
             AuthenticatedUser currentUser, ProductUpsertRequest request) {
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_CREATE,
+                        "current account is not enterprise owner");
         ensureEnterpriseCanManageProducts(enterprise);
         ProductEntity product = createDraftProduct(enterprise.getId(), request);
         return toEnterpriseView(product);
@@ -149,8 +166,13 @@ public class ProductService {
     @Transactional
     public ProductResponse updateProduct(
             AuthenticatedUser currentUser, UUID productId, ProductUpsertRequest request) {
-        ensureEnterpriseCanManageProducts(findEnterpriseOfCurrentUser(currentUser));
-        ProductEntity product = findProductForEnterprise(currentUser, productId);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_UPDATE,
+                        "current account is not enterprise owner");
+        ensureEnterpriseCanManageProducts(enterprise);
+        ProductEntity product = findProductForEnterprise(enterprise.getId(), productId);
         if (!product.getStatus().canEdit()) {
             throw new BizException(ErrorCode.FORBIDDEN, "product is not editable in current status");
         }
@@ -163,8 +185,13 @@ public class ProductService {
     @Transactional
     public ProductSubmissionResponse submitForReview(
             AuthenticatedUser currentUser, UUID productId) {
-        ensureEnterpriseCanManageProducts(findEnterpriseOfCurrentUser(currentUser));
-        ProductEntity product = findProductForEnterprise(currentUser, productId);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_SUBMIT,
+                        "current account is not enterprise owner");
+        ensureEnterpriseCanManageProducts(enterprise);
+        ProductEntity product = findProductForEnterprise(enterprise.getId(), productId);
         return submitForReview(product, currentUser.userId(), resolveEnterpriseName(product.getEnterpriseId()));
     }
 
@@ -232,8 +259,13 @@ public class ProductService {
 
     @Transactional
     public Map<String, String> deleteProduct(AuthenticatedUser currentUser, UUID productId) {
-        ensureEnterpriseCanManageProducts(findEnterpriseOfCurrentUser(currentUser));
-        ProductEntity product = findProductForEnterprise(currentUser, productId);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_DELETE,
+                        "current account is not enterprise owner");
+        ensureEnterpriseCanManageProducts(enterprise);
+        ProductEntity product = findProductForEnterprise(enterprise.getId(), productId);
         if (!product.getStatus().canDelete()) {
             throw new BizException(ErrorCode.FORBIDDEN, "product cannot be deleted");
         }
@@ -244,8 +276,13 @@ public class ProductService {
     @Transactional
     public ProductResponse offlineProduct(
             AuthenticatedUser currentUser, UUID productId, ProductOfflineRequest request) {
-        ensureEnterpriseCanManageProducts(findEnterpriseOfCurrentUser(currentUser));
-        ProductEntity product = findProductForEnterprise(currentUser, productId);
+        EnterpriseEntity enterprise =
+                findEnterpriseOfCurrentUser(
+                        currentUser,
+                        PermissionCode.PRODUCT_OFFLINE,
+                        "current account is not enterprise owner");
+        ensureEnterpriseCanManageProducts(enterprise);
+        ProductEntity product = findProductForEnterprise(enterprise.getId(), productId);
         if (!product.getStatus().canOffline()) {
             throw new BizException(ErrorCode.STATE_CONFLICT, "product cannot be taken offline");
         }
@@ -339,21 +376,19 @@ public class ProductService {
         return enterprise.getName();
     }
 
-    private EnterpriseEntity findEnterpriseOfCurrentUser(AuthenticatedUser currentUser) {
-        if (currentUser == null
-                || currentUser.role() != UserRole.ENTERPRISE_OWNER
-                || currentUser.enterpriseId() == null) {
-            throw new BizException(ErrorCode.FORBIDDEN, "current account is not enterprise owner");
-        }
+    private EnterpriseEntity findEnterpriseOfCurrentUser(
+            AuthenticatedUser currentUser, PermissionCode permission, String forbiddenMessage) {
+        UUID enterpriseId =
+                authorizationService.assertCurrentEnterprisePermission(
+                        currentUser, permission, forbiddenMessage);
         return enterpriseRepository
-                .findById(currentUser.enterpriseId())
+                .findById(enterpriseId)
                 .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "enterprise not found"));
     }
 
-    private ProductEntity findProductForEnterprise(AuthenticatedUser currentUser, UUID productId) {
+    private ProductEntity findProductForEnterprise(UUID enterpriseId, UUID productId) {
         ProductEntity product = findProduct(productId);
-        EnterpriseEntity enterprise = findEnterpriseOfCurrentUser(currentUser);
-        if (!product.getEnterpriseId().equals(enterprise.getId())) {
+        if (!product.getEnterpriseId().equals(enterpriseId)) {
             throw new BizException(ErrorCode.FORBIDDEN, "product does not belong to current enterprise");
         }
         return product;

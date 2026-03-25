@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-@Profile({"default", "dev"})
+@Profile({"default", "dev", "test"})
 public class LocalFileStorageService implements StorageService {
 
     private final StorageProperties storageProperties;

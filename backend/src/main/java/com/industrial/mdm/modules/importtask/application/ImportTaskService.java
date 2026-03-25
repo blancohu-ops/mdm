@@ -6,10 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.industrial.mdm.common.exception.BizException;
 import com.industrial.mdm.common.exception.ErrorCode;
 import com.industrial.mdm.common.security.AuthenticatedUser;
-import com.industrial.mdm.common.security.UserRole;
 import com.industrial.mdm.modules.category.application.CategoryService;
 import com.industrial.mdm.modules.file.application.FileService;
 import com.industrial.mdm.modules.file.repository.StoredFileEntity;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.domain.permission.PermissionCode;
 import com.industrial.mdm.modules.importtask.domain.ImportMode;
 import com.industrial.mdm.modules.importtask.domain.ImportRowResult;
 import com.industrial.mdm.modules.importtask.domain.ImportTaskStatus;
@@ -50,6 +51,7 @@ public class ImportTaskService {
     private final MessageService messageService;
     private final ImportSheetParser importSheetParser;
     private final ObjectMapper objectMapper;
+    private final AuthorizationService authorizationService;
 
     public ImportTaskService(
             ImportTaskRepository importTaskRepository,
@@ -59,7 +61,8 @@ public class ImportTaskService {
             ProductService productService,
             MessageService messageService,
             ImportSheetParser importSheetParser,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            AuthorizationService authorizationService) {
         this.importTaskRepository = importTaskRepository;
         this.importTaskRowRepository = importTaskRowRepository;
         this.fileService = fileService;
@@ -68,6 +71,7 @@ public class ImportTaskService {
         this.messageService = messageService;
         this.importSheetParser = importSheetParser;
         this.objectMapper = objectMapper;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional(readOnly = true)
@@ -112,7 +116,11 @@ public class ImportTaskService {
     @Transactional
     public ImportTaskResponse createValidationTask(
             AuthenticatedUser currentUser, ImportTaskCreateRequest request) {
-        UUID enterpriseId = requireEnterpriseOwner(currentUser);
+        UUID enterpriseId =
+                requireEnterprisePermission(
+                        currentUser,
+                        PermissionCode.IMPORT_TASK_CREATE,
+                        "current account cannot manage import task");
         productService.ensureEnterpriseCanManageProducts(enterpriseId);
         StoredFileEntity sourceFile =
                 fileService.loadAuthorizedFile(request.sourceFileId(), currentUser);
@@ -157,7 +165,12 @@ public class ImportTaskService {
 
     @Transactional(readOnly = true)
     public ImportTaskResponse getTask(AuthenticatedUser currentUser, UUID taskId) {
-        ImportTaskEntity task = loadTaskForEnterprise(currentUser, taskId);
+        UUID enterpriseId =
+                requireEnterprisePermission(
+                        currentUser,
+                        PermissionCode.IMPORT_TASK_READ,
+                        "current account cannot manage import task");
+        ImportTaskEntity task = loadTaskForEnterprise(enterpriseId, taskId);
         StoredFileEntity sourceFile =
                 fileService.loadAuthorizedFile(task.getSourceFileId(), currentUser);
         List<ImportTaskRowEntity> rows =
@@ -168,7 +181,12 @@ public class ImportTaskService {
     @Transactional(readOnly = true)
     public ResponseEntity<Resource> downloadErrorReport(
             AuthenticatedUser currentUser, UUID taskId) {
-        ImportTaskEntity task = loadTaskForEnterprise(currentUser, taskId);
+        UUID enterpriseId =
+                requireEnterprisePermission(
+                        currentUser,
+                        PermissionCode.IMPORT_TASK_READ,
+                        "current account cannot manage import task");
+        ImportTaskEntity task = loadTaskForEnterprise(enterpriseId, taskId);
         List<ImportTaskRowEntity> rows =
                 importTaskRowRepository.findByImportTaskIdOrderByRowNoAsc(taskId);
         List<ImportTaskRowEntity> failedRows =
@@ -195,7 +213,12 @@ public class ImportTaskService {
 
     @Transactional
     public ImportTaskResponse confirmImport(AuthenticatedUser currentUser, UUID taskId) {
-        ImportTaskEntity task = loadTaskForEnterprise(currentUser, taskId);
+        UUID enterpriseId =
+                requireEnterprisePermission(
+                        currentUser,
+                        PermissionCode.IMPORT_TASK_CONFIRM,
+                        "current account cannot manage import task");
+        ImportTaskEntity task = loadTaskForEnterprise(enterpriseId, taskId);
         productService.ensureEnterpriseCanManageProducts(task.getEnterpriseId());
         if (task.getStatus() != ImportTaskStatus.READY) {
             throw new BizException(
@@ -306,8 +329,7 @@ public class ImportTaskService {
                         .toList());
     }
 
-    private ImportTaskEntity loadTaskForEnterprise(AuthenticatedUser currentUser, UUID taskId) {
-        UUID enterpriseId = requireEnterpriseOwner(currentUser);
+    private ImportTaskEntity loadTaskForEnterprise(UUID enterpriseId, UUID taskId) {
         ImportTaskEntity task =
                 importTaskRepository
                         .findById(taskId)
@@ -320,14 +342,10 @@ public class ImportTaskService {
         return task;
     }
 
-    private UUID requireEnterpriseOwner(AuthenticatedUser currentUser) {
-        if (currentUser == null
-                || currentUser.role() != UserRole.ENTERPRISE_OWNER
-                || currentUser.enterpriseId() == null) {
-            throw new BizException(
-                    ErrorCode.FORBIDDEN, "current account cannot manage import task");
-        }
-        return currentUser.enterpriseId();
+    private UUID requireEnterprisePermission(
+            AuthenticatedUser currentUser, PermissionCode permission, String forbiddenMessage) {
+        return authorizationService.assertCurrentEnterprisePermission(
+                currentUser, permission, forbiddenMessage);
     }
 
     private ImportMode parseMode(String mode) {

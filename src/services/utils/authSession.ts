@@ -5,6 +5,9 @@ const SESSION_STORAGE_KEY = "mdm.backoffice.session";
 export type StoredSession = LoginResponse & {
   userId?: string;
   enterpriseId?: string | null;
+  permissions?: string[];
+  dataScopes?: string[];
+  capabilities?: string[];
 };
 
 export function getStoredSession(): StoredSession | null {
@@ -54,6 +57,9 @@ export function mergeStoredSessionProfile(profile: AuthMeResponse) {
     role: profile.role,
     displayName: profile.displayName,
     organization: profile.organization,
+    permissions: profile.permissions ?? [],
+    dataScopes: profile.dataScopes ?? [],
+    capabilities: profile.capabilities ?? [],
   };
   saveStoredSession(next);
   return next;

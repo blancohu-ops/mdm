@@ -193,6 +193,7 @@ export function BackofficeButton({
   type = "button",
   disabled,
   className,
+  testId,
 }: {
   children: ReactNode;
   to?: string;
@@ -201,6 +202,7 @@ export function BackofficeButton({
   type?: "button" | "submit";
   disabled?: boolean;
   className?: string;
+  testId?: string;
 }) {
   const baseClassName = clsx(
     "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-primary/20",
@@ -217,14 +219,20 @@ export function BackofficeButton({
 
   if (to) {
     return (
-      <Link className={baseClassName} to={to}>
+      <Link className={baseClassName} data-testid={testId} to={to}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={baseClassName} onClick={onClick} type={type} disabled={disabled}>
+    <button
+      className={baseClassName}
+      data-testid={testId}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

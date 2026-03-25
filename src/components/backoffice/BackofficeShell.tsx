@@ -3,9 +3,11 @@ import { Navigate, NavLink, Outlet, useLocation, useNavigate } from "react-route
 import { Dialog } from "@/components/backoffice/BackofficeOverlays";
 import { BackofficeButton } from "@/components/backoffice/BackofficePrimitives";
 import { IconSymbol } from "@/components/common/IconSymbol";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { getBackofficeNavItems } from "@/constants/backoffice";
 import { authService } from "@/services/authService";
 import { getStoredSession } from "@/services/utils/authSession";
+import { sessionHasAnyPermission } from "@/services/utils/permissions";
 import type { BackofficeNavItem, UserRole } from "@/types/backoffice";
 
 export function BackofficeShell({
@@ -32,11 +34,16 @@ export function BackofficeShell({
     return <Navigate replace to={session.redirectPath} />;
   }
 
-  const navItems = getBackofficeNavItems(scope, session.role);
+  const navItems = getBackofficeNavItems(scope, session.role, session.permissions);
+  const defaultAdminReviewPath = sessionHasAnyPermission(session, ["company_review:list"])
+    ? "/admin/reviews/companies"
+    : sessionHasAnyPermission(session, ["product_review:list"])
+      ? "/admin/reviews/products"
+      : "/admin/overview";
 
   const currentLabel = useMemo(() => {
     const matched = navItems.find((item) => location.pathname.startsWith(item.path)) ?? navItems[0];
-    return matched.label;
+    return matched?.label ?? "后台工作台";
   }, [location.pathname, navItems]);
 
   useEffect(() => {
@@ -47,13 +54,10 @@ export function BackofficeShell({
   const searchPlaceholder =
     scope === "enterprise" ? "搜索产品名称、型号或类目" : "搜索企业名称、产品名称或型号";
 
-  const secondaryTabs =
-    scope === "enterprise" ? ["产品管理", "批量导入"] : ["企业审核", "产品审核"];
-
   const supportSummary =
     scope === "enterprise"
-      ? "你可以在这里查看接口文档、导入模板说明和审核通知处理建议。"
-      : "你可以在这里查看审核规范、接口文档和常见运营操作说明。";
+      ? "这里汇总了接口文档、导入说明、审核通知与常见问题，方便企业快速完成资料维护与提审。"
+      : "这里汇总了审核规范、接口文档和常见运营操作说明，方便平台高效完成审核与管理。";
 
   const handleSearch = () => {
     const keyword = searchKeyword.trim();
@@ -84,6 +88,7 @@ export function BackofficeShell({
 
   return (
     <div className="min-h-screen bg-[#f5f8fc]">
+      <ScrollToTop />
       <div className="lg:grid lg:min-h-screen lg:grid-cols-[16.5rem_1fr]">
         <aside
           className={[
@@ -196,18 +201,17 @@ export function BackofficeShell({
                 </form>
               </div>
 
-              <div className="hidden items-center gap-7 text-sm text-ink-muted lg:flex">
+              <div className="hidden items-center text-sm lg:flex">
                 <span className="font-semibold text-primary-strong">{currentLabel}</span>
-                {secondaryTabs.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
               </div>
 
               <div className="ml-auto flex items-center gap-3 text-ink-muted">
                 <button
                   className="rounded-full p-2 transition hover:bg-[#edf3fb]"
                   type="button"
-                  onClick={() => navigate(scope === "enterprise" ? "/enterprise/messages" : "/admin/overview")}
+                  onClick={() =>
+                    navigate(scope === "enterprise" ? "/enterprise/messages" : defaultAdminReviewPath)
+                  }
                 >
                   <IconSymbol name="notifications" />
                 </button>
@@ -258,7 +262,7 @@ export function BackofficeShell({
       <Dialog
         open={helpOpen}
         title="帮助中心"
-        description="当前环境已接入真实后端接口。下面这些入口可以帮助你快速定位问题或继续联调。"
+        description="当前环境已接入真实后端接口，下面这些入口可以帮助你快速定位问题或继续联调。"
         onClose={() => setHelpOpen(false)}
         footer={<BackofficeButton onClick={() => setHelpOpen(false)}>关闭</BackofficeButton>}
       >
@@ -266,7 +270,7 @@ export function BackofficeShell({
           <div className="rounded-2xl bg-[#f7f9fc] px-4 py-4">
             <div className="font-semibold text-primary-strong">接口文档</div>
             <p className="mt-2 leading-7">
-              默认地址为 <code>http://localhost:8083/swagger-ui/index.html</code>，适合联调和查看字段定义。
+              默认地址是 <code>http://localhost:8083/swagger-ui/index.html</code>，适合联调和查看字段定义。
             </p>
           </div>
           <div className="rounded-2xl bg-[#f7f9fc] px-4 py-4">

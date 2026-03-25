@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin/categories")
 @Tag(name = "Admin / Categories")
-@PreAuthorize("hasAuthority('operations_admin')")
 public class AdminCategoryController {
 
     private final CategoryService categoryService;
@@ -35,7 +34,8 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/tree")
-    @Operation(summary = "Get category tree for admin")
+    @Operation(summary = "Get admin category tree")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'category:read')")
     public ApiResponse<CategoryTreeResponse> tree() {
         return ApiResponse.success(
                 categoryService.getAdminTree(), MDC.get(RequestIdFilter.REQUEST_ID));
@@ -43,6 +43,7 @@ public class AdminCategoryController {
 
     @PostMapping
     @Operation(summary = "Create category")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'category:create')")
     public ApiResponse<CategoryNodeResponse> create(@Valid @RequestBody CategorySaveRequest request) {
         return ApiResponse.success(
                 categoryService.create(request), MDC.get(RequestIdFilter.REQUEST_ID));
@@ -50,6 +51,7 @@ public class AdminCategoryController {
 
     @PutMapping("/{categoryId}")
     @Operation(summary = "Update category")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'category:update')")
     public ApiResponse<CategoryNodeResponse> update(
             @PathVariable UUID categoryId, @Valid @RequestBody CategorySaveRequest request) {
         return ApiResponse.success(
@@ -58,6 +60,7 @@ public class AdminCategoryController {
 
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Delete category")
+    @PreAuthorize("@permissionSecurity.hasAnyPermission(authentication, 'category:update', 'category:disable')")
     public ApiResponse<Map<String, String>> delete(@PathVariable UUID categoryId) {
         categoryService.delete(categoryId);
         return ApiResponse.success(

@@ -9,6 +9,7 @@ import {
   SectionCard,
   StatusBadge,
 } from "@/components/backoffice/BackofficePrimitives";
+import { FilePreviewDialog } from "@/components/backoffice/FilePreviewDialog";
 import { adminService } from "@/services/adminService";
 import type { AdminCompanyReviewDetailResponse } from "@/services/contracts/backoffice";
 
@@ -23,6 +24,7 @@ export function AdminCompanyReviewDetailPage() {
   const [internalNote, setInternalNote] = useState("");
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -84,7 +86,7 @@ export function AdminCompanyReviewDetailPage() {
       <BackofficePageHeader
         eyebrow="A03"
         title={company.name}
-        description="左侧查看企业资料与资质文件，右侧完成审核判断、驳回说明和内部备注。"
+        description="左侧查看企业资料与资质文件，右侧完成审核判断、驳回说明和账号激活状态确认。"
         actions={
           <>
             <BackofficeButton
@@ -92,7 +94,7 @@ export function AdminCompanyReviewDetailPage() {
               disabled={!company.licensePreview}
               onClick={() =>
                 company.licensePreview
-                  ? void adminService.openFilePreview(company.licensePreview)
+                  ? setPreviewOpen(true)
                   : undefined
               }
             >
@@ -137,7 +139,7 @@ export function AdminCompanyReviewDetailPage() {
               <InfoItem label="统一社会信用代码" value={company.socialCreditCode || "--"} />
               <InfoItem label="企业类型" value={company.companyType || "--"} />
               <InfoItem label="所属行业" value={company.industry || "--"} />
-              <InfoItem label="主营产品类目" value={company.mainCategories.join("、") || "--"} />
+              <InfoItem label="主营类目" value={company.mainCategories.join("、") || "--"} />
               <InfoItem label="所在地区" value={company.region || "--"} />
               <InfoItem label="详细地址" value={company.address || "--"} />
               <InfoItem label="企业官网" value={company.website ?? "--"} />
@@ -160,7 +162,7 @@ export function AdminCompanyReviewDetailPage() {
                     disabled={!company.licensePreview}
                     onClick={() =>
                       company.licensePreview
-                        ? void adminService.openFilePreview(company.licensePreview)
+                        ? setPreviewOpen(true)
                         : undefined
                     }
                   >
@@ -200,11 +202,54 @@ export function AdminCompanyReviewDetailPage() {
               <InfoItem label="联系邮箱" value={company.contactEmail || "--"} />
             </div>
           </SectionCard>
+
+          {payload?.activation ? (
+            <SectionCard
+              title="账号激活信息"
+              description="开发环境使用 mock 邮件发送。审核通过后，可直接使用下方预览链接完成账号激活注册。"
+            >
+              <div className="grid gap-4 md:grid-cols-2">
+                <InfoItem label="锁定账号" value={payload.activation.account} />
+                <InfoItem label="接收邮箱" value={payload.activation.email} />
+                <InfoItem label="绑定手机号" value={payload.activation.phone} />
+                <InfoItem label="发送时间" value={payload.activation.sentAt ?? "--"} />
+                <InfoItem label="失效时间" value={payload.activation.expiresAt ?? "--"} />
+                <InfoItem label="激活完成时间" value={payload.activation.activatedAt ?? "--"} />
+              </div>
+
+              {payload.activation.activationLinkPreview ? (
+                <div className="mt-5 rounded-2xl bg-surface-low px-4 py-4">
+                  <div className="text-xs uppercase tracking-[0.18em] text-ink-muted">激活链接预览</div>
+                  <div className="mt-3 break-all text-sm text-ink">
+                    {payload.activation.activationLinkPreview}
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <BackofficeButton
+                      variant="secondary"
+                      onClick={() =>
+                        navigator.clipboard.writeText(payload.activation?.activationLinkPreview ?? "")
+                      }
+                    >
+                      复制激活链接
+                    </BackofficeButton>
+                    <BackofficeButton
+                      variant="ghost"
+                      onClick={() =>
+                        window.open(payload.activation?.activationLinkPreview, "_blank", "noopener,noreferrer")
+                      }
+                    >
+                      打开注册链接
+                    </BackofficeButton>
+                  </div>
+                </div>
+              ) : null}
+            </SectionCard>
+          ) : null}
         </div>
 
         <SectionCard
           title="审核面板"
-          description="审核通过后企业可继续维护资料；若驳回，请明确指出需要补充或修改的内容。"
+          description="审核通过后，系统会向企业预留邮箱发送账号激活邮件；若驳回，请明确指出需补充或修改的内容。"
         >
           <div className="space-y-5">
             <div className="rounded-2xl bg-surface-low px-4 py-4">
@@ -287,8 +332,10 @@ export function AdminCompanyReviewDetailPage() {
                     setPayload(nextPayload.data);
                     setFeedback(
                       auditResult === "approved"
-                        ? "企业已审核通过，可继续录入和维护产品。"
-                        : "企业已驳回，驳回原因会同步到企业端消息中心。",
+                        ? nextPayload.data.activation?.activationLinkPreview
+                          ? "企业已审核通过，系统已生成账号激活邮件，可使用页面中的激活链接继续完成注册。"
+                          : "企业已审核通过。"
+                        : "企业已驳回，驳回原因会同步到企业侧后续通知中。",
                     );
                   } catch (serviceError) {
                     setError(
@@ -306,13 +353,19 @@ export function AdminCompanyReviewDetailPage() {
               <BackofficeButton variant="secondary" onClick={() => navigate("/admin/reviews/companies")}>
                 返回列表
               </BackofficeButton>
-              <BackofficeButton variant="ghost" to="/admin/products">
-                查看产品
-              </BackofficeButton>
             </div>
           </div>
         </SectionCard>
       </div>
+
+      <FilePreviewDialog
+        open={previewOpen}
+        title="营业执照预览"
+        description="在当前页面快速查看企业提交的营业执照材料。"
+        filePath={company.licensePreview}
+        suggestedFileName={company.licenseFile || undefined}
+        onClose={() => setPreviewOpen(false)}
+      />
     </div>
   );
 }

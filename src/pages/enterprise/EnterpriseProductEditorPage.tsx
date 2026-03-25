@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Dialog, Drawer } from "@/components/backoffice/BackofficeOverlays";
+import { FilePreviewDialog } from "@/components/backoffice/FilePreviewDialog";
 import {
   BackofficeButton,
   BackofficePageHeader,
@@ -65,6 +66,10 @@ export function EnterpriseProductEditorPage() {
   const [info, setInfo] = useState("");
   const [form, setForm] = useState<ProductFormState>(createDefaultProduct());
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState("");
+  const [attachmentPreviewTarget, setAttachmentPreviewTarget] = useState<{
+    path: string;
+    name?: string;
+  } | null>(null);
 
   useEffect(() => {
     setCurrentProductId(id);
@@ -619,7 +624,12 @@ export function EnterpriseProductEditorPage() {
                       <button
                         className="text-left text-primary"
                         type="button"
-                        onClick={() => void enterpriseService.openFilePreview(item)}
+                        onClick={() =>
+                          setAttachmentPreviewTarget({
+                            path: item,
+                            name: `附件 ${index + 1}`,
+                          })
+                        }
                       >
                         附件 {index + 1}
                       </button>
@@ -754,6 +764,15 @@ export function EnterpriseProductEditorPage() {
           ) : null}
         </div>
       </Dialog>
+
+      <FilePreviewDialog
+        open={Boolean(attachmentPreviewTarget)}
+        title={attachmentPreviewTarget?.name ?? "附件预览"}
+        description="在当前页面快速查看产品附件。"
+        filePath={attachmentPreviewTarget?.path}
+        suggestedFileName={attachmentPreviewTarget?.name}
+        onClose={() => setAttachmentPreviewTarget(null)}
+      />
 
       <Dialog
         open={submitOpen}

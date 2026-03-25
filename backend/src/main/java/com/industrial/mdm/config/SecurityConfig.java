@@ -1,9 +1,13 @@
 package com.industrial.mdm.config;
 
 import com.industrial.mdm.common.security.JwtAuthenticationFilter;
+import com.industrial.mdm.common.security.PermissionSecurity;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.application.RoleAuthorizationCatalog;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +46,13 @@ public class SecurityConfig {
                                         .requestMatchers(
                                                 "/actuator/health",
                                                 "/api/v1/system/ping",
-                                                "/api/v1/auth/**",
+                                                "/api/v1/auth/send-sms-code",
+                                                "/api/v1/auth/register",
+                                                "/api/v1/auth/login",
+                                                "/api/v1/auth/refresh-token",
+                                                "/api/v1/auth/reset-password",
+                                                "/api/v1/auth/activation-links/**",
+                                                "/api/v1/public/**",
                                                 "/api/v1/files/*/download",
                                                 "/api/v1/portal/**",
                                                 "/v3/api-docs/**",
@@ -73,9 +83,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean("permissionSecurity")
+    PermissionSecurity permissionSecurity(
+            ObjectProvider<AuthorizationService> authorizationServiceProvider,
+            ObjectProvider<RoleAuthorizationCatalog> roleAuthorizationCatalogProvider) {
+        return new PermissionSecurity(
+                authorizationServiceProvider.getIfAvailable(),
+                roleAuthorizationCatalogProvider.getIfAvailable(RoleAuthorizationCatalog::new));
+    }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource(
-            @Value("${mdm.security.allowed-origins:http://localhost:5173,http://127.0.0.1:5173}")
+            @Value("${mdm.security.allowed-origins:http://localhost:5273,http://127.0.0.1:5273}")
                     String allowedOrigins) {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(

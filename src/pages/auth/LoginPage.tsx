@@ -116,8 +116,8 @@ export function LoginPage() {
 
         <div className="flex items-center justify-between pt-2 text-sm text-ink-muted">
           <span>还没有企业账号？</span>
-          <Link className="font-semibold text-primary" to="/auth/register">
-            注册企业账号
+          <Link className="font-semibold text-primary" to="/onboarding">
+            申请企业入驻
           </Link>
         </div>
       </form>

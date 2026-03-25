@@ -35,17 +35,17 @@ export const onboardingBenefits = [
 ];
 
 export const onboardingSteps: StepItem[] = [
-  { title: "账号注册", description: "完成实名认证与联系人验证" },
-  { title: "提交资料", description: "上传营业执照与企业基础信息" },
-  { title: "资质审核", description: "1-3 个工作日完成审核反馈" },
-  { title: "入驻成功", description: "开启出海数字化主通道" },
+  { title: "提交申请", description: "填写企业名称、联系人、邮箱和行业信息" },
+  { title: "平台审核", description: "1-3 个工作日内完成资质初审与联系确认" },
+  { title: "邮件激活", description: "审核通过后通过邮件链接完成账号激活注册" },
+  { title: "开始入驻", description: "登录企业后台，完善资料并维护产品信息" },
 ];
 
 export const onboardingFaqs: FaqItem[] = [
   {
     question: "审核周期需要多久？",
     answer:
-      "通常在提交完整资料后的 1-3 个工作日内完成。如需加急处理，可在后续阶段接入人工客服能力。",
+      "通常在提交申请后的 1-3 个工作日内完成。审核通过后，系统会向申请时填写的邮箱发送账号激活邮件。",
   },
   {
     question: "入驻是否会产生费用？",
@@ -53,9 +53,9 @@ export const onboardingFaqs: FaqItem[] = [
       "一期以官网展示与基础交互演示为主，不产生真实收费行为，后续收费规则可在业务上线时再接入。",
   },
   {
-    question: "平台是否支持原有产品数据导入？",
+    question: "审核通过后如何获得账号？",
     answer:
-      "当前以前端展示为主，后续接入后端时会预留批量导入和字段映射能力。",
+      "平台会将激活注册链接发送到申请时预留的邮箱。您通过邮件链接设置密码后，即可使用申请时锁定的邮箱或手机号登录平台。",
   },
   {
     question: "企业是否可以直接在平台申请 AI 补贴？",

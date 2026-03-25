@@ -3,7 +3,8 @@ package com.industrial.mdm.modules.message.application;
 import com.industrial.mdm.common.exception.BizException;
 import com.industrial.mdm.common.exception.ErrorCode;
 import com.industrial.mdm.common.security.AuthenticatedUser;
-import com.industrial.mdm.common.security.UserRole;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.domain.permission.PermissionCode;
 import com.industrial.mdm.modules.auth.repository.UserEntity;
 import com.industrial.mdm.modules.auth.repository.UserRepository;
 import com.industrial.mdm.modules.message.domain.MessageStatus;
@@ -24,16 +25,25 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+    private final AuthorizationService authorizationService;
 
-    public MessageService(MessageRepository messageRepository, UserRepository userRepository) {
+    public MessageService(
+            MessageRepository messageRepository,
+            UserRepository userRepository,
+            AuthorizationService authorizationService) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional(readOnly = true)
     public EnterpriseMessageListResponse listEnterpriseMessages(
             AuthenticatedUser currentUser, String type, String status) {
-        UserEntity user = loadEnterpriseUser(currentUser);
+        UserEntity user =
+                loadEnterpriseUser(
+                        currentUser,
+                        PermissionCode.MESSAGE_READ,
+                        "current account cannot read enterprise messages");
         List<MessageEntity> items =
                 messageRepository.findByRecipientUserIdOrderBySentAtDesc(user.getId()).stream()
                         .filter(item -> matchesType(item, type))
@@ -47,7 +57,11 @@ public class MessageService {
 
     @Transactional
     public MessageResponse markRead(AuthenticatedUser currentUser, UUID messageId) {
-        UserEntity user = loadEnterpriseUser(currentUser);
+        UserEntity user =
+                loadEnterpriseUser(
+                        currentUser,
+                        PermissionCode.MESSAGE_MARK_READ,
+                        "current account cannot read enterprise messages");
         MessageEntity entity =
                 messageRepository
                         .findById(messageId)
@@ -65,7 +79,11 @@ public class MessageService {
 
     @Transactional
     public Map<String, Long> markAllRead(AuthenticatedUser currentUser) {
-        UserEntity user = loadEnterpriseUser(currentUser);
+        UserEntity user =
+                loadEnterpriseUser(
+                        currentUser,
+                        PermissionCode.MESSAGE_MARK_READ,
+                        "current account cannot read enterprise messages");
         List<MessageEntity> items = messageRepository.findByRecipientUserIdOrderBySentAtDesc(user.getId());
         long changed = 0;
         for (MessageEntity item : items) {
@@ -118,10 +136,9 @@ public class MessageService {
                 entity.getRelatedResourceId());
     }
 
-    private UserEntity loadEnterpriseUser(AuthenticatedUser currentUser) {
-        if (currentUser == null || currentUser.role() != UserRole.ENTERPRISE_OWNER) {
-            throw new BizException(ErrorCode.FORBIDDEN, "current account cannot read enterprise messages");
-        }
+    private UserEntity loadEnterpriseUser(
+            AuthenticatedUser currentUser, PermissionCode permission, String forbiddenMessage) {
+        authorizationService.assertCurrentEnterprisePermission(currentUser, permission, forbiddenMessage);
         return userRepository
                 .findById(currentUser.userId())
                 .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "current user not found"));

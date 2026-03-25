@@ -18,51 +18,75 @@ public class CompanyListQueryRepository {
     }
 
     public PageResponse<UUID> findReviewCompanyIds(
-            String keyword, String industry, String status, int page, int pageSize) {
+            String keyword,
+            String industry,
+            String status,
+            List<UUID> enterpriseIds,
+            int page,
+            int pageSize) {
         return queryCompanyIds(
                 keyword,
                 industry,
                 status,
+                enterpriseIds,
                 page,
                 pageSize,
                 "e.latest_submission_at DESC NULLS LAST, e.name ASC");
     }
 
     public PageResponse<UUID> findManagementCompanyIds(
-            String keyword, String industry, String status, int page, int pageSize) {
+            String keyword,
+            String industry,
+            String status,
+            List<UUID> enterpriseIds,
+            int page,
+            int pageSize) {
         return queryCompanyIds(
                 keyword,
                 industry,
                 status,
+                enterpriseIds,
                 page,
                 pageSize,
                 "e.updated_at DESC NULLS LAST, e.name ASC");
     }
 
-    public List<String> findIndustries() {
-        return jdbcTemplate.queryForList(
-                """
-                SELECT DISTINCT p.industry
-                FROM enterprises e
-                JOIN enterprise_profiles p
-                  ON p.id = COALESCE(e.working_profile_id, e.current_profile_id)
-                WHERE e.status <> 'UNSUBMITTED'
-                  AND NULLIF(TRIM(REPLACE(REPLACE(p.industry, '?', ''), '？', '')), '') IS NOT NULL
-                ORDER BY p.industry
-                """,
-                new MapSqlParameterSource(),
-                String.class);
+    public List<String> findIndustries(List<UUID> enterpriseIds) {
+        if (enterpriseIds != null && enterpriseIds.isEmpty()) {
+            return List.of();
+        }
+        StringBuilder sql =
+                new StringBuilder(
+                        """
+                        SELECT DISTINCT p.industry
+                        FROM enterprises e
+                        JOIN enterprise_profiles p
+                          ON p.id = COALESCE(e.working_profile_id, e.current_profile_id)
+                        WHERE e.status <> 'UNSUBMITTED'
+                          AND NULLIF(TRIM(REPLACE(p.industry, '?', '')), '') IS NOT NULL
+                        """);
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        if (enterpriseIds != null) {
+            sql.append(" AND e.id IN (:enterpriseIds)");
+            params.addValue("enterpriseIds", enterpriseIds);
+        }
+        sql.append(" ORDER BY p.industry");
+        return jdbcTemplate.queryForList(sql.toString(), params, String.class);
     }
 
     private PageResponse<UUID> queryCompanyIds(
             String keyword,
             String industry,
             String status,
+            List<UUID> enterpriseIds,
             int page,
             int pageSize,
             String orderByClause) {
         int safePage = Math.max(page, 1);
         int safeSize = Math.max(Math.min(pageSize, 100), 1);
+        if (enterpriseIds != null && enterpriseIds.isEmpty()) {
+            return new PageResponse<>(List.of(), 0L, safePage, safeSize);
+        }
         int offset = (safePage - 1) * safeSize;
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -75,6 +99,10 @@ public class CompanyListQueryRepository {
                         WHERE e.status <> 'UNSUBMITTED'
                         """);
 
+        if (enterpriseIds != null) {
+            fromClause.append(" AND e.id IN (:enterpriseIds)");
+            params.addValue("enterpriseIds", enterpriseIds);
+        }
         if (keyword != null && !keyword.isBlank()) {
             fromClause.append(" AND (e.name ILIKE :keyword OR p.social_credit_code ILIKE :keyword)");
             params.addValue("keyword", "%" + keyword.trim() + "%");
@@ -98,9 +126,7 @@ public class CompanyListQueryRepository {
         params.addValue("offset", offset);
 
         List<UUID> ids = jdbcTemplate.queryForList(dataSql, params, UUID.class);
-        Long total =
-                jdbcTemplate.queryForObject(
-                        "SELECT COUNT(*) " + fromClause, params, Long.class);
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) " + fromClause, params, Long.class);
         return new PageResponse<>(ids, total == null ? 0L : total, safePage, safeSize);
     }
 }

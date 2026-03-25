@@ -4,6 +4,7 @@ logs/
 playwright-report/
 test-results/
 .playwright/
+.playwright-browsers/
 
 backend/target/
 backend/logs/
@@ -14,7 +15,8 @@ backend/temp/
 *.class
 *.log
 
-tmp-import-*.csv
+tmp-*.csv
+tmp-*.png
 agents.txt
 
 vite.config.js

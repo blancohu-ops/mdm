@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/enterprise/products")
 @Tag(name = "Enterprise / Products")
-@PreAuthorize("hasAuthority('enterprise_owner')")
 public class EnterpriseProductController {
 
     private final ProductService productService;
@@ -42,6 +41,7 @@ public class EnterpriseProductController {
 
     @GetMapping
     @Operation(summary = "List enterprise products")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:read')")
     public ApiResponse<EnterpriseProductListResponse> list(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) String keyword,
@@ -56,6 +56,7 @@ public class EnterpriseProductController {
 
     @GetMapping("/editor")
     @Operation(summary = "Get product editor payload")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:read')")
     public ApiResponse<EnterpriseProductEditorResponse> editorPayload(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) UUID productId) {
@@ -66,6 +67,7 @@ public class EnterpriseProductController {
 
     @GetMapping("/{productId}")
     @Operation(summary = "Get product detail")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:read')")
     public ApiResponse<ProductResponse> detail(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID productId) {
         return ApiResponse.success(
@@ -75,6 +77,7 @@ public class EnterpriseProductController {
 
     @PostMapping
     @Operation(summary = "Create product draft")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:create')")
     public ApiResponse<ProductResponse> create(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @Valid @RequestBody ProductUpsertRequest request) {
@@ -85,6 +88,7 @@ public class EnterpriseProductController {
 
     @PutMapping("/{productId}")
     @Operation(summary = "Update product draft")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:update')")
     public ApiResponse<ProductResponse> update(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @PathVariable UUID productId,
@@ -96,6 +100,7 @@ public class EnterpriseProductController {
 
     @PostMapping("/{productId}/submit-review")
     @Operation(summary = "Submit product for review")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:submit')")
     public ApiResponse<ProductSubmissionResponse> submitReview(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID productId) {
         return ApiResponse.success(
@@ -105,6 +110,7 @@ public class EnterpriseProductController {
 
     @DeleteMapping("/{productId}")
     @Operation(summary = "Delete product draft")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:delete')")
     public ApiResponse<Map<String, String>> delete(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID productId) {
         return ApiResponse.success(
@@ -114,6 +120,7 @@ public class EnterpriseProductController {
 
     @PostMapping("/{productId}/offline")
     @Operation(summary = "Take enterprise product offline")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product:offline')")
     public ApiResponse<ProductResponse> offline(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @PathVariable UUID productId,

@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { authHighlights } from "@/constants/backoffice";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 export function AuthLayout() {
   const { pathname } = useLocation();
@@ -10,6 +11,7 @@ export function AuthLayout() {
   if (isLogin) {
     return (
       <div className="grid min-h-screen lg:grid-cols-[1.25fr_0.75fr]">
+        <ScrollToTop />
         <aside className="relative hidden overflow-hidden bg-[#0f4b8f] text-white lg:block">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.12),transparent_28%),linear-gradient(transparent_95%,rgba(255,255,255,0.06)_95%),linear-gradient(90deg,transparent_95%,rgba(255,255,255,0.06)_95%)] bg-[length:auto,24px_24px,24px_24px]" />
           <div className="absolute inset-x-0 bottom-0 h-72 bg-[linear-gradient(180deg,transparent,rgba(8,43,87,0.4))]" />
@@ -71,6 +73,7 @@ export function AuthLayout() {
   if (isRegister) {
     return (
       <div className="min-h-screen bg-[#f4f7fb]">
+        <ScrollToTop />
         <header className="border-b border-[#e7edf5] bg-white/80 backdrop-blur-xl">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
             <div className="flex items-center gap-3 text-primary-strong">
@@ -137,6 +140,7 @@ export function AuthLayout() {
   if (isReset) {
     return (
       <div className="min-h-screen bg-[linear-gradient(rgba(13,72,135,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(13,72,135,0.05)_1px,transparent_1px)] bg-[size:32px_32px]">
+        <ScrollToTop />
         <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-10">
           <div className="mb-8 text-center">
             <div className="inline-flex items-center gap-3 rounded-2xl bg-white px-5 py-3 shadow-soft">
@@ -171,6 +175,7 @@ export function AuthLayout() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface px-4 py-10 sm:px-6">
+      <ScrollToTop />
       <div className="w-full max-w-xl rounded-[2rem] border border-white/50 bg-white p-8 shadow-panel sm:p-10">
         <Outlet />
       </div>

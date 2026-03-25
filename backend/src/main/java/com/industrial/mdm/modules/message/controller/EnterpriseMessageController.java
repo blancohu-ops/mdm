@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/enterprise/messages")
 @Tag(name = "Enterprise / Messages")
-@PreAuthorize("hasAuthority('enterprise_owner')")
 public class EnterpriseMessageController {
 
     private final MessageService messageService;
@@ -34,6 +33,7 @@ public class EnterpriseMessageController {
 
     @GetMapping
     @Operation(summary = "List enterprise messages")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'message:read')")
     public ApiResponse<EnterpriseMessageListResponse> list(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) String type,
@@ -45,6 +45,7 @@ public class EnterpriseMessageController {
 
     @PostMapping("/{messageId}/mark-read")
     @Operation(summary = "Mark message as read")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'message:mark_read')")
     public ApiResponse<MessageResponse> markRead(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID messageId) {
         return ApiResponse.success(
@@ -54,6 +55,7 @@ public class EnterpriseMessageController {
 
     @PostMapping("/mark-all-read")
     @Operation(summary = "Mark all messages as read")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'message:mark_read')")
     public ApiResponse<Map<String, Long>> markAllRead(
             @AuthenticationPrincipal AuthenticatedUser currentUser) {
         return ApiResponse.success(

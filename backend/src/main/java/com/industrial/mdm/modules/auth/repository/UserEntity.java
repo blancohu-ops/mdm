@@ -54,6 +54,9 @@ public class UserEntity extends AuditableEntity {
     @Column(name = "last_login_at")
     private OffsetDateTime lastLoginAt;
 
+    @Column(name = "authz_version", nullable = false)
+    private Integer authzVersion = 0;
+
     public UUID getId() {
         return id;
     }
@@ -136,5 +139,13 @@ public class UserEntity extends AuditableEntity {
 
     public void setLastLoginAt(OffsetDateTime lastLoginAt) {
         this.lastLoginAt = lastLoginAt;
+    }
+
+    public Integer getAuthzVersion() {
+        return authzVersion;
+    }
+
+    public void setAuthzVersion(Integer authzVersion) {
+        this.authzVersion = authzVersion;
     }
 }

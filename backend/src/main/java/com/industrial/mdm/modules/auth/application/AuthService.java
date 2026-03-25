@@ -34,8 +34,11 @@ import com.industrial.mdm.modules.enterprise.repository.EnterpriseEntity;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseProfileEntity;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseProfileRepository;
 import com.industrial.mdm.modules.enterprise.repository.EnterpriseRepository;
+import com.industrial.mdm.modules.iam.application.AuthorizationProfile;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +62,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService jwtTokenService;
     private final SmsProvider smsProvider;
+    private final AuthorizationService authorizationService;
 
     public AuthService(
             UserRepository userRepository,
@@ -69,7 +73,8 @@ public class AuthService {
             EnterpriseProfileRepository enterpriseProfileRepository,
             PasswordEncoder passwordEncoder,
             JwtTokenService jwtTokenService,
-            SmsProvider smsProvider) {
+            SmsProvider smsProvider,
+            AuthorizationService authorizationService) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.loginLogRepository = loginLogRepository;
@@ -79,6 +84,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenService = jwtTokenService;
         this.smsProvider = smsProvider;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional
@@ -176,6 +182,9 @@ public class AuthService {
         userRepository.save(user);
 
         AuthenticatedUser principal = toPrincipal(user);
+        if (principal.authzVersion() != normalizeAuthzVersion(user.getAuthzVersion())) {
+            throw new BizException(ErrorCode.REFRESH_TOKEN_INVALID, "refresh token 鏃犳晥");
+        }
         revokeActiveRefreshTokens(user.getId());
         JwtTokenService.TokenPair tokenPair = jwtTokenService.issueTokens(principal);
         saveRefreshToken(user.getId(), tokenPair);
@@ -185,12 +194,27 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthMeResponse me(AuthenticatedUser currentUser) {
+        UserEntity user = loadCurrentUser(currentUser);
+        AuthenticatedUser principal = toPrincipal(user);
+        AuthorizationProfile authorizationProfile = authorizationService.getProfile(principal);
         return new AuthMeResponse(
-                currentUser.userId(),
-                currentUser.role().getCode(),
-                currentUser.enterpriseId(),
-                currentUser.displayName(),
-                currentUser.organization());
+                principal.userId(),
+                principal.role().getCode(),
+                principal.enterpriseId(),
+                principal.displayName(),
+                principal.organization(),
+                authorizationProfile.permissions().stream()
+                        .map(permission -> permission.getCode())
+                        .sorted()
+                        .toList(),
+                authorizationProfile.dataScopes().stream()
+                        .map(dataScope -> dataScope.getCode())
+                        .sorted()
+                        .toList(),
+                authorizationProfile.capabilities().stream()
+                        .map(capability -> capability.getCode())
+                        .sorted(Comparator.naturalOrder())
+                        .toList());
     }
 
     @Transactional(readOnly = true)
@@ -354,7 +378,8 @@ public class AuthService {
                 user.getRole(),
                 user.getEnterpriseId(),
                 user.getDisplayName(),
-                user.getOrganization());
+                user.getOrganization(),
+                normalizeAuthzVersion(user.getAuthzVersion()));
     }
 
     private LoginResponse buildLoginResponse(
@@ -398,5 +423,9 @@ public class AuthService {
 
     private String normalizeRequired(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private int normalizeAuthzVersion(Integer authzVersion) {
+        return authzVersion == null ? 0 : authzVersion;
     }
 }

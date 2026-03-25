@@ -8,6 +8,8 @@ export function Dialog({
   onClose,
   children,
   footer,
+  panelClassName,
+  testId,
 }: {
   open: boolean;
   title: string;
@@ -15,6 +17,8 @@ export function Dialog({
   onClose: () => void;
   children?: ReactNode;
   footer?: ReactNode;
+  panelClassName?: string;
+  testId?: string;
 }) {
   if (!open) return null;
 
@@ -24,7 +28,11 @@ export function Dialog({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-xl rounded-[2rem] bg-white p-8 shadow-panel"
+        className={[
+          "w-full max-w-xl rounded-[2rem] bg-white p-8 shadow-panel",
+          panelClassName ?? "",
+        ].join(" ")}
+        data-testid={testId}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
@@ -55,12 +63,14 @@ export function Drawer({
   description,
   onClose,
   children,
+  testId,
 }: {
   open: boolean;
   title: string;
   description?: string;
   onClose: () => void;
   children: ReactNode;
+  testId?: string;
 }) {
   if (!open) return null;
 
@@ -68,6 +78,7 @@ export function Drawer({
     <div className="fixed inset-0 z-[70] bg-slate-950/35" onClick={onClose}>
       <aside
         className="ml-auto h-full w-full max-w-2xl overflow-y-auto bg-white p-8 shadow-panel"
+        data-testid={testId}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">

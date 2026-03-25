@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin/products")
 @Tag(name = "Admin / Products")
-@PreAuthorize("hasAuthority('operations_admin')")
 public class AdminProductController {
 
     private final ProductReviewService productReviewService;
@@ -35,7 +34,9 @@ public class AdminProductController {
 
     @GetMapping
     @Operation(summary = "List managed products")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product_manage:list')")
     public ApiResponse<AdminProductListResponse> list(
+            @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String enterpriseName,
             @RequestParam(required = false) String category,
@@ -44,12 +45,13 @@ public class AdminProductController {
             @RequestParam(defaultValue = "20") int pageSize) {
         return ApiResponse.success(
                 productReviewService.listManagementProducts(
-                        keyword, enterpriseName, category, status, page, pageSize),
+                        keyword, enterpriseName, category, status, page, pageSize, currentUser),
                 MDC.get(RequestIdFilter.REQUEST_ID));
     }
 
     @PostMapping("/{productId}/offline")
     @Operation(summary = "Take product offline by platform")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'product_manage:offline')")
     public ApiResponse<ProductResponse> offline(
             @PathVariable UUID productId,
             @RequestBody(required = false) ProductOfflineRequest request,

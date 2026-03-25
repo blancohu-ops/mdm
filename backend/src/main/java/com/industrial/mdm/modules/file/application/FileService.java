@@ -3,10 +3,11 @@ package com.industrial.mdm.modules.file.application;
 import com.industrial.mdm.common.exception.BizException;
 import com.industrial.mdm.common.exception.ErrorCode;
 import com.industrial.mdm.common.security.AuthenticatedUser;
-import com.industrial.mdm.common.security.UserRole;
 import com.industrial.mdm.infrastructure.storage.StorageService;
 import com.industrial.mdm.modules.file.domain.FileAccessScope;
 import com.industrial.mdm.modules.file.dto.StoredFileResponse;
+import com.industrial.mdm.modules.iam.application.AuthorizationService;
+import com.industrial.mdm.modules.iam.domain.permission.PermissionCode;
 import com.industrial.mdm.modules.file.repository.StoredFileEntity;
 import com.industrial.mdm.modules.file.repository.StoredFileRepository;
 import java.io.IOException;
@@ -32,6 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileService {
 
     private static final long MAX_FILE_BYTES = 10 * 1024 * 1024;
+    private static final Set<String> ALLOWED_PUBLIC_BUSINESS_TYPES =
+            Set.of("enterprise-logo", "product-image");
     private static final Set<String> ALLOWED_BUSINESS_TYPES =
             Set.of(
                     "enterprise-logo",
@@ -49,10 +52,15 @@ public class FileService {
 
     private final StorageService storageService;
     private final StoredFileRepository storedFileRepository;
+    private final AuthorizationService authorizationService;
 
-    public FileService(StorageService storageService, StoredFileRepository storedFileRepository) {
+    public FileService(
+            StorageService storageService,
+            StoredFileRepository storedFileRepository,
+            AuthorizationService authorizationService) {
         this.storageService = storageService;
         this.storedFileRepository = storedFileRepository;
+        this.authorizationService = authorizationService;
     }
 
     @Transactional
@@ -67,6 +75,7 @@ public class FileService {
         }
         String sanitizedBusinessType = sanitizeBusinessType(businessType);
         FileAccessScope parsedScope = parseAccessScope(accessScope);
+        UUID enterpriseId = assertUploadAllowed(currentUser, sanitizedBusinessType, parsedScope);
         String safeOriginalFilename = sanitizeOriginalFilename(file.getOriginalFilename());
         String extension = extractExtension(safeOriginalFilename);
         validateUpload(file, sanitizedBusinessType, extension);
@@ -87,7 +96,7 @@ public class FileService {
             entity.setFileSize(file.getSize());
             entity.setStoragePath(targetPath.toString());
             entity.setUploadedBy(currentUser.userId());
-            entity.setEnterpriseId(currentUser.enterpriseId());
+            entity.setEnterpriseId(enterpriseId);
             entity = storedFileRepository.save(entity);
             return toResponse(entity);
         } catch (IOException exception) {
@@ -108,6 +117,17 @@ public class FileService {
     @Transactional(readOnly = true)
     public ResponseEntity<Resource> download(UUID fileId, AuthenticatedUser currentUser) {
         StoredFileEntity entity = loadReadableFile(fileId, currentUser);
+        return downloadStoredFile(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public StoredFileEntity loadExistingFile(UUID fileId) {
+        return storedFileRepository
+                .findById(fileId)
+                .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "stored file not found"));
+    }
+
+    public ResponseEntity<Resource> downloadStoredFile(StoredFileEntity entity) {
         Path path = Path.of(entity.getStoragePath());
         if (!Files.exists(path)) {
             throw new BizException(ErrorCode.NOT_FOUND, "stored file not found");
@@ -129,20 +149,14 @@ public class FileService {
 
     @Transactional(readOnly = true)
     public StoredFileEntity loadAuthorizedFile(UUID fileId, AuthenticatedUser currentUser) {
-        StoredFileEntity entity =
-                storedFileRepository
-                        .findById(fileId)
-                        .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "stored file not found"));
+        StoredFileEntity entity = loadExistingFile(fileId);
         assertReadable(entity, currentUser, true);
         return entity;
     }
 
     @Transactional(readOnly = true)
     public StoredFileEntity loadReadableFile(UUID fileId, AuthenticatedUser currentUser) {
-        StoredFileEntity entity =
-                storedFileRepository
-                        .findById(fileId)
-                        .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "stored file not found"));
+        StoredFileEntity entity = loadExistingFile(fileId);
         assertReadable(entity, currentUser, false);
         return entity;
     }
@@ -252,9 +266,23 @@ public class FileService {
     }
 
     private void assertAuthenticated(AuthenticatedUser currentUser) {
-        if (currentUser == null) {
-            throw new BizException(ErrorCode.UNAUTHORIZED, "authentication is required");
+        authorizationService.requireAuthenticated(currentUser, "authentication is required");
+    }
+
+    private UUID assertUploadAllowed(
+            AuthenticatedUser currentUser, String businessType, FileAccessScope accessScope) {
+        UUID enterpriseId =
+                authorizationService.assertCurrentEnterprisePermission(
+                        currentUser,
+                        PermissionCode.FILE_ASSET_UPLOAD,
+                        "only enterprise users can upload files");
+        if (accessScope == FileAccessScope.PUBLIC
+                && !ALLOWED_PUBLIC_BUSINESS_TYPES.contains(businessType)) {
+            throw new BizException(
+                    ErrorCode.INVALID_REQUEST,
+                    "public access is not allowed for the current business type");
         }
+        return enterpriseId;
     }
 
     private void assertReadable(
@@ -264,13 +292,22 @@ public class FileService {
         }
 
         assertAuthenticated(currentUser);
-        if (currentUser.role() == UserRole.ENTERPRISE_OWNER) {
-            if (currentUser.enterpriseId() == null
-                    || entity.getEnterpriseId() == null
-                    || !currentUser.enterpriseId().equals(entity.getEnterpriseId())) {
-                throw new BizException(
-                        ErrorCode.FORBIDDEN, "stored file does not belong to current enterprise");
-            }
+        if (entity.getAccessScope() == FileAccessScope.PUBLIC) {
+            return;
         }
+
+        PermissionCode permission =
+                requireAuthentication
+                        ? PermissionCode.FILE_ASSET_READ
+                        : PermissionCode.FILE_ASSET_DOWNLOAD;
+        if (!authorizationService.hasPermission(currentUser, permission)) {
+            throw new BizException(
+                    ErrorCode.FORBIDDEN, "current role cannot read private files directly");
+        }
+        authorizationService.assertEnterprisePermission(
+                currentUser,
+                permission,
+                entity.getEnterpriseId(),
+                "stored file does not belong to current enterprise");
     }
 }

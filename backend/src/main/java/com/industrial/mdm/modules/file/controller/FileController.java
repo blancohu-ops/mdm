@@ -33,8 +33,8 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    @Operation(summary = "Upload a file to local storage")
-    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Upload a file")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'file_asset:upload')")
     public ApiResponse<StoredFileResponse> upload(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) String businessType,
@@ -47,7 +47,7 @@ public class FileController {
 
     @GetMapping("/{fileId}")
     @Operation(summary = "Get stored file metadata")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'file_asset:read')")
     public ApiResponse<StoredFileResponse> metadata(
             @PathVariable UUID fileId, @AuthenticationPrincipal AuthenticatedUser currentUser) {
         return ApiResponse.success(

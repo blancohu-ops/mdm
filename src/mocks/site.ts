@@ -14,11 +14,11 @@ export const footerGroups: FooterGroup[] = [
     links: navItems,
   },
   {
-    title: "后台入口",
+    title: "服务入口",
     links: [
       { label: "企业账号登录", path: "/auth/login" },
       { label: "企业后台工作台", path: "/enterprise/dashboard" },
-      { label: "平台审核端", path: "/admin/overview" },
+      { label: "AI 工具体验", path: "/ai-tools" },
     ],
   },
   {
@@ -33,9 +33,9 @@ export const footerGroups: FooterGroup[] = [
 
 export const globalCta: CtaConfig = {
   eyebrow: "Industrial Expansion Gateway",
-  title: "让官网门户与企业后台形成统一入口",
+  title: "以统一的数据标准连接企业、产品与服务资源",
   description:
-    "一期前端已经打通公开门户、企业后台与平台审核端的路由关系。后续只需接入真实鉴权和接口层，即可平滑扩展为完整业务系统。",
-  primaryAction: { label: "企业账号登录", path: "/auth/login" },
-  secondaryAction: { label: "进入平台审核端", path: "/admin/overview" },
+    "平台围绕工业企业出海需求，持续整合政策信息、产品展示、企业服务与智能工具，帮助企业提升出海效率与协同能力。",
+  primaryAction: { label: "了解平台服务", path: "/platform" },
+  secondaryAction: { label: "体验 AI 工具", path: "/ai-tools" },
 };

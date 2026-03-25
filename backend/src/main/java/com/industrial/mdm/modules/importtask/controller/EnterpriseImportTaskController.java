@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/enterprise/import-tasks")
 @Tag(name = "Enterprise / Import Tasks")
-@PreAuthorize("hasAuthority('enterprise_owner')")
 public class EnterpriseImportTaskController {
 
     private final ImportTaskService importTaskService;
@@ -37,6 +36,7 @@ public class EnterpriseImportTaskController {
 
     @GetMapping("/template")
     @Operation(summary = "Get product import template metadata")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'import_template:download')")
     public ApiResponse<ImportTemplateResponse> template() {
         return ApiResponse.success(
                 importTaskService.getTemplate(), MDC.get(RequestIdFilter.REQUEST_ID));
@@ -44,6 +44,7 @@ public class EnterpriseImportTaskController {
 
     @PostMapping
     @Operation(summary = "Create import validation task")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'import_task:create')")
     public ApiResponse<ImportTaskResponse> create(
             @AuthenticationPrincipal AuthenticatedUser currentUser,
             @Valid @RequestBody ImportTaskCreateRequest request) {
@@ -54,6 +55,7 @@ public class EnterpriseImportTaskController {
 
     @GetMapping("/{taskId}")
     @Operation(summary = "Get import task detail")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'import_task:read')")
     public ApiResponse<ImportTaskResponse> detail(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID taskId) {
         return ApiResponse.success(
@@ -63,6 +65,7 @@ public class EnterpriseImportTaskController {
 
     @GetMapping("/{taskId}/error-report")
     @Operation(summary = "Download import error report")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'import_task:read')")
     public ResponseEntity<Resource> errorReport(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID taskId) {
         return importTaskService.downloadErrorReport(currentUser, taskId);
@@ -70,6 +73,7 @@ public class EnterpriseImportTaskController {
 
     @PostMapping("/{taskId}/confirm")
     @Operation(summary = "Confirm import task")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'import_task:confirm')")
     public ApiResponse<ImportTaskResponse> confirm(
             @AuthenticationPrincipal AuthenticatedUser currentUser, @PathVariable UUID taskId) {
         return ApiResponse.success(

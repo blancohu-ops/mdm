@@ -10,6 +10,7 @@ import {
   StatusBadge,
   TableCard,
 } from "@/components/backoffice/BackofficePrimitives";
+import { FilePreviewDialog } from "@/components/backoffice/FilePreviewDialog";
 import { adminService } from "@/services/adminService";
 import type { AdminProductReviewDetailResponse } from "@/services/contracts/backoffice";
 
@@ -39,6 +40,7 @@ export function AdminProductReviewDetailPage() {
   });
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
+  const [previewTarget, setPreviewTarget] = useState<{ path: string; name?: string } | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -242,7 +244,12 @@ export function AdminProductReviewDetailPage() {
                     <button
                       className="text-left text-sm font-medium text-primary"
                       type="button"
-                      onClick={() => void adminService.openFilePreview(item)}
+                      onClick={() =>
+                        setPreviewTarget({
+                          path: item,
+                          name: `附件 ${index + 1}`,
+                        })
+                      }
                     >
                       附件 {index + 1}
                     </button>
@@ -396,6 +403,15 @@ export function AdminProductReviewDetailPage() {
           </div>
         </SectionCard>
       </div>
+
+      <FilePreviewDialog
+        open={Boolean(previewTarget)}
+        title={previewTarget?.name ?? "附件预览"}
+        description="在当前页面快速查看产品审核附件。"
+        filePath={previewTarget?.path}
+        suggestedFileName={previewTarget?.name}
+        onClose={() => setPreviewTarget(null)}
+      />
     </div>
   );
 }

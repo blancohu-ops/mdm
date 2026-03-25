@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/admin/companies")
-@Tag(name = "平台端 / 企业管理")
-@PreAuthorize("hasAuthority('operations_admin')")
+@Tag(name = "Admin / Company Management")
 public class AdminCompanyController {
 
     private final EnterpriseReviewService enterpriseReviewService;
@@ -32,8 +31,10 @@ public class AdminCompanyController {
     }
 
     @GetMapping
-    @Operation(summary = "企业管理列表")
+    @Operation(summary = "List managed companies")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'company_manage:list')")
     public ApiResponse<AdminCompanyListResponse> list(
+            @AuthenticationPrincipal AuthenticatedUser currentUser,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String industry,
             @RequestParam(required = false) String status,
@@ -41,12 +42,13 @@ public class AdminCompanyController {
             @RequestParam(defaultValue = "20") int pageSize) {
         return ApiResponse.success(
                 enterpriseReviewService.listManagementCompanies(
-                        keyword, industry, status, page, pageSize),
+                        keyword, industry, status, page, pageSize, currentUser),
                 MDC.get(RequestIdFilter.REQUEST_ID));
     }
 
     @PostMapping("/{enterpriseId}/freeze")
-    @Operation(summary = "冻结企业")
+    @Operation(summary = "Freeze company")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'company_manage:freeze')")
     public ApiResponse<CompanyProfileResponse> freeze(
             @PathVariable UUID enterpriseId,
             @AuthenticationPrincipal AuthenticatedUser currentUser) {
@@ -56,7 +58,8 @@ public class AdminCompanyController {
     }
 
     @PostMapping("/{enterpriseId}/restore")
-    @Operation(summary = "恢复企业")
+    @Operation(summary = "Restore company")
+    @PreAuthorize("@permissionSecurity.hasPermission(authentication, 'company_manage:restore')")
     public ApiResponse<CompanyProfileResponse> restore(
             @PathVariable UUID enterpriseId,
             @AuthenticationPrincipal AuthenticatedUser currentUser) {

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile({"default", "dev"})
+@Profile({"default", "dev", "test"})
 public class MockSmsProvider implements SmsProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockSmsProvider.class);

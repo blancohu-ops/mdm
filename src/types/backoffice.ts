@@ -21,6 +21,7 @@ export type BackofficeNavItem = {
   label: string;
   path: string;
   icon: string;
+  requiredPermissions?: string[];
 };
 
 export type DashboardMetric = {
@@ -70,6 +71,16 @@ export type CompanyProfile = {
   joinedAt?: string;
   reviewComment?: string;
   productCount?: number;
+};
+
+export type CompanyActivationInfo = {
+  account: string;
+  email: string;
+  phone: string;
+  activationLinkPreview?: string;
+  sentAt?: string;
+  expiresAt?: string;
+  activatedAt?: string;
 };
 
 export type ProductSpec = {
@@ -144,4 +155,130 @@ export type CategoryNode = {
   status: "enabled" | "disabled";
   sortOrder: number;
   children?: CategoryNode[];
+};
+
+export type UserAccountStatus = "active" | "frozen";
+export type UserType = "platform" | "enterprise";
+
+export type UserListItem = {
+  id: string;
+  userType: UserType;
+  displayName: string;
+  account: string;
+  phone: string;
+  email: string;
+  role: UserRole;
+  status: UserAccountStatus;
+  enterpriseId?: string | null;
+  enterpriseName?: string | null;
+  organization: string;
+  lastLoginAt?: string | null;
+  createdAt?: string | null;
+};
+
+export type UserRoleBindingRecord = {
+  id: string;
+  roleTemplateCode?: string | null;
+  roleTemplateName?: string | null;
+  sourceType: string;
+  enterpriseId?: string | null;
+  enterpriseName?: string | null;
+  effectiveFrom?: string | null;
+  expiresAt?: string | null;
+  revokedAt?: string | null;
+  reason?: string | null;
+};
+
+export type UserCapabilityBindingRecord = {
+  id: string;
+  capabilityCode?: string | null;
+  capabilityDescription?: string | null;
+  sourceType: string;
+  effectiveFrom?: string | null;
+  expiresAt?: string | null;
+  revokedAt?: string | null;
+  reason?: string | null;
+};
+
+export type UserAccessGrantRecord = {
+  id: string;
+  permissionCode: string;
+  enterpriseId?: string | null;
+  enterpriseName?: string | null;
+  scopeType?: string | null;
+  scopeValue?: string | null;
+  resourceType?: string | null;
+  resourceId?: string | null;
+  grantType: string;
+  effect: string;
+  effectiveFrom?: string | null;
+  expiresAt?: string | null;
+  revokedAt?: string | null;
+  reason?: string | null;
+  ticketNo?: string | null;
+};
+
+export type UserAuditLogRecord = {
+  id: string;
+  actionCode: string;
+  summary: string;
+  detailJson?: string | null;
+  createdAt?: string | null;
+};
+
+export type UserManagementOptions = {
+  enterprises: Array<{ id: string; name: string; status: string }>;
+  roleTemplates: Array<{ code: string; name: string; legacyRoleCode?: UserRole | null; builtIn: boolean }>;
+  capabilities: Array<{ code: string; description: string }>;
+};
+
+export type UserDetailRecord = {
+  summary: {
+    id: string;
+    userType: UserType;
+    displayName: string;
+    account: string;
+    phone: string;
+    email: string;
+    role: UserRole;
+    status: UserAccountStatus;
+    enterpriseId?: string | null;
+    enterpriseName?: string | null;
+    organization: string;
+    lastLoginAt?: string | null;
+    createdAt?: string | null;
+    updatedAt?: string | null;
+  };
+  effectiveAuthorization: {
+    permissions: string[];
+    dataScopes: string[];
+    capabilities: string[];
+  };
+  roleBindings: UserRoleBindingRecord[];
+  capabilityBindings: UserCapabilityBindingRecord[];
+  reviewDomainAssignments: Array<{
+    id: string;
+    domainType: string;
+    enterpriseId?: string | null;
+    enterpriseName?: string | null;
+    effectiveFrom?: string | null;
+    expiresAt?: string | null;
+    revokedAt?: string | null;
+    reason?: string | null;
+  }>;
+  accessGrants: UserAccessGrantRecord[];
+  accessGrantRequests: Array<{
+    id: string;
+    permissionCode: string;
+    enterpriseId?: string | null;
+    enterpriseName?: string | null;
+    status: string;
+    effectiveFrom?: string | null;
+    expiresAt?: string | null;
+    createdAt?: string | null;
+    reason?: string | null;
+    ticketNo?: string | null;
+    decisionComment?: string | null;
+  }>;
+  auditLogs: UserAuditLogRecord[];
 };

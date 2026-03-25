@@ -1,0 +1,2 @@
+rowNo,productName,model,result,reason
+2,"Bad Import Product","IMP-BAD","failed","HS Code不能为空"
