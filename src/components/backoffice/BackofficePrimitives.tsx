@@ -194,6 +194,7 @@ export function BackofficeButton({
   disabled,
   className,
   testId,
+  ariaLabel,
 }: {
   children: ReactNode;
   to?: string;
@@ -203,6 +204,7 @@ export function BackofficeButton({
   disabled?: boolean;
   className?: string;
   testId?: string;
+  ariaLabel?: string;
 }) {
   const baseClassName = clsx(
     "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-primary/20",
@@ -219,7 +221,7 @@ export function BackofficeButton({
 
   if (to) {
     return (
-      <Link className={baseClassName} data-testid={testId} to={to}>
+      <Link aria-label={ariaLabel} className={baseClassName} data-testid={testId} to={to}>
         {children}
       </Link>
     );
@@ -227,6 +229,7 @@ export function BackofficeButton({
 
   return (
     <button
+      aria-label={ariaLabel}
       className={baseClassName}
       data-testid={testId}
       onClick={onClick}

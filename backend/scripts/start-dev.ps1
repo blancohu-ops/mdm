@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 
 . "$PSScriptRoot\use-dev-env.ps1"
 
-$projectRoot = 'E:\workspace\mdm'
+$projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $backendRoot = Join-Path $projectRoot 'backend'
 $jarPath = Join-Path $backendRoot 'target\mdm-backend-0.1.0-SNAPSHOT.jar'
 $logDir = Join-Path $backendRoot 'logs'

@@ -13,13 +13,13 @@ async function submitPublicOnboarding(
   email: string,
 ) {
   await page.goto("/onboarding");
-  await page.waitForLoadState("networkidle");
+  await expect(page.getByPlaceholder("请输入完整的企业全称")).toBeVisible();
   await page.getByPlaceholder("请输入完整的企业全称").fill(companyName);
   await page.getByPlaceholder("请输入联系人姓名").fill(contactName);
   await page.getByPlaceholder("13800000000").fill(phone);
   await page.getByPlaceholder("work@company.com").fill(email);
   await page.locator("select").last().selectOption({ index: 1 });
-  await page.locator('input[type="checkbox"]').check();
+  await page.locator('label:has(input[type="checkbox"])').click();
   await page.getByRole("button", { name: "提交入驻申请" }).click();
   await expect(page.locator("body")).toContainText("入驻申请已提交");
 }
@@ -34,13 +34,13 @@ async function login(page: Page, account: string, password: string) {
   await expect(page.getByTestId("login-page")).toBeVisible();
   await page.getByTestId("login-account-input").fill(account);
   await page.getByTestId("login-password-input").fill(password);
-  await page.locator('button[type="submit"]').click();
+  await page.getByRole("button", { name: /登录/ }).click();
 }
 
 async function openAdminUsers(page: Page) {
   await page.goto("/admin/users");
   await expect(page.getByTestId("admin-user-management-page")).toBeVisible();
-  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(500);
 }
 
 async function getEnterpriseOptions(page: Page) {
@@ -86,7 +86,6 @@ async function confirmTopDialog(page: Page) {
 async function filterUsers(page: Page, keyword: string) {
   const root = page.getByTestId("admin-user-management-page");
   await root.locator("input").first().fill(keyword);
-  await page.waitForLoadState("networkidle");
   await page.waitForTimeout(700);
 }
 
@@ -197,7 +196,7 @@ test.describe.serial("user management web regression", () => {
     await confirmTopDialog(page);
 
     await drawer.locator("button").nth(2).click();
-    await expect(drawer.locator("button").nth(2)).not.toHaveText("停用账号");
+    await expect(drawer.locator("button").nth(2)).toContainText("启用");
     await drawer.locator("button").nth(2).click();
     await expect(drawer.locator("button").nth(2)).toContainText("停用");
 

@@ -2,6 +2,7 @@ package com.industrial.mdm.common.security;
 
 public enum UserRole {
     ENTERPRISE_OWNER("enterprise_owner"),
+    PROVIDER_OWNER("provider_owner"),
     REVIEWER("reviewer"),
     OPERATIONS_ADMIN("operations_admin");
 
@@ -24,3 +25,4 @@ public enum UserRole {
         throw new IllegalArgumentException("unsupported user role: " + code);
     }
 }
+

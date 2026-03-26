@@ -1,4 +1,8 @@
-export type UserRole = "enterprise_owner" | "reviewer" | "operations_admin";
+export type UserRole =
+  | "enterprise_owner"
+  | "provider_owner"
+  | "reviewer"
+  | "operations_admin";
 
 export type EnterpriseStatus =
   | "unsubmitted"

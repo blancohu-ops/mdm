@@ -7,6 +7,7 @@ public record AuthMeResponse(
         UUID userId,
         String role,
         UUID enterpriseId,
+        UUID serviceProviderId,
         String displayName,
         String organization,
         List<String> permissions,

@@ -1,17 +1,5 @@
-export type ProductCategory =
-  | "全部产品"
-  | "工业机械"
-  | "电子电气"
-  | "精密零部件"
-  | "工业传感器";
+import type { PublicProductDetail, PublicProductSummary } from "@/services/contracts/portal";
 
-export type ProductSummary = {
-  id: string;
-  name: string;
-  company: string;
-  category: ProductCategory;
-  model: string;
-  description: string;
-  image: string;
-  tags: string[];
-};
+export type ProductCategory = string;
+export type ProductSummary = PublicProductSummary;
+export type ProductDetail = PublicProductDetail;

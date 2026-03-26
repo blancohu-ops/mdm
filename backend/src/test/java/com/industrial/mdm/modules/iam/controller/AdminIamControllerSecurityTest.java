@@ -778,6 +778,7 @@ class AdminIamControllerSecurityTest {
                 UUID.randomUUID(),
                 role,
                 role == UserRole.ENTERPRISE_OWNER ? UUID.randomUUID() : null,
+                null,
                 "tester",
                 "org",
                 0);

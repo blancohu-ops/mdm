@@ -622,6 +622,7 @@ public class UserManagementService {
                 user.getId(),
                 user.getRole(),
                 user.getEnterpriseId(),
+                user.getServiceProviderId(),
                 user.getDisplayName(),
                 user.getOrganization(),
                 user.getAuthzVersion() == null ? 0 : user.getAuthzVersion());

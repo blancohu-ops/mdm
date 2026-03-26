@@ -104,4 +104,13 @@ public class AuthorizationService {
         }
     }
 
+    public UUID assertCurrentProviderPermission(
+            AuthenticatedUser currentUser, PermissionCode permission, String message) {
+        assertPermission(currentUser, permission, message);
+        if (currentUser == null || currentUser.serviceProviderId() == null) {
+            throw new BizException(ErrorCode.FORBIDDEN, message);
+        }
+        return currentUser.serviceProviderId();
+    }
+
 }

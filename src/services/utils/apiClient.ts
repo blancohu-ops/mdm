@@ -2,6 +2,7 @@ import type { ApiResult, LoginResponse } from "@/services/contracts/backoffice";
 import {
   clearStoredSession,
   getStoredSession,
+  redirectToLogin,
   saveStoredSession,
   type StoredSession,
 } from "@/services/utils/authSession";
@@ -63,9 +64,21 @@ export async function apiRequest<T>(
     body: isFormData ? (body as FormData) : serializeBody(body),
   });
 
-  if (response.status === 401 && auth && retryOnAuth && session?.refreshToken) {
-    await refreshSession();
-    return apiRequest<T>(path, { method, body, headers, auth, retryOnAuth: false });
+  if (response.status === 401 && auth && retryOnAuth) {
+    if (session?.refreshToken) {
+      try {
+        await refreshSession();
+        return apiRequest<T>(path, { method, body, headers, auth, retryOnAuth: false });
+      } catch (refreshError) {
+        redirectToLogin(getCurrentBrowserPath());
+        throw refreshError;
+      }
+    }
+
+    if (session) {
+      redirectToLogin(getCurrentBrowserPath());
+      throw new Error("登录已过期，请重新登录。");
+    }
   }
 
   if (!response.ok) {
@@ -133,9 +146,21 @@ async function authorizedFetch(path: string, init: RequestInit, retryOnAuth = tr
     headers,
   });
 
-  if (response.status === 401 && retryOnAuth && session?.refreshToken) {
-    await refreshSession();
-    return authorizedFetch(path, init, false);
+  if (response.status === 401 && retryOnAuth) {
+    if (session?.refreshToken) {
+      try {
+        await refreshSession();
+        return authorizedFetch(path, init, false);
+      } catch (refreshError) {
+        redirectToLogin(getCurrentBrowserPath());
+        throw refreshError;
+      }
+    }
+
+    if (session) {
+      redirectToLogin(getCurrentBrowserPath());
+      throw new Error("登录已过期，请重新登录。");
+    }
   }
 
   return response;
@@ -195,7 +220,7 @@ async function performRefresh() {
   const current = getStoredSession();
   if (!current?.refreshToken) {
     clearStoredSession();
-    throw new Error("登录已过期，请重新登录");
+    throw new Error("登录已过期，请重新登录。");
   }
 
   const response = await fetch(`${API_BASE_URL}/api/v1/auth/refresh-token`, {
@@ -220,4 +245,12 @@ async function performRefresh() {
   };
   saveStoredSession(nextSession);
   return nextSession;
+}
+
+function getCurrentBrowserPath() {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
+
+  return `${window.location.pathname}${window.location.search}${window.location.hash}`;
 }

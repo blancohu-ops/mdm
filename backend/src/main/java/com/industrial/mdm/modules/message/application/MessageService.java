@@ -106,7 +106,46 @@ public class MessageService {
             String content,
             String relatedResourceType,
             UUID relatedResourceId) {
-        List<UserEntity> recipients = userRepository.findByEnterpriseId(enterpriseId);
+        sendToUsers(
+                userRepository.findByEnterpriseId(enterpriseId),
+                enterpriseId,
+                type,
+                title,
+                summary,
+                content,
+                relatedResourceType,
+                relatedResourceId);
+    }
+
+    @Transactional
+    public void sendToProviderUsers(
+            UUID serviceProviderId,
+            MessageType type,
+            String title,
+            String summary,
+            String content,
+            String relatedResourceType,
+            UUID relatedResourceId) {
+        sendToUsers(
+                userRepository.findByServiceProviderId(serviceProviderId),
+                null,
+                type,
+                title,
+                summary,
+                content,
+                relatedResourceType,
+                relatedResourceId);
+    }
+
+    private void sendToUsers(
+            List<UserEntity> recipients,
+            UUID enterpriseId,
+            MessageType type,
+            String title,
+            String summary,
+            String content,
+            String relatedResourceType,
+            UUID relatedResourceId) {
         for (UserEntity recipient : recipients) {
             MessageEntity entity = new MessageEntity();
             entity.setRecipientUserId(recipient.getId());

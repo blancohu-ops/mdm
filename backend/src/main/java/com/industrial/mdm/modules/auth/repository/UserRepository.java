@@ -30,5 +30,9 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID>, JpaSpec
 
     List<UserEntity> findByEnterpriseId(UUID enterpriseId);
 
+    List<UserEntity> findByServiceProviderId(UUID serviceProviderId);
+
     Optional<UserEntity> findFirstByEnterpriseIdAndRole(UUID enterpriseId, UserRole role);
+
+    Optional<UserEntity> findFirstByServiceProviderIdAndRole(UUID serviceProviderId, UserRole role);
 }

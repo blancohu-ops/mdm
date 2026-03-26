@@ -229,7 +229,7 @@ export function EnterpriseProfilePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" data-testid="enterprise-profile-page">
       <BackofficePageHeader
         eyebrow="E06"
         title="企业信息维护"

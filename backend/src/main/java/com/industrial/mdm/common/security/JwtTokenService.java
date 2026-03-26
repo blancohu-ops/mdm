@@ -16,6 +16,7 @@ public class JwtTokenService {
 
     public static final String CLAIM_ROLE = "role";
     public static final String CLAIM_ENTERPRISE_ID = "enterpriseId";
+    public static final String CLAIM_SERVICE_PROVIDER_ID = "serviceProviderId";
     public static final String CLAIM_DISPLAY_NAME = "displayName";
     public static final String CLAIM_ORGANIZATION = "organization";
     public static final String CLAIM_AUTHZ_VERSION = "authzVersion";
@@ -63,6 +64,11 @@ public class JwtTokenService {
                 .claim(
                         CLAIM_ENTERPRISE_ID,
                         user.enterpriseId() == null ? null : user.enterpriseId().toString())
+                .claim(
+                        CLAIM_SERVICE_PROVIDER_ID,
+                        user.serviceProviderId() == null
+                                ? null
+                                : user.serviceProviderId().toString())
                 .claim(CLAIM_DISPLAY_NAME, user.displayName())
                 .claim(CLAIM_ORGANIZATION, user.organization())
                 .claim(CLAIM_AUTHZ_VERSION, user.authzVersion())
@@ -81,12 +87,16 @@ public class JwtTokenService {
 
     private AuthenticatedUser buildUser(Claims claims) {
         String enterpriseId = claims.get(CLAIM_ENTERPRISE_ID, String.class);
+        String serviceProviderId = claims.get(CLAIM_SERVICE_PROVIDER_ID, String.class);
         return new AuthenticatedUser(
                 UUID.fromString(claims.getSubject()),
                 UserRole.fromCode(claims.get(CLAIM_ROLE, String.class)),
                 enterpriseId == null || enterpriseId.isBlank()
                         ? null
                         : UUID.fromString(enterpriseId),
+                serviceProviderId == null || serviceProviderId.isBlank()
+                        ? null
+                        : UUID.fromString(serviceProviderId),
                 claims.get(CLAIM_DISPLAY_NAME, String.class),
                 claims.get(CLAIM_ORGANIZATION, String.class),
                 claims.get(CLAIM_AUTHZ_VERSION, Integer.class) == null

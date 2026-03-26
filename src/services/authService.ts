@@ -13,6 +13,7 @@ import type {
 } from "@/services/contracts/backoffice";
 import { apiRequest } from "@/services/utils/apiClient";
 import {
+  clearPendingPostLoginRedirect,
   clearStoredSession,
   mergeStoredSessionProfile,
   saveStoredSession,
@@ -92,6 +93,7 @@ export const authService = {
   },
 
   logout() {
+    clearPendingPostLoginRedirect();
     clearStoredSession();
   },
 };

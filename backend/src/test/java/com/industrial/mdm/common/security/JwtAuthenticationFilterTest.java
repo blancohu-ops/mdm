@@ -46,7 +46,7 @@ class JwtAuthenticationFilterTest {
         UUID userId = UUID.randomUUID();
         AuthenticatedUser authenticatedUser =
                 new AuthenticatedUser(
-                        userId, UserRole.REVIEWER, null, "reviewer", "platform", 2);
+                        userId, UserRole.REVIEWER, null, null, "reviewer", "platform", 2);
         UserEntity entity = userEntity(userId, 2);
         MockHttpServletRequest request = bearerRequest();
 
@@ -66,7 +66,7 @@ class JwtAuthenticationFilterTest {
         UUID userId = UUID.randomUUID();
         AuthenticatedUser authenticatedUser =
                 new AuthenticatedUser(
-                        userId, UserRole.REVIEWER, null, "reviewer", "platform", 1);
+                        userId, UserRole.REVIEWER, null, null, "reviewer", "platform", 1);
         UserEntity entity = userEntity(userId, 2);
         MockHttpServletRequest request = bearerRequest();
 

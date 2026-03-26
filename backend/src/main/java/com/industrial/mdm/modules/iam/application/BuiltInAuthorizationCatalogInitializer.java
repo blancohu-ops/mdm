@@ -205,6 +205,11 @@ public class BuiltInAuthorizationCatalogInitializer implements ApplicationRunner
                             "enterprise_owner_base",
                             "Enterprise Owner Base",
                             role.getCode());
+            case PROVIDER_OWNER ->
+                    new RoleTemplateSeed(
+                            "provider_owner_base",
+                            "Provider Owner Base",
+                            role.getCode());
             case REVIEWER ->
                     new RoleTemplateSeed("reviewer_base", "Reviewer Base", role.getCode());
             case OPERATIONS_ADMIN ->

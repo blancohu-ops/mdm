@@ -1,22 +1,57 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { CtaBanner } from "@/components/common/CtaBanner";
 import { Chip } from "@/components/common/Chip";
 import { FeatureCard } from "@/components/common/FeatureCard";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { PageHero } from "@/components/layout/PageHero";
-import {
-  homeCapabilities,
-  homeHero,
-  homeJoinCta,
-  homePortalEntries,
-  homeShowcase,
-  homeStats,
-  homeToolPreview,
-  homeValuePoints,
-} from "@/mocks/home";
+import { homeCapabilities, homeHero, homeJoinCta, homePortalEntries, homeStats, homeToolPreview, homeValuePoints } from "@/mocks/home";
 import { globalCta } from "@/mocks/site";
+import { portalService } from "@/services/portalService";
+import type { ProductSummary } from "@/types/product";
 
 export function HomePage() {
+  const [featuredProducts, setFeaturedProducts] = useState<ProductSummary[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState("");
+
+  useEffect(() => {
+    let mounted = true;
+    setProductsLoading(true);
+    setProductsError("");
+
+    portalService
+      .listPublicProducts()
+      .then((result) => {
+        if (!mounted) {
+          return;
+        }
+        setFeaturedProducts(result.data.items.slice(0, 2));
+      })
+      .catch((requestError) => {
+        if (mounted) {
+          setProductsError(requestError instanceof Error ? requestError.message : "加载精选产品失败");
+        }
+      })
+      .finally(() => {
+        if (mounted) {
+          setProductsLoading(false);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const featuredSummary = useMemo(
+    () => ({
+      promotedCount: featuredProducts.filter((item) => item.promoted).length,
+      categories: Array.from(new Set(featuredProducts.map((item) => item.category).filter(Boolean))).length,
+    }),
+    [featuredProducts],
+  );
+
   return (
     <>
       <PageHero {...homeHero} stats={homeStats} />
@@ -149,9 +184,7 @@ export function HomePage() {
               </div>
               <div className="p-8">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-ink-muted">
-                    Input
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-ink-muted">Input</p>
                   <div className="mt-3 rounded-3xl bg-surface-low p-5 text-sm leading-7 text-ink">
                     {homeToolPreview.input}
                   </div>
@@ -176,49 +209,107 @@ export function HomePage() {
       </section>
 
       <section className="section-spacing bg-surface-low/70">
-        <div className="shell-container">
+        <div className="shell-container" data-testid="home-featured-products">
           <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeader
-              title="正在连接全球市场的工业企业"
-              description="展示企业入驻、产品结构化与平台服务支撑下的对外展示形态。"
+              title="官网精选产品位"
+              description="这里优先展示已公开且已生效推广权益的产品，帮助企业把主数据沉淀直接转化为官网曝光。"
             />
             <Link className="text-sm font-bold text-primary" to="/products">
-              查看全部
+              查看全部产品
             </Link>
           </div>
+
+          {productsError ? (
+            <div className="mb-6 rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
+              {productsError}
+            </div>
+          ) : null}
+
           <div className="grid gap-6 lg:grid-cols-[1fr_1fr_0.9fr]">
-            {homeShowcase.map((item) => (
-              <article key={item.title} className="industrial-card overflow-hidden">
-                <div className="relative h-64">
-                  <img className="h-full w-full object-cover" src={item.image} alt={item.title} />
-                  <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-white">
-                    {item.status}
+            {productsLoading ? (
+              <>
+                <div className="industrial-card h-[23rem] animate-pulse bg-white/70" />
+                <div className="industrial-card h-[23rem] animate-pulse bg-white/70" />
+              </>
+            ) : featuredProducts.length ? (
+              featuredProducts.map((item) => (
+                <Link key={item.id} to={`/products/${item.id}`} className="industrial-card overflow-hidden transition hover:-translate-y-1 hover:shadow-panel">
+                  <div className="relative h-64">
+                    {item.imageUrl ? (
+                      <img className="h-full w-full object-cover" src={item.imageUrl} alt={item.name} />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-industrial-gradient px-8 text-center text-sm font-semibold text-white/80">
+                        暂无产品主图
+                      </div>
+                    )}
+                    <div className="absolute right-4 top-4 flex flex-wrap gap-2">
+                      {item.promoted ? (
+                        <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-white">
+                          推广中
+                        </span>
+                      ) : null}
+                      {item.category ? (
+                        <span className="rounded-full bg-white/85 px-3 py-1 text-[11px] font-semibold text-primary-strong">
+                          {item.category}
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
+                  <div className="p-6">
+                    <div className="flex flex-wrap gap-2">
+                      {item.tags.slice(0, 3).map((tag) => (
+                        <Chip key={tag} label={tag} tone="outline" />
+                      ))}
+                    </div>
+                    <h3 className="mt-4 font-display text-xl font-bold text-ink">{item.name}</h3>
+                    <p className="mt-2 text-sm leading-7 text-ink-muted">{item.companyName}</p>
+                    <p className="mt-3 text-sm leading-7 text-ink-muted">{item.description}</p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <>
+                <div className="industrial-card flex h-[23rem] items-center justify-center p-8 text-center text-sm leading-7 text-ink-muted">
+                  当前还没有已公开的精选产品，企业完成产品审核并生效推广权益后会优先展示在这里。
                 </div>
-                <div className="p-6">
-                  <Chip label={item.tag} />
-                  <h3 className="mt-4 font-display text-xl font-bold text-ink">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-ink-muted">{item.company}</p>
+                <div className="industrial-card flex h-[23rem] items-center justify-center p-8 text-center text-sm leading-7 text-ink-muted">
+                  你也可以先去产品目录查看全部已公开产品，后续平台会逐步配置专题推荐位和首页运营位。
                 </div>
-              </article>
-            ))}
+              </>
+            )}
+
             <div className="rounded-[2rem] bg-industrial-gradient p-8 text-white shadow-panel">
               <h3 className="font-display text-3xl font-bold">连接企业、产品与服务资源</h3>
               <p className="mt-5 text-sm leading-8 text-white/75">
                 平台帮助工业企业沉淀可信资料、展示重点产品，并与政策服务、审核协同和数字工具形成联动。
               </p>
+              <div className="mt-6 grid gap-4 rounded-[1.5rem] bg-white/10 p-5">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65">精选产品数</p>
+                  <p className="mt-2 font-display text-3xl font-extrabold">{featuredProducts.length}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65">推广权益生效</p>
+                  <p className="mt-2 font-display text-3xl font-extrabold">{featuredSummary.promotedCount}</p>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/65">覆盖类目</p>
+                  <p className="mt-2 font-display text-3xl font-extrabold">{featuredSummary.categories}</p>
+                </div>
+              </div>
               <div className="mt-8 flex flex-col gap-3">
                 <Link
                   className="inline-flex rounded-2xl bg-white px-6 py-3 text-sm font-bold text-primary-strong"
-                  to="/onboarding"
+                  to="/services"
                 >
-                  了解企业服务
+                  了解推广与出海服务
                 </Link>
                 <Link
                   className="inline-flex rounded-2xl border border-white/20 px-6 py-3 text-sm font-bold text-white"
                   to="/products"
                 >
-                  查看产品展示
+                  查看产品展示目录
                 </Link>
               </div>
             </div>

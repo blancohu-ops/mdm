@@ -5,6 +5,8 @@ export const navItems: NavItem[] = [
   { label: "平台介绍 / 政策与补贴", path: "/platform" },
   { label: "企业入驻", path: "/onboarding" },
   { label: "产品展示", path: "/products" },
+  { label: "服务市场", path: "/services" },
+  { label: "服务商", path: "/providers" },
   { label: "AI 工具", path: "/ai-tools" },
 ];
 
@@ -17,8 +19,8 @@ export const footerGroups: FooterGroup[] = [
     title: "服务入口",
     links: [
       { label: "企业账号登录", path: "/auth/login" },
-      { label: "企业后台工作台", path: "/enterprise/dashboard" },
-      { label: "AI 工具体验", path: "/ai-tools" },
+      { label: "服务市场浏览", path: "/services" },
+      { label: "服务商申请入驻", path: "/providers/join" },
     ],
   },
   {
@@ -37,5 +39,5 @@ export const globalCta: CtaConfig = {
   description:
     "平台围绕工业企业出海需求，持续整合政策信息、产品展示、企业服务与智能工具，帮助企业提升出海效率与协同能力。",
   primaryAction: { label: "了解平台服务", path: "/platform" },
-  secondaryAction: { label: "体验 AI 工具", path: "/ai-tools" },
+  secondaryAction: { label: "浏览服务市场", path: "/services" },
 };

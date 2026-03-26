@@ -201,6 +201,7 @@ public class AuthService {
                 principal.userId(),
                 principal.role().getCode(),
                 principal.enterpriseId(),
+                principal.serviceProviderId(),
                 principal.displayName(),
                 principal.organization(),
                 authorizationProfile.permissions().stream()
@@ -377,6 +378,7 @@ public class AuthService {
                 user.getId(),
                 user.getRole(),
                 user.getEnterpriseId(),
+                user.getServiceProviderId(),
                 user.getDisplayName(),
                 user.getOrganization(),
                 normalizeAuthzVersion(user.getAuthzVersion()));
@@ -386,9 +388,11 @@ public class AuthService {
             AuthenticatedUser principal, JwtTokenService.TokenPair tokenPair) {
         return new LoginResponse(
                 principal.role().getCode(),
-                principal.role() == UserRole.ENTERPRISE_OWNER
-                        ? "/enterprise/dashboard"
-                        : "/admin/overview",
+                switch (principal.role()) {
+                    case ENTERPRISE_OWNER -> "/enterprise/dashboard";
+                    case PROVIDER_OWNER -> "/provider/dashboard";
+                    case REVIEWER, OPERATIONS_ADMIN -> "/admin/overview";
+                },
                 principal.displayName(),
                 principal.organization(),
                 tokenPair.accessToken(),

@@ -11,6 +11,7 @@ public record AuthenticatedUser(
         UUID userId,
         UserRole role,
         UUID enterpriseId,
+        UUID serviceProviderId,
         String displayName,
         String organization,
         int authzVersion)

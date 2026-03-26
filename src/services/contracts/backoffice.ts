@@ -31,7 +31,7 @@ export type LoginRequest = {
 
 export type LoginResponse = {
   role: UserRole;
-  redirectPath: "/enterprise/dashboard" | "/admin/overview";
+  redirectPath: "/enterprise/dashboard" | "/provider/dashboard" | "/admin/overview";
   displayName: string;
   organization: string;
   accessToken: string;
@@ -44,6 +44,7 @@ export type AuthMeResponse = {
   userId: string;
   role: UserRole;
   enterpriseId?: string | null;
+  serviceProviderId?: string | null;
   displayName: string;
   organization: string;
   permissions: string[];

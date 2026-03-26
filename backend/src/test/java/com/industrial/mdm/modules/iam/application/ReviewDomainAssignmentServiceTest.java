@@ -37,7 +37,13 @@ class ReviewDomainAssignmentServiceTest {
                         authorizationService, reviewDomainAssignmentRepository);
         AuthenticatedUser currentUser =
                 new AuthenticatedUser(
-                        UUID.randomUUID(), UserRole.REVIEWER, null, "reviewer", "platform", 0);
+                        UUID.randomUUID(),
+                        UserRole.REVIEWER,
+                        null,
+                        null,
+                        "reviewer",
+                        "platform",
+                        0);
         UUID enterpriseId = UUID.randomUUID();
 
         when(authorizationService.hasDataScope(currentUser, DataScopeCode.ASSIGNED_DOMAIN))
@@ -65,7 +71,13 @@ class ReviewDomainAssignmentServiceTest {
                         authorizationService, reviewDomainAssignmentRepository);
         AuthenticatedUser currentUser =
                 new AuthenticatedUser(
-                        UUID.randomUUID(), UserRole.REVIEWER, null, "reviewer", "platform", 0);
+                        UUID.randomUUID(),
+                        UserRole.REVIEWER,
+                        null,
+                        null,
+                        "reviewer",
+                        "platform",
+                        0);
         UUID enterpriseId = UUID.randomUUID();
         ReviewDomainAssignmentEntity assignment = new ReviewDomainAssignmentEntity();
         assignment.setUserId(currentUser.userId());

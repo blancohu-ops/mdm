@@ -34,21 +34,60 @@ public class FileService {
 
     private static final long MAX_FILE_BYTES = 10 * 1024 * 1024;
     private static final Set<String> ALLOWED_PUBLIC_BUSINESS_TYPES =
-            Set.of("enterprise-logo", "product-image");
+            Set.of(
+                    "enterprise-logo",
+                    "product-image",
+                    "provider-logo",
+                    "provider-license",
+                    "service-cover",
+                    "delivery-artifact");
+    private static final Set<String> ALLOWED_PUBLIC_ANONYMOUS_BUSINESS_TYPES =
+            Set.of("provider-logo", "provider-license");
+    private static final Set<String> ENTERPRISE_UPLOAD_BUSINESS_TYPES =
+            Set.of(
+                    "enterprise-logo",
+                    "business-license",
+                    "product-image",
+                    "product-attachment",
+                    "import-sheet",
+                    "payment-evidence");
+    private static final Set<String> PROVIDER_UPLOAD_BUSINESS_TYPES =
+            Set.of("provider-logo", "provider-license", "service-cover", "delivery-artifact");
+    private static final Set<String> ADMIN_UPLOAD_BUSINESS_TYPES = Set.of("service-cover");
     private static final Set<String> ALLOWED_BUSINESS_TYPES =
             Set.of(
                     "enterprise-logo",
                     "business-license",
                     "product-image",
                     "product-attachment",
-                    "import-sheet");
+                    "import-sheet",
+                    "provider-logo",
+                    "provider-license",
+                    "service-cover",
+                    "payment-evidence",
+                    "delivery-artifact");
     private static final Map<String, Set<String>> ALLOWED_EXTENSIONS =
             Map.of(
                     "enterprise-logo", Set.of(".png", ".jpg", ".jpeg", ".webp"),
                     "business-license", Set.of(".pdf", ".png", ".jpg", ".jpeg"),
                     "product-image", Set.of(".png", ".jpg", ".jpeg", ".webp"),
                     "product-attachment", Set.of(".pdf", ".doc", ".docx", ".xls", ".xlsx"),
-                    "import-sheet", Set.of(".xlsx", ".csv"));
+                    "import-sheet", Set.of(".xlsx", ".csv"),
+                    "provider-logo", Set.of(".png", ".jpg", ".jpeg", ".webp"),
+                    "provider-license", Set.of(".pdf", ".png", ".jpg", ".jpeg"),
+                    "service-cover", Set.of(".png", ".jpg", ".jpeg", ".webp"),
+                    "payment-evidence", Set.of(".pdf", ".png", ".jpg", ".jpeg"),
+                    "delivery-artifact",
+                            Set.of(
+                                    ".pdf",
+                                    ".doc",
+                                    ".docx",
+                                    ".xls",
+                                    ".xlsx",
+                                    ".png",
+                                    ".jpg",
+                                    ".jpeg",
+                                    ".webp"));
 
     private final StorageService storageService;
     private final StoredFileRepository storedFileRepository;
@@ -69,13 +108,27 @@ public class FileService {
             String businessType,
             String accessScope,
             MultipartFile file) {
-        assertAuthenticated(currentUser);
+        return uploadInternal(currentUser, businessType, accessScope, file, false);
+    }
+
+    @Transactional
+    public StoredFileResponse uploadPublic(String businessType, String accessScope, MultipartFile file) {
+        return uploadInternal(null, businessType, accessScope, file, true);
+    }
+
+    private StoredFileResponse uploadInternal(
+            AuthenticatedUser currentUser,
+            String businessType,
+            String accessScope,
+            MultipartFile file,
+            boolean allowAnonymous) {
         if (file == null || file.isEmpty()) {
             throw new BizException(ErrorCode.INVALID_REQUEST, "file is required");
         }
         String sanitizedBusinessType = sanitizeBusinessType(businessType);
         FileAccessScope parsedScope = parseAccessScope(accessScope);
-        UUID enterpriseId = assertUploadAllowed(currentUser, sanitizedBusinessType, parsedScope);
+        UUID enterpriseId =
+                assertUploadAllowed(currentUser, sanitizedBusinessType, parsedScope, allowAnonymous);
         String safeOriginalFilename = sanitizeOriginalFilename(file.getOriginalFilename());
         String extension = extractExtension(safeOriginalFilename);
         validateUpload(file, sanitizedBusinessType, extension);
@@ -270,19 +323,55 @@ public class FileService {
     }
 
     private UUID assertUploadAllowed(
-            AuthenticatedUser currentUser, String businessType, FileAccessScope accessScope) {
-        UUID enterpriseId =
-                authorizationService.assertCurrentEnterprisePermission(
-                        currentUser,
-                        PermissionCode.FILE_ASSET_UPLOAD,
-                        "only enterprise users can upload files");
+            AuthenticatedUser currentUser,
+            String businessType,
+            FileAccessScope accessScope,
+            boolean allowAnonymous) {
+        if (currentUser == null) {
+            if (allowAnonymous
+                    && accessScope == FileAccessScope.PUBLIC
+                    && ALLOWED_PUBLIC_ANONYMOUS_BUSINESS_TYPES.contains(businessType)) {
+                return null;
+            }
+            throw new BizException(ErrorCode.UNAUTHORIZED, "authentication is required");
+        }
+
+        String uploadDeniedMessage =
+                currentUser.enterpriseId() == null && currentUser.serviceProviderId() == null
+                        ? "only enterprise users can upload files"
+                        : "current account cannot upload files";
+        authorizationService.assertPermission(
+                currentUser,
+                PermissionCode.FILE_ASSET_UPLOAD,
+                uploadDeniedMessage);
         if (accessScope == FileAccessScope.PUBLIC
                 && !ALLOWED_PUBLIC_BUSINESS_TYPES.contains(businessType)) {
             throw new BizException(
                     ErrorCode.INVALID_REQUEST,
                     "public access is not allowed for the current business type");
         }
-        return enterpriseId;
+
+        if (currentUser.enterpriseId() != null) {
+            if (!ENTERPRISE_UPLOAD_BUSINESS_TYPES.contains(businessType)) {
+                throw new BizException(
+                        ErrorCode.FORBIDDEN, "current enterprise account cannot upload this file type");
+            }
+            return currentUser.enterpriseId();
+        }
+
+        if (currentUser.serviceProviderId() != null) {
+            if (!PROVIDER_UPLOAD_BUSINESS_TYPES.contains(businessType)) {
+                throw new BizException(
+                        ErrorCode.FORBIDDEN, "current provider account cannot upload this file type");
+            }
+            return null;
+        }
+
+        if (!ADMIN_UPLOAD_BUSINESS_TYPES.contains(businessType)) {
+            throw new BizException(
+                    ErrorCode.FORBIDDEN, "current platform account cannot upload this file type");
+        }
+        return null;
     }
 
     private void assertReadable(
@@ -304,10 +393,23 @@ public class FileService {
             throw new BizException(
                     ErrorCode.FORBIDDEN, "current role cannot read private files directly");
         }
-        authorizationService.assertEnterprisePermission(
-                currentUser,
-                permission,
-                entity.getEnterpriseId(),
-                "stored file does not belong to current enterprise");
+
+        if (currentUser.enterpriseId() == null && currentUser.serviceProviderId() == null) {
+            return;
+        }
+
+        if (currentUser.enterpriseId() != null) {
+            authorizationService.assertEnterprisePermission(
+                    currentUser,
+                    permission,
+                    entity.getEnterpriseId(),
+                    "stored file does not belong to current enterprise");
+            return;
+        }
+
+        if (entity.getUploadedBy() != null && entity.getUploadedBy().equals(currentUser.userId())) {
+            return;
+        }
+        throw new BizException(ErrorCode.FORBIDDEN, "stored file does not belong to current provider");
     }
 }

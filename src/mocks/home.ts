@@ -80,25 +80,6 @@ export const homeToolPreview = {
     "This high-precision CNC lathe features a high-rigidity bed structure and imported servo motors. It is designed for batch machining of precision components, delivers stable operation, and supports long-duration continuous production.",
 };
 
-export const homeShowcase = [
-  {
-    title: "GT-500 智能精密数控车床",
-    company: "上海宏大精密机械有限公司",
-    tag: "机械设备",
-    status: "已完成资料归档",
-    image:
-      "https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "V3 系列高效直流无刷电机",
-    company: "浙江力源电机技术有限公司",
-    tag: "电气电子",
-    status: "产品持续更新中",
-    image:
-      "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1200&q=80",
-  },
-];
-
 export const homeJoinCta: CtaConfig = {
   title: "让工业企业更高效完成出海资料准备",
   description:

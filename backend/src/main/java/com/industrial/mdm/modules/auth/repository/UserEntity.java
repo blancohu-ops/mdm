@@ -45,6 +45,9 @@ public class UserEntity extends AuditableEntity {
     @Column(name = "enterprise_id")
     private UUID enterpriseId;
 
+    @Column(name = "service_provider_id")
+    private UUID serviceProviderId;
+
     @Column(name = "display_name", nullable = false, length = 128)
     private String displayName;
 
@@ -115,6 +118,14 @@ public class UserEntity extends AuditableEntity {
 
     public void setEnterpriseId(UUID enterpriseId) {
         this.enterpriseId = enterpriseId;
+    }
+
+    public UUID getServiceProviderId() {
+        return serviceProviderId;
+    }
+
+    public void setServiceProviderId(UUID serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
     }
 
     public String getDisplayName() {

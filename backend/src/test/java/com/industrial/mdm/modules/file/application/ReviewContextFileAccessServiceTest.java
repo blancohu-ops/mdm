@@ -310,7 +310,7 @@ class ReviewContextFileAccessServiceTest {
     }
 
     private AuthenticatedUser user(UserRole role) {
-        return new AuthenticatedUser(UUID.randomUUID(), role, null, "reviewer", "platform", 0);
+        return new AuthenticatedUser(UUID.randomUUID(), role, null, null, "reviewer", "platform", 0);
     }
 
     private void setField(Class<?> type, Object target, String fieldName, Object value) {

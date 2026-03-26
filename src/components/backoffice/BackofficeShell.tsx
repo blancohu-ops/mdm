@@ -6,15 +6,13 @@ import { IconSymbol } from "@/components/common/IconSymbol";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import { getBackofficeNavItems } from "@/constants/backoffice";
 import { authService } from "@/services/authService";
-import { getStoredSession } from "@/services/utils/authSession";
+import { buildLoginRedirectPath, clearPendingPostLoginRedirect, getStoredSession } from "@/services/utils/authSession";
 import { sessionHasAnyPermission } from "@/services/utils/permissions";
 import type { BackofficeNavItem, UserRole } from "@/types/backoffice";
 
-export function BackofficeShell({
-  scope,
-}: {
-  scope: "enterprise" | "admin";
-}) {
+type BackofficeScope = "enterprise" | "provider" | "admin";
+
+export function BackofficeShell({ scope }: { scope: BackofficeScope }) {
   const [open, setOpen] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [helpOpen, setHelpOpen] = useState(false);
@@ -23,14 +21,23 @@ export function BackofficeShell({
   const session = getStoredSession();
 
   if (!session) {
-    return <Navigate replace to="/auth/login" />;
+    return (
+      <Navigate
+        replace
+        to={buildLoginRedirectPath(`${location.pathname}${location.search}${location.hash}`)}
+      />
+    );
   }
 
   if (scope === "enterprise" && session.role !== "enterprise_owner") {
     return <Navigate replace to={session.redirectPath} />;
   }
 
-  if (scope === "admin" && session.role === "enterprise_owner") {
+  if (scope === "provider" && session.role !== "provider_owner") {
+    return <Navigate replace to={session.redirectPath} />;
+  }
+
+  if (scope === "admin" && (session.role === "enterprise_owner" || session.role === "provider_owner")) {
     return <Navigate replace to={session.redirectPath} />;
   }
 
@@ -52,19 +59,30 @@ export function BackofficeShell({
   }, [location.search]);
 
   const searchPlaceholder =
-    scope === "enterprise" ? "搜索产品名称、型号或类目" : "搜索企业名称、产品名称或型号";
+    scope === "enterprise"
+      ? "搜索产品、服务或订单"
+      : scope === "provider"
+        ? "搜索服务、订单或履约节点"
+        : "搜索企业、产品、服务或订单";
 
   const supportSummary =
     scope === "enterprise"
-      ? "这里汇总了接口文档、导入说明、审核通知与常见问题，方便企业快速完成资料维护与提审。"
-      : "这里汇总了审核规范、接口文档和常见运营操作说明，方便平台高效完成审核与管理。";
+      ? "这里汇总了企业资料维护、产品提审、服务订单、支付提交和消息协同的常用入口。"
+      : scope === "provider"
+        ? "这里汇总了服务商资料维护、服务管理、订单协作、履约交付与联调说明。"
+        : "这里汇总了审核规范、市场发布、支付确认和服务履约的常用操作入口。";
 
   const handleSearch = () => {
     const keyword = searchKeyword.trim();
     const params = keyword ? `?keyword=${encodeURIComponent(keyword)}` : "";
 
     if (scope === "enterprise") {
-      navigate(`/enterprise/products${params}`);
+      navigate(`/enterprise/services${params}`);
+      return;
+    }
+
+    if (scope === "provider") {
+      navigate(`/provider/services${params}`);
       return;
     }
 
@@ -78,12 +96,22 @@ export function BackofficeShell({
       return;
     }
 
-    if (location.pathname.startsWith("/admin/reviews/companies")) {
-      navigate(`/admin/reviews/companies${params}`);
+    if (location.pathname.startsWith("/admin/providers")) {
+      navigate(`/admin/providers${params}`);
       return;
     }
 
-    navigate(`/admin/reviews/products${params}`);
+    if (location.pathname.startsWith("/admin/service-orders")) {
+      navigate(`/admin/service-orders${params}`);
+      return;
+    }
+
+    if (location.pathname.startsWith("/admin/payments")) {
+      navigate(`/admin/payments${params}`);
+      return;
+    }
+
+    navigate(`/admin/services${params}`);
   };
 
   return (
@@ -99,14 +127,21 @@ export function BackofficeShell({
           <div className="mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
-                <IconSymbol name="inventory" className="text-lg" />
+                <IconSymbol
+                  name={scope === "provider" ? "storefront" : scope === "admin" ? "shield_person" : "inventory"}
+                  className="text-lg"
+                />
               </div>
               <div>
                 <div className="font-display text-lg font-extrabold text-primary-strong">
                   工业企业出海主数据平台
                 </div>
                 <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-slate-400">
-                  {scope === "enterprise" ? "Enterprise Console" : "Platform Review Center"}
+                  {scope === "enterprise"
+                    ? "Enterprise Console"
+                    : scope === "provider"
+                      ? "Provider Console"
+                      : "Platform Review Center"}
                 </div>
               </div>
             </div>
@@ -210,7 +245,13 @@ export function BackofficeShell({
                   className="rounded-full p-2 transition hover:bg-[#edf3fb]"
                   type="button"
                   onClick={() =>
-                    navigate(scope === "enterprise" ? "/enterprise/messages" : defaultAdminReviewPath)
+                    navigate(
+                      scope === "enterprise"
+                        ? "/enterprise/messages"
+                        : scope === "provider"
+                          ? "/provider/orders"
+                          : defaultAdminReviewPath,
+                    )
                   }
                 >
                   <IconSymbol name="notifications" />
@@ -225,6 +266,7 @@ export function BackofficeShell({
                 <button
                   className="inline-flex rounded-full bg-[#edf3fb] px-4 py-2 text-sm font-semibold text-primary-strong shadow-soft"
                   onClick={() => {
+                    clearPendingPostLoginRedirect();
                     authService.logout();
                     window.location.href = "/auth/login";
                   }}
@@ -252,7 +294,7 @@ export function BackofficeShell({
 
       {open ? (
         <button
-          aria-label="关闭侧边栏遮罩"
+          aria-label="关闭侧栏遮罩"
           className="fixed inset-0 z-50 bg-slate-950/20 lg:hidden"
           onClick={() => setOpen(false)}
           type="button"
@@ -262,7 +304,7 @@ export function BackofficeShell({
       <Dialog
         open={helpOpen}
         title="帮助中心"
-        description="当前环境已接入真实后端接口，下面这些入口可以帮助你快速定位问题或继续联调。"
+        description="当前环境已经接入真实后端接口，下面这些入口可以帮助你快速定位问题或继续联调。"
         onClose={() => setHelpOpen(false)}
         footer={<BackofficeButton onClick={() => setHelpOpen(false)}>关闭</BackofficeButton>}
       >
@@ -278,15 +320,35 @@ export function BackofficeShell({
             <div className="mt-3 flex flex-wrap gap-3">
               <BackofficeButton
                 variant="secondary"
-                to={scope === "enterprise" ? "/enterprise/messages" : "/admin/reviews/companies"}
+                to={
+                  scope === "enterprise"
+                    ? "/enterprise/orders"
+                    : scope === "provider"
+                      ? "/provider/orders"
+                      : "/admin/service-orders"
+                }
               >
-                {scope === "enterprise" ? "查看消息中心" : "查看企业审核"}
+                {scope === "enterprise"
+                  ? "查看服务订单"
+                  : scope === "provider"
+                    ? "查看协作订单"
+                    : "查看服务订单"}
               </BackofficeButton>
               <BackofficeButton
                 variant="secondary"
-                to={scope === "enterprise" ? "/enterprise/import" : "/admin/reviews/products"}
+                to={
+                  scope === "enterprise"
+                    ? "/enterprise/payments"
+                    : scope === "provider"
+                      ? "/provider/fulfillment"
+                      : "/admin/payments"
+                }
               >
-                {scope === "enterprise" ? "查看批量导入" : "查看产品审核"}
+                {scope === "enterprise"
+                  ? "查看支付记录"
+                  : scope === "provider"
+                    ? "查看履约交付"
+                    : "查看支付管理"}
               </BackofficeButton>
             </div>
           </div>
@@ -336,6 +398,8 @@ function roleLabel(role: UserRole) {
   switch (role) {
     case "enterprise_owner":
       return "企业主账号";
+    case "provider_owner":
+      return "服务商主账号";
     case "reviewer":
       return "平台审核员";
     case "operations_admin":

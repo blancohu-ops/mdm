@@ -1,26 +1,30 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import {
-  BackofficeButton,
-  FormField,
-  FormInput,
-} from "@/components/backoffice/BackofficePrimitives";
+import { BackofficeButton, FormField, FormInput } from "@/components/backoffice/BackofficePrimitives";
 import { publicService } from "@/services/publicService";
+
+type ActivationMode = "enterprise" | "provider";
+
+type ActivationContext = {
+  companyName: string;
+  contactName: string;
+  account: string;
+  phone: string;
+  email: string;
+  expiresAt: string;
+};
 
 export function ActivateAccountPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const token = searchParams.get("token")?.trim() ?? "";
+  const enterpriseToken = searchParams.get("token")?.trim() ?? "";
+  const providerToken = searchParams.get("providerToken")?.trim() ?? "";
+  const mode: ActivationMode | null = providerToken ? "provider" : enterpriseToken ? "enterprise" : null;
+  const token = providerToken || enterpriseToken;
+
   const [loading, setLoading] = useState(Boolean(token));
   const [submitting, setSubmitting] = useState(false);
-  const [context, setContext] = useState<{
-    companyName: string;
-    contactName: string;
-    account: string;
-    phone: string;
-    email: string;
-    expiresAt: string;
-  } | null>(null);
+  const [context, setContext] = useState<ActivationContext | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -28,14 +32,18 @@ export function ActivateAccountPage() {
 
   useEffect(() => {
     let mounted = true;
-    if (!token) {
+    if (!token || !mode) {
       setLoading(false);
       return;
     }
 
     setLoading(true);
-    publicService
-      .getActivationPreview(token)
+    const request =
+      mode === "provider"
+        ? publicService.getProviderActivationPreview(token)
+        : publicService.getActivationPreview(token);
+
+    request
       .then((result) => {
         if (mounted) {
           setContext(result.data);
@@ -55,7 +63,7 @@ export function ActivateAccountPage() {
     return () => {
       mounted = false;
     };
-  }, [token]);
+  }, [mode, token]);
 
   const canSubmit = useMemo(
     () =>
@@ -70,26 +78,35 @@ export function ActivateAccountPage() {
     [token, context, password, confirmPassword, submitting],
   );
 
-  if (!token) {
+  if (!token || !mode) {
     return (
-      <div className="space-y-6">
-        <h2 className="font-display text-4xl font-bold text-primary-strong">请先提交入驻申请</h2>
+      <div className="space-y-6" data-testid="activate-account-page">
+        <h2 className="font-display text-4xl font-bold text-primary-strong">请先提交申请</h2>
         <p className="text-sm leading-7 text-ink-muted">
-          平台审核通过后，会将账号激活邮件发送到您申请时填写的邮箱。请通过邮件中的链接完成注册。
+          平台审核通过后，会将账号激活链接发送到申请时填写的邮箱。请通过邮件中的链接完成注册和密码设置。
         </p>
-        <BackofficeButton to="/onboarding">前往申请入驻</BackofficeButton>
+        <div className="flex gap-3">
+          <BackofficeButton to="/onboarding">企业入驻申请</BackofficeButton>
+          <BackofficeButton to="/providers/join" variant="secondary">
+            服务商入驻申请
+          </BackofficeButton>
+        </div>
       </div>
     );
   }
 
+  const title = mode === "provider" ? "激活服务商账号" : "激活企业账号";
+  const description =
+    mode === "provider"
+      ? "请设置服务商后台登录密码。账号将锁定为申请时填写的邮箱，邮箱缺失时回退为手机号。"
+      : "请设置企业后台登录密码。账号将锁定为申请时填写的邮箱，邮箱缺失时回退为手机号。";
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="activate-account-page">
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Account Activation</p>
-        <h2 className="mt-4 font-display text-4xl font-bold text-primary-strong">激活企业账号</h2>
-        <p className="mt-3 text-sm leading-7 text-ink-muted">
-          请设置登录密码。账号将锁定为申请时填写的邮箱或手机号，激活完成后可直接前往登录页进入平台。
-        </p>
+        <h2 className="mt-4 font-display text-4xl font-bold text-primary-strong">{title}</h2>
+        <p className="mt-3 text-sm leading-7 text-ink-muted">{description}</p>
       </div>
 
       {feedback ? (
@@ -111,7 +128,7 @@ export function ActivateAccountPage() {
       ) : context ? (
         <>
           <div className="grid gap-4 rounded-[1.5rem] bg-surface-low p-5 sm:grid-cols-2">
-            <InfoItem label="企业名称" value={context.companyName} />
+            <InfoItem label="主体名称" value={context.companyName} />
             <InfoItem label="联系人" value={context.contactName} />
             <InfoItem label="锁定账号" value={context.account} />
             <InfoItem label="有效期至" value={context.expiresAt} />
@@ -128,16 +145,25 @@ export function ActivateAccountPage() {
               setSubmitting(true);
               setError("");
               setFeedback("");
+
               try {
-                const result = await publicService.completeActivation(token, {
-                  password,
-                  confirmPassword,
-                });
-                setFeedback(
-                  `账号激活成功。请使用 ${result.data.account} 登录 ${result.data.companyName} 企业后台。`,
-                );
+                const result =
+                  mode === "provider"
+                    ? await publicService.completeProviderActivation(token, {
+                        password,
+                        confirmPassword,
+                      })
+                    : await publicService.completeActivation(token, {
+                        password,
+                        confirmPassword,
+                      });
+
+                setFeedback(`账号激活成功，正在跳转到登录页，请使用 ${result.data.account} 登录。`);
                 window.setTimeout(() => {
-                  navigate(result.data.redirectPath);
+                  navigate(
+                    `${result.data.redirectPath}?account=${encodeURIComponent(result.data.account)}&activated=${mode}`,
+                    { replace: true },
+                  );
                 }, 800);
               } catch (serviceError) {
                 setError(
@@ -148,7 +174,7 @@ export function ActivateAccountPage() {
               }
             }}
           >
-            <FormField label="设置密码" required hint="8-20 位">
+            <FormField label="设置密码" required hint="至少 8 位">
               <FormInput
                 type="password"
                 value={password}
@@ -160,9 +186,7 @@ export function ActivateAccountPage() {
             <FormField
               label="确认密码"
               required
-              hint={
-                confirmPassword && password !== confirmPassword ? "两次输入的密码不一致" : undefined
-              }
+              hint={confirmPassword && password !== confirmPassword ? "两次输入的密码不一致" : undefined}
             >
               <FormInput
                 type="password"
@@ -172,8 +196,8 @@ export function ActivateAccountPage() {
               />
             </FormField>
 
-            <BackofficeButton className="w-full" disabled={!canSubmit} type="submit">
-              {submitting ? "激活中..." : "完成激活并注册"}
+            <BackofficeButton className="w-full" disabled={!canSubmit} type="submit" testId="activate-submit-button">
+              {submitting ? "激活中..." : "完成激活并前往登录"}
             </BackofficeButton>
           </form>
         </>

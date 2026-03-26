@@ -29,6 +29,14 @@ public class ProductListQueryRepository {
               ON e.id = p.enterprise_id
             """;
 
+    private static final String PUBLIC_PROFILE_JOIN =
+            """
+            JOIN product_profiles pf
+              ON pf.id = COALESCE(p.current_profile_id, p.working_profile_id)
+            JOIN enterprises e
+              ON e.id = p.enterprise_id
+            """;
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public ProductListQueryRepository(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -163,6 +171,71 @@ public class ProductListQueryRepository {
                 """,
                 "pf.category_path",
                 enterpriseIds);
+    }
+
+    public List<UUID> findPublicProductIds(String keyword, String category) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        StringBuilder sql =
+                new StringBuilder(
+                        """
+                        SELECT p.id
+                        FROM products p
+                        """
+                                + PUBLIC_PROFILE_JOIN
+                                + """
+                        WHERE p.status = 'PUBLISHED'
+                          AND pf.display_public = TRUE
+                        """);
+        if (keyword != null && !keyword.isBlank()) {
+            sql.append(
+                    """
+                     AND (
+                            pf.name_zh ILIKE :keyword
+                         OR pf.model ILIKE :keyword
+                         OR pf.summary_zh ILIKE :keyword
+                         OR e.name ILIKE :keyword
+                     )
+                    """);
+            params.addValue("keyword", "%" + keyword.trim() + "%");
+        }
+        if (category != null && !category.isBlank() && !"all".equalsIgnoreCase(category)) {
+            sql.append(" AND pf.category_path = :category");
+            params.addValue("category", category.trim());
+        }
+        sql.append(
+                """
+                 ORDER BY CASE
+                           WHEN EXISTS (
+                               SELECT 1
+                               FROM marketplace_publications mp
+                               WHERE mp.product_id = p.id
+                                 AND mp.status = 'ACTIVE'
+                                 AND mp.publication_type = 'PRODUCT_PROMOTION'
+                                 AND (mp.expires_at IS NULL OR mp.expires_at > NOW())
+                           ) THEN 0
+                           ELSE 1
+                         END,
+                         COALESCE(pf.sort_order, 0) DESC,
+                         p.updated_at DESC NULLS LAST,
+                         p.id
+                """);
+        return jdbcTemplate.queryForList(sql.toString(), params, UUID.class);
+    }
+
+    public List<String> findPublicCategories() {
+        return jdbcTemplate.queryForList(
+                """
+                SELECT DISTINCT pf.category_path
+                FROM products p
+                JOIN product_profiles pf
+                  ON pf.id = COALESCE(p.current_profile_id, p.working_profile_id)
+                WHERE p.status = 'PUBLISHED'
+                  AND pf.display_public = TRUE
+                  AND NULLIF(TRIM(REPLACE(pf.category_path, '?', '')), '') IS NOT NULL
+                ORDER BY pf.category_path
+                """,
+                new MapSqlParameterSource(),
+                String.class);
     }
 
     private PageResponse<UUID> queryAdminProductIds(

@@ -199,7 +199,7 @@ class FileServiceAuthorizationTest {
     }
 
     private AuthenticatedUser user(UserRole role, UUID enterpriseId) {
-        return new AuthenticatedUser(UUID.randomUUID(), role, enterpriseId, "tester", "org", 0);
+        return new AuthenticatedUser(UUID.randomUUID(), role, enterpriseId, null, "tester", "org", 0);
     }
 
     private void assertThatForbidden(ThrowingRunnable runnable, String message) {

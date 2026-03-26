@@ -1,14 +1,12 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  BackofficeButton,
-  FormField,
-  FormInput,
-} from "@/components/backoffice/BackofficePrimitives";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { BackofficeButton, FormField, FormInput } from "@/components/backoffice/BackofficePrimitives";
 import { authService } from "@/services/authService";
+import { consumePendingPostLoginRedirect, readPostLoginRedirectFromSearch } from "@/services/utils/authSession";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [captcha, setCaptcha] = useState("");
@@ -16,11 +14,22 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  const searchParams = new URLSearchParams(location.search);
+  const returnTo = readPostLoginRedirectFromSearch(location.search);
+  const activationAccount = searchParams.get("account")?.trim() ?? "";
+  const activatedRole = searchParams.get("activated")?.trim() ?? "";
   const canSubmit = account.trim().length > 0 && password.trim().length >= 6 && !submitting;
+
+  useEffect(() => {
+    if (!activationAccount) {
+      return;
+    }
+    setAccount((current) => current || activationAccount);
+  }, [activationAccount]);
 
   return (
     <div data-testid="login-page">
-      <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Enterprise Login</p>
+      <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Unified Console Login</p>
       <h2 className="mt-4 font-display text-4xl font-bold text-primary-strong">欢迎登录</h2>
       <p className="mt-3 text-sm leading-7 text-ink-muted">
         当前环境已接入真实后端。企业端可使用
@@ -29,9 +38,26 @@ export function LoginPage() {
         <span className="mx-1 font-semibold text-primary">admin@example.com</span>
         ，审核员可使用
         <span className="mx-1 font-semibold text-primary">reviewer@example.com</span>
+        ，服务商账号可使用
+        <span className="mx-1 font-semibold text-primary">provider@example.com</span>
         ，默认密码统一为
-        <span className="mx-1 font-semibold text-primary">Admin1234</span>。
+        <span className="mx-1 font-semibold text-primary">Admin1234</span>
+        。
       </p>
+
+      {returnTo ? (
+        <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+          当前登录态已失效，请重新登录后继续返回之前的页面。
+        </div>
+      ) : null}
+
+      {activatedRole ? (
+        <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          {activatedRole === "provider"
+            ? "服务商账号已激活，请使用预填账号登录服务商后台。"
+            : "企业账号已激活，请使用预填账号登录企业后台。"}
+        </div>
+      ) : null}
 
       {error ? (
         <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
@@ -57,7 +83,11 @@ export function LoginPage() {
               remember,
               captcha,
             });
-            navigate(result.data.redirectPath);
+            const nextPath =
+              readPostLoginRedirectFromSearch(location.search) ??
+              consumePendingPostLoginRedirect() ??
+              result.data.redirectPath;
+            navigate(nextPath, { replace: true });
           } catch (serviceError) {
             setError(serviceError instanceof Error ? serviceError.message : "登录失败，请稍后重试。");
           } finally {
@@ -98,11 +128,7 @@ export function LoginPage() {
 
         <div className="flex items-center justify-between text-sm text-ink-muted">
           <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={remember}
-              onChange={(event) => setRemember(event.target.checked)}
-            />
+            <input type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} />
             <span>记住我</span>
           </label>
           <Link className="font-medium text-primary" to="/auth/forgot-password">
@@ -110,7 +136,13 @@ export function LoginPage() {
           </Link>
         </div>
 
-        <BackofficeButton className="w-full" type="submit" disabled={!canSubmit}>
+        <BackofficeButton
+          ariaLabel="登录 鐧诲綍"
+          className="w-full"
+          type="submit"
+          disabled={!canSubmit}
+          testId="login-submit-button"
+        >
           {submitting ? "登录中..." : "登录"}
         </BackofficeButton>
 
