@@ -117,6 +117,21 @@ class AuthorizationServicePersistenceTest {
                 .isTrue();
     }
 
+    @Test
+    void operationsAdminRoleIncludesBaseDataPermissions() {
+        UserEntity user = saveUser(UserRole.OPERATIONS_ADMIN);
+        AuthenticatedUser currentUser = toPrincipal(user);
+
+        assertThat(authorizationService.hasPermission(currentUser, PermissionCode.BASE_DICT_READ))
+                .isTrue();
+        assertThat(authorizationService.hasPermission(currentUser, PermissionCode.BASE_REGION_CREATE))
+                .isTrue();
+        assertThat(
+                        authorizationService.hasPermission(
+                                currentUser, PermissionCode.BASE_SERVICE_TYPE_UPDATE))
+                .isTrue();
+    }
+
     private UserEntity saveUser(UserRole role) {
         UserEntity user = new UserEntity();
         user.setAccount("authz-" + UUID.randomUUID());

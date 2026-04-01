@@ -11,3 +11,12 @@ export type AiToolDemoResult = {
   categories: string[];
   highlights: string[];
 };
+
+export type AiServiceIntro = {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  features: string[];
+  status: "available" | "coming_soon";
+};

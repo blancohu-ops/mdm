@@ -27,6 +27,10 @@ import com.industrial.mdm.modules.serviceCatalog.repository.ServiceEntity;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceOfferEntity;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceOfferRepository;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceRepository;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceSubTypeEntity;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceSubTypeRepository;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceTypeEntity;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceTypeRepository;
 import com.industrial.mdm.modules.serviceFulfillment.domain.FulfillmentStatus;
 import com.industrial.mdm.modules.serviceFulfillment.repository.DeliveryArtifactEntity;
 import com.industrial.mdm.modules.serviceFulfillment.repository.DeliveryArtifactRepository;
@@ -44,6 +48,10 @@ import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderEnti
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderProfileEntity;
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderProfileRepository;
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderRepository;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -67,6 +75,8 @@ public class DevServiceMarketplaceDataInitializer {
             ServiceCategoryRepository categoryRepository,
             ServiceRepository serviceRepository,
             ServiceOfferRepository offerRepository,
+            ServiceTypeRepository serviceTypeRepository,
+            ServiceSubTypeRepository serviceSubTypeRepository,
             ServiceOrderRepository orderRepository,
             PaymentRecordRepository paymentRecordRepository,
             MarketplacePublicationRepository marketplacePublicationRepository,
@@ -114,13 +124,29 @@ public class DevServiceMarketplaceDataInitializer {
                             "AI 智能服务",
                             "围绕出海资料整理、英文生成与信息增强的 AI 服务。",
                             40);
+            ServiceTypeEntity consultingType = loadServiceType(serviceTypeRepository, "consulting");
+            ServiceTypeEntity marketingType = loadServiceType(serviceTypeRepository, "marketing");
+            ServiceTypeEntity translationType = loadServiceType(serviceTypeRepository, "translation");
+            ServiceTypeEntity certificationType = loadServiceType(serviceTypeRepository, "certification");
+            ServiceSubTypeEntity marketAccessSubType =
+                    loadServiceSubType(serviceSubTypeRepository, "market_access");
+            ServiceSubTypeEntity digitalMarketingSubType =
+                    loadServiceSubType(serviceSubTypeRepository, "digital_marketing");
+            ServiceSubTypeEntity localizationSubType =
+                    loadServiceSubType(serviceSubTypeRepository, "localization");
+            ServiceSubTypeEntity exportComplianceSubType =
+                    loadServiceSubType(serviceSubTypeRepository, "export_compliance");
 
             ServiceEntity policyService =
                     ensureService(
                             serviceRepository,
                             offerRepository,
+                            orderRepository,
+                            marketplacePublicationRepository,
                             null,
                             policyCategory,
+                            consultingType,
+                            marketAccessSubType,
                             "service.export-policy-consulting",
                             ServiceOperatorType.PLATFORM,
                             "出海政策匹配与申报辅导",
@@ -151,8 +177,12 @@ public class DevServiceMarketplaceDataInitializer {
                     ensureService(
                             serviceRepository,
                             offerRepository,
+                            orderRepository,
+                            marketplacePublicationRepository,
                             null,
                             promotionCategory,
+                            marketingType,
+                            digitalMarketingSubType,
                             "service.portal-promotion-package",
                             ServiceOperatorType.PLATFORM,
                             "官网展示与产品推广包",
@@ -183,8 +213,12 @@ public class DevServiceMarketplaceDataInitializer {
                     ensureService(
                             serviceRepository,
                             offerRepository,
+                            orderRepository,
+                            marketplacePublicationRepository,
                             null,
                             aiCategory,
+                            translationType,
+                            localizationSubType,
                             "service.ai-description-runtime",
                             ServiceOperatorType.PLATFORM,
                             "AI 多语详情生成服务",
@@ -206,8 +240,12 @@ public class DevServiceMarketplaceDataInitializer {
                     ensureService(
                             serviceRepository,
                             offerRepository,
+                            orderRepository,
+                            marketplacePublicationRepository,
                             activeProvider.getId(),
                             complianceCategory,
+                            certificationType,
+                            exportComplianceSubType,
                             "service.eu-compliance-support",
                             ServiceOperatorType.PROVIDER,
                             "欧盟合规认证辅导",
@@ -267,8 +305,9 @@ public class DevServiceMarketplaceDataInitializer {
             UserRepository userRepository,
             PasswordEncoder passwordEncoder) {
         ServiceProviderEntity provider =
-                providerRepository.findAllByOrderByUpdatedAtDesc().stream()
-                        .findFirst()
+                userRepository.findByAccountIgnoreCase("provider@example.com")
+                        .map(UserEntity::getServiceProviderId)
+                        .flatMap(providerRepository::findById)
                         .orElseGet(
                                 () -> {
                                     ServiceProviderEntity entity = new ServiceProviderEntity();
@@ -390,8 +429,12 @@ public class DevServiceMarketplaceDataInitializer {
     private ServiceEntity ensureService(
             ServiceRepository serviceRepository,
             ServiceOfferRepository offerRepository,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository,
             UUID providerId,
             ServiceCategoryEntity category,
+            ServiceTypeEntity serviceType,
+            ServiceSubTypeEntity serviceSubType,
             String marker,
             ServiceOperatorType operatorType,
             String title,
@@ -400,14 +443,25 @@ public class DevServiceMarketplaceDataInitializer {
             String deliverableSummary,
             String coverImageUrl,
             OfferSeed... offers) {
+        List<ServiceEntity> candidates =
+                loadSeedServiceCandidates(serviceRepository, providerId, operatorType, title, marker);
         ServiceEntity service =
-                serviceRepository.findAll().stream()
-                        .filter(item -> marker.equals(item.getDescription()))
-                        .findFirst()
-                        .orElseGet(ServiceEntity::new);
+                selectPrimarySeedService(candidates, orderRepository, marketplacePublicationRepository);
+        cleanupDuplicateSeedServices(
+                candidates,
+                service,
+                serviceRepository,
+                offerRepository,
+                orderRepository,
+                marketplacePublicationRepository);
+        if (service == null) {
+            service = new ServiceEntity();
+        }
 
         service.setServiceProviderId(providerId);
         service.setCategoryId(category.getId());
+        service.setServiceTypeId(serviceType.getId());
+        service.setServiceSubTypeId(serviceSubType.getId());
         service.setOperatorType(operatorType);
         service.setStatus(ServiceStatus.PUBLISHED);
         service.setTitle(title);
@@ -420,10 +474,116 @@ public class DevServiceMarketplaceDataInitializer {
                 service.getPublishedAt() == null ? OffsetDateTime.now().minusDays(15) : service.getPublishedAt());
         service = serviceRepository.save(service);
 
-        offerRepository.deleteAll(offerRepository.findByServiceIdOrderByCreatedAtAsc(service.getId()));
+        syncSeedOffers(
+                service.getId(),
+                offers,
+                offerRepository,
+                orderRepository,
+                marketplacePublicationRepository);
+
+        service.setDescription(description);
+        return serviceRepository.save(service);
+    }
+
+    private List<ServiceEntity> loadSeedServiceCandidates(
+            ServiceRepository serviceRepository,
+            UUID providerId,
+            ServiceOperatorType operatorType,
+            String title,
+            String marker) {
+        Map<UUID, ServiceEntity> candidates = new LinkedHashMap<>();
+        List<ServiceEntity> titleMatches =
+                providerId == null
+                        ? serviceRepository.findByOperatorTypeAndServiceProviderIdIsNullAndTitleOrderByCreatedAtAsc(
+                                operatorType, title)
+                        : serviceRepository.findByOperatorTypeAndServiceProviderIdAndTitleOrderByCreatedAtAsc(
+                                operatorType, providerId, title);
+        for (ServiceEntity item : titleMatches) {
+            if (item.getId() != null) {
+                candidates.put(item.getId(), item);
+            }
+        }
+        for (ServiceEntity item : serviceRepository.findByDescriptionOrderByCreatedAtAsc(marker)) {
+            if (item.getId() == null || item.getOperatorType() != operatorType) {
+                continue;
+            }
+            if (providerId == null && item.getServiceProviderId() != null) {
+                continue;
+            }
+            if (providerId != null && !providerId.equals(item.getServiceProviderId())) {
+                continue;
+            }
+            candidates.putIfAbsent(item.getId(), item);
+        }
+        return new ArrayList<>(candidates.values());
+    }
+
+    private ServiceEntity selectPrimarySeedService(
+            List<ServiceEntity> candidates,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository) {
+        for (ServiceEntity candidate : candidates) {
+            if (candidate.getId() != null
+                    && isServiceReferenced(
+                            candidate.getId(), orderRepository, marketplacePublicationRepository)) {
+                return candidate;
+            }
+        }
+        return candidates.isEmpty() ? null : candidates.get(0);
+    }
+
+    private void cleanupDuplicateSeedServices(
+            List<ServiceEntity> candidates,
+            ServiceEntity primary,
+            ServiceRepository serviceRepository,
+            ServiceOfferRepository offerRepository,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository) {
+        UUID primaryId = primary == null ? null : primary.getId();
+        for (ServiceEntity candidate : candidates) {
+            UUID candidateId = candidate.getId();
+            if (candidateId == null || candidateId.equals(primaryId)) {
+                continue;
+            }
+            if (isServiceReferenced(candidateId, orderRepository, marketplacePublicationRepository)) {
+                continue;
+            }
+            offerRepository.deleteAll(offerRepository.findByServiceIdOrderByCreatedAtAsc(candidateId));
+            serviceRepository.delete(candidate);
+        }
+    }
+
+    private boolean isServiceReferenced(
+            UUID serviceId,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository) {
+        return orderRepository.existsByServiceId(serviceId)
+                || marketplacePublicationRepository.existsByServiceId(serviceId);
+    }
+
+    private void syncSeedOffers(
+            UUID serviceId,
+            OfferSeed[] offers,
+            ServiceOfferRepository offerRepository,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository) {
+        List<ServiceOfferEntity> existingOffers = offerRepository.findByServiceIdOrderByCreatedAtAsc(serviceId);
+        Map<String, ServiceOfferEntity> existingByKey = new LinkedHashMap<>();
+        for (ServiceOfferEntity existing : existingOffers) {
+            existingByKey.put(buildOfferSeedKey(existing.getName(), existing.getTargetResourceType()), existing);
+        }
+
+        List<UUID> matchedOfferIds = new ArrayList<>();
         for (OfferSeed seed : offers) {
-            ServiceOfferEntity offer = new ServiceOfferEntity();
-            offer.setServiceId(service.getId());
+            ServiceOfferEntity offer =
+                    existingByKey.get(buildOfferSeedKey(seed.name(), seed.targetResourceType()));
+            if (offer == null) {
+                offer = selectOfferByTargetType(existingOffers, matchedOfferIds, seed.targetResourceType());
+            }
+            if (offer == null) {
+                offer = new ServiceOfferEntity();
+                offer.setServiceId(serviceId);
+            }
             offer.setName(seed.name());
             offer.setTargetResourceType(seed.targetResourceType());
             offer.setBillingMode(seed.billingMode());
@@ -433,11 +593,60 @@ public class DevServiceMarketplaceDataInitializer {
             offer.setValidityDays(seed.validityDays());
             offer.setHighlightText(seed.highlightText());
             offer.setEnabled(true);
-            offerRepository.save(offer);
+            offer = offerRepository.save(offer);
+            matchedOfferIds.add(offer.getId());
         }
 
-        service.setDescription(description);
-        return serviceRepository.save(service);
+        for (ServiceOfferEntity existing : existingOffers) {
+            UUID offerId = existing.getId();
+            if (offerId == null || matchedOfferIds.contains(offerId)) {
+                continue;
+            }
+            if (isOfferReferenced(offerId, orderRepository, marketplacePublicationRepository)) {
+                continue;
+            }
+            offerRepository.delete(existing);
+        }
+    }
+
+    private ServiceOfferEntity selectOfferByTargetType(
+            List<ServiceOfferEntity> existingOffers,
+            List<UUID> matchedOfferIds,
+            ServiceTargetResourceType targetResourceType) {
+        ServiceOfferEntity candidate = null;
+        for (ServiceOfferEntity existing : existingOffers) {
+            UUID offerId = existing.getId();
+            if (offerId == null
+                    || matchedOfferIds.contains(offerId)
+                    || existing.getTargetResourceType() != targetResourceType) {
+                continue;
+            }
+            if (candidate != null) {
+                return null;
+            }
+            candidate = existing;
+        }
+        return candidate;
+    }
+
+    private boolean isOfferReferenced(
+            UUID offerId,
+            ServiceOrderRepository orderRepository,
+            MarketplacePublicationRepository marketplacePublicationRepository) {
+        return orderRepository.existsByOfferId(offerId)
+                || marketplacePublicationRepository.existsByOfferId(offerId);
+    }
+
+    private String buildOfferSeedKey(String name, ServiceTargetResourceType targetResourceType) {
+        return name + "::" + targetResourceType.name();
+    }
+
+    private ServiceTypeEntity loadServiceType(ServiceTypeRepository repository, String code) {
+        return repository.findByCode(code).orElseThrow();
+    }
+
+    private ServiceSubTypeEntity loadServiceSubType(ServiceSubTypeRepository repository, String code) {
+        return repository.findByCode(code).orElseThrow();
     }
 
     private void ensureDemoOrders(

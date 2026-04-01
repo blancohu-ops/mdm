@@ -12,13 +12,20 @@ import {
   FormTextarea,
   SectionCard,
 } from "@/components/backoffice/BackofficePrimitives";
+import {
+  normalizeDictName,
+  normalizeDictNames,
+  toggleSelection,
+} from "@/features/baseData/selectionUtils";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
+import { dictionaryService } from "@/services/dictionaryService";
 import { enterpriseService } from "@/services/enterpriseService";
 import { getStoredSession } from "@/services/utils/authSession";
 import type {
   EnterpriseProductEditorResponse,
   ProductUpsertPayload,
 } from "@/services/contracts/backoffice";
+import type { DictItem, RegionNode } from "@/types/dictionary";
 
 type ProductFormState = {
   nameZh: string;
@@ -70,6 +77,11 @@ export function EnterpriseProductEditorPage() {
     path: string;
     name?: string;
   } | null>(null);
+  const [originOptions, setOriginOptions] = useState<RegionNode[]>([]);
+  const [packagingOptions, setPackagingOptions] = useState<DictItem[]>([]);
+  const [unitOptions, setUnitOptions] = useState<DictItem[]>([]);
+  const [currencyOptions, setCurrencyOptions] = useState<DictItem[]>([]);
+  const [certificationOptions, setCertificationOptions] = useState<DictItem[]>([]);
 
   useEffect(() => {
     setCurrentProductId(id);
@@ -80,25 +92,57 @@ export function EnterpriseProductEditorPage() {
     setLoading(true);
     setError("");
 
-    enterpriseService
-      .getProductEditorPayload(currentProductId)
-      .then((result) => {
+    Promise.all([
+      enterpriseService.getProductEditorPayload(currentProductId),
+      dictionaryService.fetchEnabledRegions({ level: 1 }),
+      dictionaryService.fetchEnabledDictItems("packaging"),
+      dictionaryService.fetchEnabledDictItems("unit"),
+      dictionaryService.fetchEnabledDictItems("currency"),
+      dictionaryService.fetchEnabledDictItems("certification"),
+    ])
+      .then(
+        ([
+          payloadResult,
+          originResult,
+          packagingResult,
+          unitResult,
+          currencyResult,
+          certificationResult,
+        ]) => {
         if (!mounted) {
           return;
         }
 
-        setPayload(result.data);
-        const editingProduct = result.data.product;
+          setPayload(payloadResult.data);
+          setOriginOptions(originResult.data);
+          setPackagingOptions(packagingResult.data);
+          setUnitOptions(unitResult.data);
+          setCurrencyOptions(currencyResult.data);
+          setCertificationOptions(certificationResult.data);
+          const editingProduct = payloadResult.data.product;
         if (editingProduct) {
-          const nextForm = toFormState(editingProduct);
+            const nextForm = normalizeProductFormState(
+              toFormState(editingProduct),
+              unitResult.data,
+              currencyResult.data,
+              packagingResult.data,
+              certificationResult.data,
+            );
           setForm(nextForm);
           setLastSavedSnapshot(createProductPayloadSnapshot(toPayload(nextForm)));
         } else {
-          const nextForm = createDefaultProduct();
+            const nextForm = normalizeProductFormState(
+              createDefaultProduct(),
+              unitResult.data,
+              currencyResult.data,
+              packagingResult.data,
+              certificationResult.data,
+            );
           setForm(nextForm);
           setLastSavedSnapshot(createProductPayloadSnapshot(toPayload(nextForm)));
         }
-      })
+        },
+      )
       .catch((serviceError) => {
         if (mounted) {
           setError(
@@ -152,7 +196,13 @@ export function EnterpriseProductEditorPage() {
 
     try {
       const result = await enterpriseService.saveProduct(normalizedPayload, currentProductId);
-      const nextForm = toFormState(result.data);
+      const nextForm = normalizeProductFormState(
+        toFormState(result.data),
+        unitOptions,
+        currencyOptions,
+        packagingOptions,
+        certificationOptions,
+      );
       setInfo("产品草稿已保存。");
       setSuccess(false);
       setForm(nextForm);
@@ -166,8 +216,6 @@ export function EnterpriseProductEditorPage() {
           : {
               product: result.data,
               categories: [],
-              unitOptions: ["piece", "set", "unit", "kg", "m", "m2", "m3"],
-              certificationOptions: ["CE", "RoHS", "ISO9001", "FCC", "FDA", "Other"],
               hsSuggestions: [],
             },
       );
@@ -196,7 +244,13 @@ export function EnterpriseProductEditorPage() {
       let targetId = currentProductId;
       if (!targetId || hasUnsavedChanges) {
         const saveResult = await enterpriseService.saveProduct(normalizedPayload, targetId);
-        const nextForm = toFormState(saveResult.data);
+        const nextForm = normalizeProductFormState(
+          toFormState(saveResult.data),
+          unitOptions,
+          currencyOptions,
+          packagingOptions,
+          certificationOptions,
+        );
         targetId = saveResult.data.id;
         setForm(nextForm);
         setLastSavedSnapshot(createProductPayloadSnapshot(toPayload(nextForm)));
@@ -209,8 +263,6 @@ export function EnterpriseProductEditorPage() {
             : {
                 product: saveResult.data,
                 categories: [],
-                unitOptions: ["piece", "set", "unit", "kg", "m", "m2", "m3"],
-                certificationOptions: ["CE", "RoHS", "ISO9001", "FCC", "FDA", "Other"],
                 hsSuggestions: [],
               },
         );
@@ -485,12 +537,22 @@ export function EnterpriseProductEditorPage() {
             <FormInput value={form.hsName} disabled />
           </FormField>
           <FormField label="原产地" required>
-            <FormInput value={form.origin} onChange={(event) => setForm({ ...form, origin: event.target.value })} />
+            <FormSelect value={form.origin} onChange={(event) => setForm({ ...form, origin: event.target.value })}>
+              <option value="">请选择原产地</option>
+              {originOptions.map((item) => (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </FormSelect>
           </FormField>
           <FormField label="计量单位" required>
             <FormSelect value={form.unit} onChange={(event) => setForm({ ...form, unit: event.target.value })}>
-              {(payload?.unitOptions ?? ["piece", "set", "unit", "kg", "m", "m2", "m3"]).map((item) => (
-                <option key={item}>{item}</option>
+              <option value="">请选择计量单位</option>
+              {unitOptions.map((item) => (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
               ))}
             </FormSelect>
           </FormField>
@@ -499,16 +561,26 @@ export function EnterpriseProductEditorPage() {
           </FormField>
           <FormField label="币种">
             <FormSelect value={form.currency} onChange={(event) => setForm({ ...form, currency: event.target.value })}>
-              {["USD", "CNY", "EUR"].map((item) => (
-                <option key={item}>{item}</option>
+              <option value="">请选择币种</option>
+              {currencyOptions.map((item) => (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
               ))}
             </FormSelect>
           </FormField>
           <FormField label="包装方式">
-            <FormInput
+            <FormSelect
               value={form.packaging}
               onChange={(event) => setForm({ ...form, packaging: event.target.value })}
-            />
+            >
+              <option value="">请选择包装方式</option>
+              {packagingOptions.map((item) => (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              ))}
+            </FormSelect>
           </FormField>
           <FormField label="最小起订量 MOQ">
             <FormInput value={form.moq} onChange={(event) => setForm({ ...form, moq: event.target.value })} />
@@ -581,11 +653,11 @@ export function EnterpriseProductEditorPage() {
         <div className="grid gap-5 lg:grid-cols-2">
           <FormField label="认证资质">
             <div className="grid gap-3 sm:grid-cols-3">
-              {(payload?.certificationOptions ?? ["CE", "RoHS", "ISO9001", "FCC", "FDA", "Other"]).map((item) => {
-                const selected = form.certifications.includes(item);
+              {certificationOptions.map((item) => {
+                const selected = form.certifications.includes(item.name);
                 return (
                   <label
-                    key={item}
+                    key={item.id}
                     className={[
                       "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm",
                       selected ? "bg-primary text-white" : "bg-[#f7f9fc] text-ink",
@@ -594,14 +666,18 @@ export function EnterpriseProductEditorPage() {
                     <input
                       type="checkbox"
                       checked={selected}
-                      onChange={(event) => {
-                        const next = event.target.checked
-                          ? [...form.certifications, item]
-                          : form.certifications.filter((value) => value !== item);
-                        setForm({ ...form, certifications: next });
-                      }}
+                      onChange={(event) =>
+                        setForm({
+                          ...form,
+                          certifications: toggleSelection(
+                            form.certifications,
+                            item.name,
+                            event.target.checked,
+                          ),
+                        })
+                      }
                     />
-                    {item}
+                    {item.name}
                   </label>
                 );
               })}
@@ -832,6 +908,22 @@ function createDefaultProduct(): ProductFormState {
     attachments: [],
     displayPublic: true,
     sortOrder: "",
+  };
+}
+
+function normalizeProductFormState(
+  form: ProductFormState,
+  units: DictItem[],
+  currencies: DictItem[],
+  packaging: DictItem[],
+  certifications: DictItem[],
+): ProductFormState {
+  return {
+    ...form,
+    unit: normalizeDictName(form.unit, units),
+    currency: normalizeDictName(form.currency, currencies),
+    packaging: normalizeDictName(form.packaging, packaging),
+    certifications: normalizeDictNames(form.certifications, certifications),
   };
 }
 

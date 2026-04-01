@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Dialog } from "@/components/backoffice/BackofficeOverlays";
 import { BackofficeButton } from "@/components/backoffice/BackofficePrimitives";
@@ -47,11 +47,6 @@ export function BackofficeShell({ scope }: { scope: BackofficeScope }) {
     : sessionHasAnyPermission(session, ["product_review:list"])
       ? "/admin/reviews/products"
       : "/admin/overview";
-
-  const currentLabel = useMemo(() => {
-    const matched = navItems.find((item) => location.pathname.startsWith(item.path)) ?? navItems[0];
-    return matched?.label ?? "后台工作台";
-  }, [location.pathname, navItems]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -155,8 +150,12 @@ export function BackofficeShell({ scope }: { scope: BackofficeScope }) {
           </div>
 
           <nav className="space-y-2">
-            {navItems.map((item) => (
-              <SidebarLink key={item.path} item={item} onClick={() => setOpen(false)} />
+            {buildSidebarEntries(navItems).map((entry) => (
+              entry.type === "group" ? (
+                <SidebarGroupLabel key={`group-${entry.label}-${entry.index}`} label={entry.label} />
+              ) : (
+                <SidebarLink key={entry.item.path} item={entry.item} onClick={() => setOpen(false)} />
+              )
             ))}
           </nav>
 
@@ -234,10 +233,6 @@ export function BackofficeShell({ scope }: { scope: BackofficeScope }) {
                     搜索
                   </button>
                 </form>
-              </div>
-
-              <div className="hidden items-center text-sm lg:flex">
-                <span className="font-semibold text-primary-strong">{currentLabel}</span>
               </div>
 
               <div className="ml-auto flex items-center gap-3 text-ink-muted">
@@ -371,7 +366,8 @@ function SidebarLink({
       onClick={onClick}
       className={({ isActive }) =>
         [
-          "group relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition",
+          "group relative flex items-center gap-3 rounded-2xl py-3 text-sm font-medium transition",
+          item.group ? "pl-8 pr-4" : "px-4",
           isActive
             ? "bg-white text-primary-strong shadow-soft"
             : "text-slate-500 hover:bg-white hover:text-primary-strong",
@@ -392,6 +388,41 @@ function SidebarLink({
       )}
     </NavLink>
   );
+}
+
+function SidebarGroupLabel({ label }: { label: string }) {
+  return (
+    <div className="px-2 pb-1 pt-4 first:pt-0">
+      <div className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
+        <span className="h-px flex-1 bg-[#dbe5f1]" />
+        <span className="shrink-0">{label}</span>
+        <span className="h-px flex-1 bg-[#dbe5f1]" />
+      </div>
+    </div>
+  );
+}
+
+function buildSidebarEntries(navItems: BackofficeNavItem[]) {
+  const entries: Array<
+    | { type: "group"; label: string; index: number }
+    | { type: "item"; item: BackofficeNavItem }
+  > = [];
+  let currentGroup = "";
+
+  navItems.forEach((item, index) => {
+    if (item.group) {
+      if (item.group !== currentGroup) {
+        entries.push({ type: "group", label: item.group, index });
+        currentGroup = item.group;
+      }
+    } else {
+      currentGroup = "";
+    }
+
+    entries.push({ type: "item", item });
+  });
+
+  return entries;
 }
 
 function roleLabel(role: UserRole) {

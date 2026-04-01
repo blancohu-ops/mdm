@@ -66,6 +66,8 @@ export type PublicProviderOnboardingResponse = {
 
 export type ServiceSaveRequest = {
   categoryId: string;
+  serviceTypeId: string;
+  serviceSubTypeId: string;
   title: string;
   summary: string;
   description: string;

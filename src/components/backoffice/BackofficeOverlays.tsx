@@ -24,12 +24,12 @@ export function Dialog({
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/45 px-4"
+      className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/45 px-4 py-6"
       onClick={onClose}
     >
       <div
         className={[
-          "w-full max-w-xl rounded-[2rem] bg-white p-8 shadow-panel",
+          "flex max-h-[calc(100vh-3rem)] w-full max-w-xl flex-col overflow-hidden rounded-[2rem] bg-white p-6 shadow-panel sm:p-8",
           panelClassName ?? "",
         ].join(" ")}
         data-testid={testId}
@@ -50,8 +50,12 @@ export function Dialog({
             <IconSymbol name="close" />
           </button>
         </div>
-        {children ? <div className="mt-6">{children}</div> : null}
-        {footer ? <div className="mt-8 flex flex-wrap justify-end gap-3">{footer}</div> : null}
+        {children ? <div className="mt-6 min-h-0 flex-1 overflow-y-auto pr-1">{children}</div> : null}
+        {footer ? (
+          <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-[#eef3f9] pt-5">
+            {footer}
+          </div>
+        ) : null}
       </div>
     </div>
   );

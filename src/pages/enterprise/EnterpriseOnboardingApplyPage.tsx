@@ -11,22 +11,18 @@ import {
   SectionCard,
   StatusBadge,
 } from "@/components/backoffice/BackofficePrimitives";
-import {
-  companyTypeOptions,
-  industryOptions,
-  mainCategoryOptions,
-} from "@/constants/backoffice";
+import { toggleSelection } from "@/features/baseData/selectionUtils";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import {
   createCompanyProfilePayloadSnapshot,
   hasUploadedLicense,
   isStepOneComplete,
   isStepTwoComplete,
-  splitListValue,
   toCompanyProfileFormState,
   toCompanyProfileSavePayload,
   type CompanyProfileFormState,
 } from "@/features/enterprise/companyProfileForm";
+import { useCompanyProfileBaseData } from "@/features/enterprise/useCompanyProfileBaseData";
 import { enterpriseService } from "@/services/enterpriseService";
 import type { CompanyProfile } from "@/types/backoffice";
 
@@ -46,6 +42,15 @@ export function EnterpriseOnboardingApplyPage() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState("");
+  const {
+    companyTypes,
+    industries,
+    mainCategories,
+    provinces,
+    cities,
+    districts,
+    error: baseDataError,
+  } = useCompanyProfileBaseData(form);
 
   const loadProfile = async () => {
     setLoading(true);
@@ -94,6 +99,8 @@ export function EnterpriseOnboardingApplyPage() {
     return createCompanyProfilePayloadSnapshot(form) !== lastSavedSnapshot;
   }, [form, lastSavedSnapshot]);
   useUnsavedChangesGuard(hasUnsavedChanges && !working);
+
+  const displayError = error || baseDataError;
 
   const saveDraft = async () => {
     if (!form || working || readOnly) {
@@ -209,9 +216,9 @@ export function EnterpriseOnboardingApplyPage() {
         }
       />
 
-      {error ? (
+      {displayError ? (
         <div className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
-          {error}
+          {displayError}
         </div>
       ) : null}
 
@@ -282,9 +289,9 @@ export function EnterpriseOnboardingApplyPage() {
                   onChange={(event) => setForm({ ...form, companyType: event.target.value })}
                 >
                   <option value="">请选择企业类型</option>
-                  {companyTypeOptions.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
+                  {companyTypes.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
                     </option>
                   ))}
                 </FormSelect>
@@ -296,9 +303,9 @@ export function EnterpriseOnboardingApplyPage() {
                   onChange={(event) => setForm({ ...form, industry: event.target.value })}
                 >
                   <option value="">请选择所属行业</option>
-                  {industryOptions.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
+                  {industries.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
                     </option>
                   ))}
                 </FormSelect>
@@ -313,27 +320,33 @@ export function EnterpriseOnboardingApplyPage() {
 
               <FormField label="主营产品类目" required hint="最多选择 3 项">
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {mainCategoryOptions.map((item) => {
+                  {mainCategories.map((item) => {
                     const selected = form.mainCategories.includes(item);
+                    const disabled = readOnly || (!selected && form.mainCategories.length >= 3);
                     return (
                       <label
                         key={item}
                         className={[
                           "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm",
                           selected ? "bg-primary text-white" : "bg-[#f7f9fc] text-ink",
-                          readOnly ? "opacity-70" : "",
+                          disabled ? "opacity-70" : "",
                         ].join(" ")}
                       >
                         <input
                           type="checkbox"
-                          disabled={readOnly}
+                          disabled={disabled}
                           checked={selected}
-                          onChange={(event) => {
-                            const next = event.target.checked
-                              ? [...form.mainCategories, item].slice(0, 3)
-                              : form.mainCategories.filter((category) => category !== item);
-                            setForm({ ...form, mainCategories: next });
-                          }}
+                          onChange={(event) =>
+                            setForm({
+                              ...form,
+                              mainCategories: toggleSelection(
+                                form.mainCategories,
+                                item,
+                                event.target.checked,
+                                3,
+                              ),
+                            })
+                          }
                         />
                         <span>{item}</span>
                       </label>
@@ -344,25 +357,59 @@ export function EnterpriseOnboardingApplyPage() {
 
               <div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">
                 <FormField label="省份" required>
-                  <FormInput
+                  <FormSelect
                     disabled={readOnly}
                     value={form.province}
-                    onChange={(event) => setForm({ ...form, province: event.target.value })}
-                  />
+                    onChange={(event) =>
+                      setForm({
+                        ...form,
+                        province: event.target.value,
+                        city: "",
+                        district: "",
+                      })
+                    }
+                  >
+                    <option value="">请选择省份</option>
+                    {provinces.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </FormSelect>
                 </FormField>
                 <FormField label="城市" required>
-                  <FormInput
-                    disabled={readOnly}
+                  <FormSelect
+                    disabled={readOnly || !form.province}
                     value={form.city}
-                    onChange={(event) => setForm({ ...form, city: event.target.value })}
-                  />
+                    onChange={(event) =>
+                      setForm({
+                        ...form,
+                        city: event.target.value,
+                        district: "",
+                      })
+                    }
+                  >
+                    <option value="">{form.province ? "请选择城市" : "请先选择省份"}</option>
+                    {cities.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </FormSelect>
                 </FormField>
                 <FormField label="区县" required>
-                  <FormInput
-                    disabled={readOnly}
+                  <FormSelect
+                    disabled={readOnly || !form.city}
                     value={form.district}
                     onChange={(event) => setForm({ ...form, district: event.target.value })}
-                  />
+                  >
+                    <option value="">{form.city ? "请选择区县" : "请先选择城市"}</option>
+                    {districts.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </FormSelect>
                 </FormField>
               </div>
 

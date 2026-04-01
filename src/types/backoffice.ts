@@ -25,6 +25,7 @@ export type BackofficeNavItem = {
   label: string;
   path: string;
   icon: string;
+  group?: string;
   requiredPermissions?: string[];
 };
 

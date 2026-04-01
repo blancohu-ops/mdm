@@ -21,12 +21,21 @@ import {
   paymentStatusLabel,
 } from "@/components/marketplace/MarketplacePrimitives";
 import { ServiceEditorDialog } from "@/components/marketplace/ServiceEditorDialog";
+import {
+  joinDelimitedNames,
+  splitDelimitedNames,
+  toggleSelection,
+} from "@/features/baseData/selectionUtils";
+import { dictionaryService } from "@/services/dictionaryService";
 import { marketplaceService } from "@/services/marketplaceService";
+import type { DictItem } from "@/types/dictionary";
 import type {
   FulfillmentWorkspaceItem,
+  ServiceCategory,
   ServiceDefinition,
   ServiceOrder,
   ServiceProvider,
+  ServiceType,
 } from "@/types/marketplace";
 
 export function ProviderDashboardPage() {
@@ -133,17 +142,21 @@ export function ProviderDashboardPage() {
 
 export function ProviderProfilePage() {
   const [profile, setProfile] = useState<ServiceProvider | null>(null);
+  const [scopeOptions, setScopeOptions] = useState<DictItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
     let mounted = true;
-    marketplaceService
-      .getProviderProfile()
-      .then((result) => {
+    Promise.all([
+      marketplaceService.getProviderProfile(),
+      dictionaryService.fetchEnabledDictItems("service_region"),
+    ])
+      .then(([profileResult, scopeResult]) => {
         if (mounted) {
-          setProfile(result.data);
+          setProfile(profileResult.data);
+          setScopeOptions(scopeResult.data);
         }
       })
       .catch((serviceError) => {
@@ -160,6 +173,11 @@ export function ProviderProfilePage() {
       mounted = false;
     };
   }, []);
+
+  const selectedScopes = useMemo(
+    () => splitDelimitedNames(profile?.serviceScope ?? ""),
+    [profile?.serviceScope],
+  );
 
   if (loading || !profile) {
     return <div className="industrial-card p-10 text-center text-sm text-ink-muted">服务商资料加载中...</div>;
@@ -191,12 +209,47 @@ export function ProviderProfilePage() {
               onChange={(event) => setProfile((current) => current ? { ...current, shortName: event.target.value } : current)}
             />
           </FormField>
-          <FormField label="服务范围" required>
-            <FormInput
-              value={profile.serviceScope}
-              onChange={(event) => setProfile((current) => current ? { ...current, serviceScope: event.target.value } : current)}
-            />
-          </FormField>
+          <div className="md:col-span-2">
+            <FormField label="服务范围" required>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {scopeOptions.map((item) => {
+                  const selected = selectedScopes.includes(item.name);
+                  return (
+                    <label
+                      key={item.id}
+                      className={[
+                        "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm",
+                        selected ? "bg-primary text-white" : "bg-[#f7f9fc] text-ink",
+                      ].join(" ")}
+                    >
+                      <input
+                        aria-label={item.name}
+                        type="checkbox"
+                        checked={selected}
+                        onChange={(event) =>
+                          setProfile((current) =>
+                            current
+                              ? {
+                                  ...current,
+                                  serviceScope: joinDelimitedNames(
+                                    toggleSelection(
+                                      splitDelimitedNames(current.serviceScope),
+                                      item.name,
+                                      event.target.checked,
+                                    ),
+                                  ),
+                                }
+                              : current,
+                          )
+                        }
+                      />
+                      <span>{item.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </FormField>
+          </div>
           <FormField label="官网地址">
             <FormInput
               value={profile.website ?? ""}
@@ -269,7 +322,7 @@ export function ProviderProfilePage() {
                 const result = await marketplaceService.updateProviderProfile({
                   companyName: profile.companyName,
                   shortName: profile.shortName ?? undefined,
-                  serviceScope: profile.serviceScope,
+                  serviceScope: joinDelimitedNames(splitDelimitedNames(profile.serviceScope)),
                   summary: profile.summary,
                   website: profile.website ?? undefined,
                   logoUrl: profile.logoUrl ?? undefined,
@@ -297,16 +350,21 @@ export function ProviderProfilePage() {
 
 export function ProviderServicesPage() {
   const [services, setServices] = useState<ServiceDefinition[]>([]);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string; code: string; description?: string | null; sortOrder: number; status: string }>>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
   const [editing, setEditing] = useState<ServiceDefinition | null>(null);
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   const loadServices = async () => {
-    const result = await marketplaceService.listProviderServices();
-    setServices(result.data.items);
-    setCategories(result.data.categories);
+    const [serviceResult, serviceTypeResult] = await Promise.all([
+      marketplaceService.listProviderServices(),
+      marketplaceService.fetchServiceTypes(),
+    ]);
+    setServices(serviceResult.data.items);
+    setCategories(serviceResult.data.categories);
+    setServiceTypes(serviceTypeResult.data);
   };
 
   useEffect(() => {
@@ -363,6 +421,7 @@ export function ProviderServicesPage() {
         open={open}
         title={editing ? "编辑服务" : "新建服务"}
         categories={categories}
+        serviceTypes={serviceTypes}
         service={editing}
         submitting={saving}
         onClose={() => {

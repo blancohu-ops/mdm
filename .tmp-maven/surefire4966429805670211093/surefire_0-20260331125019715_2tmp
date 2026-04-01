@@ -1,0 +1,5 @@
+#surefire_0
+#Tue Mar 31 12:50:19 CST 2026
+basedir=E\:\\workspace\\mdm\\backend
+localRepository=C\:\\Users\\\u80E1\u5251\\.m2\\repository
+spring.profiles.active=test

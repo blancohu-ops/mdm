@@ -30,6 +30,7 @@ import type {
   ServiceCategory,
   ServiceDefinition,
   ServiceOffer,
+  ServiceType,
   ServiceOrder,
   ServiceProvider,
   ServiceProviderApplication,
@@ -59,6 +60,19 @@ type BackendServiceOffer = {
   enabled: boolean;
 };
 
+type BackendServiceSubType = {
+  id: string;
+  code: string;
+  name: string;
+};
+
+type BackendServiceType = {
+  id: string;
+  code: string;
+  name: string;
+  subTypes: BackendServiceSubType[];
+};
+
 type BackendService = {
   id: string;
   title: string;
@@ -69,6 +83,10 @@ type BackendService = {
   operatorType: string;
   status: string;
   categoryName: string;
+  serviceTypeId?: string | null;
+  serviceTypeName?: string | null;
+  serviceSubTypeId?: string | null;
+  serviceSubTypeName?: string | null;
   providerId?: string | null;
   providerName?: string | null;
   publishedAt?: string | null;
@@ -249,8 +267,18 @@ type BackendAdminMarketplacePublishResponse = BackendMarketplacePublicationListR
 };
 
 export const marketplaceService = {
+  async fetchServiceTypes(): Promise<ApiResult<ServiceType[]>> {
+    const result = await apiRequest<BackendServiceType[]>("/api/v1/service-types", { auth: false });
+    return { data: result.data.map(mapServiceType), message: result.message };
+  },
+
   async listPublicServices(
-    query: { keyword?: string; targetResourceType?: "all" | "enterprise" | "product" } = {},
+    query: {
+      keyword?: string;
+      targetResourceType?: "all" | "enterprise" | "product";
+      serviceType?: string;
+      serviceSubType?: string;
+    } = {},
   ): Promise<ApiResult<ServiceListResponse>> {
     return apiRequest<BackendServiceListResponse>(
       `/api/v1/public/services?${buildSearchParams(query).toString()}`,
@@ -687,6 +715,19 @@ function mapCategory(item: BackendServiceCategory): ServiceCategory {
   };
 }
 
+function mapServiceType(item: BackendServiceType): ServiceType {
+  return {
+    id: item.id,
+    code: item.code,
+    name: item.name,
+    subTypes: item.subTypes.map((subType) => ({
+      id: subType.id,
+      code: subType.code,
+      name: subType.name,
+    })),
+  };
+}
+
 function mapService(item: BackendService): ServiceDefinition {
   return {
     id: item.id,
@@ -698,6 +739,10 @@ function mapService(item: BackendService): ServiceDefinition {
     operatorType: item.operatorType as ServiceDefinition["operatorType"],
     status: item.status as ServiceDefinition["status"],
     categoryName: item.categoryName,
+    serviceTypeId: item.serviceTypeId ?? null,
+    serviceTypeName: item.serviceTypeName ?? null,
+    serviceSubTypeId: item.serviceSubTypeId ?? null,
+    serviceSubTypeName: item.serviceSubTypeName ?? null,
     providerId: item.providerId ?? null,
     providerName: item.providerName ?? null,
     publishedAt: formatDateTime(item.publishedAt),

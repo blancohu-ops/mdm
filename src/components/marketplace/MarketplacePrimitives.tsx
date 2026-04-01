@@ -40,6 +40,18 @@ export function serviceStatusLabel(status: ServiceDefinition["status"]) {
   return status === "published" ? "已发布" : status === "offline" ? "已下线" : "草稿";
 }
 
+function serviceStatusTone(status: ServiceDefinition["status"]): "default" | "success" | "warning" {
+  if (status === "published") {
+    return "success";
+  }
+
+  if (status === "draft") {
+    return "warning";
+  }
+
+  return "default";
+}
+
 export function providerStatusLabel(status: ServiceProvider["status"]) {
   return status === "active" ? "已启用" : status === "pending_activation" ? "待激活" : "已冻结";
 }
@@ -154,23 +166,33 @@ export function ServiceCard({
           <MarketplaceChip label={serviceOperatorLabel(service.operatorType)} tone="primary" />
           <MarketplaceChip label={service.categoryName} />
         </div>
+        <div className="absolute right-5 top-5">
+          <MarketplaceChip
+            label={serviceStatusLabel(service.status)}
+            tone={serviceStatusTone(service.status)}
+          />
+        </div>
       </div>
       <div className="space-y-4 p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <Link
-              className="font-display text-2xl font-bold text-primary-strong transition hover:text-primary"
-              to={href}
-            >
-              {service.title}
-            </Link>
-            <p className="mt-2 text-sm leading-7 text-ink-muted">{service.summary}</p>
+        <div>
+          <div className="flex flex-wrap gap-2">
+            {service.serviceTypeName ? (
+              <MarketplaceChip label={service.serviceTypeName} tone="primary" />
+            ) : null}
+            {service.serviceSubTypeName ? <MarketplaceChip label={service.serviceSubTypeName} /> : null}
           </div>
-          <MarketplaceChip label={serviceStatusLabel(service.status)} tone="success" />
+          <Link
+            className="mt-3 inline-block font-display text-2xl font-bold text-primary-strong transition hover:text-primary"
+            to={href}
+          >
+            {service.title}
+          </Link>
+          <p className="mt-2 text-sm leading-7 text-ink-muted">{service.summary}</p>
         </div>
         <div className="flex flex-wrap gap-3 text-xs text-ink-muted">
           <span>服务主体：{service.providerName ?? "平台自营"}</span>
           {service.publishedAt ? <span>发布时间：{service.publishedAt}</span> : null}
+          <span>报价套餐：{service.offers.length}</span>
         </div>
         {primaryOffer ? (
           <div className="rounded-2xl bg-surface-low p-4">
@@ -178,7 +200,7 @@ export function ServiceCard({
               <div>
                 <div className="font-semibold text-primary-strong">{primaryOffer.name}</div>
                 <div className="mt-1 text-xs text-ink-muted">
-                  {targetResourceLabel(primaryOffer.targetResourceType)} ·{" "}
+                  {targetResourceLabel(primaryOffer.targetResourceType)} 路{" "}
                   {billingModeLabel(primaryOffer.billingMode)}
                 </div>
               </div>
@@ -275,7 +297,7 @@ export function OfferGrid({
             <p className="mt-4 text-sm leading-7 text-ink-muted">{offer.highlightText}</p>
           ) : null}
           {offer.validityDays ? (
-            <div className="mt-3 text-xs text-ink-muted">有效期 {offer.validityDays} 天</div>
+            <div className="mt-3 text-xs text-ink-muted">有效期：{offer.validityDays} 天</div>
           ) : null}
           {action ? <div className="mt-5">{action(offer)}</div> : null}
         </div>
@@ -298,9 +320,11 @@ export function OrderSnapshot({
           <div className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
             {order.orderNo}
           </div>
-          <h2 className="mt-2 font-display text-3xl font-bold text-primary-strong">{order.serviceTitle}</h2>
+          <h2 className="mt-2 font-display text-3xl font-bold text-primary-strong">
+            {order.serviceTitle}
+          </h2>
           <p className="mt-2 text-sm leading-7 text-ink-muted">
-            套餐：{order.offerName} · 服务主体：{order.providerName ?? "平台自营"}
+            套餐：{order.offerName} 路 服务主体：{order.providerName ?? "平台自营"}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -361,7 +385,7 @@ export function ArtifactList({
           <div>
             <div className="font-semibold text-primary-strong">{artifact.fileName}</div>
             <div className="mt-1 text-xs text-ink-muted">
-              类型：{artifact.artifactType} · {artifact.visibleToEnterprise ? "企业可见" : "仅平台可见"}
+              类型：{artifact.artifactType} 路 {artifact.visibleToEnterprise ? "企业可见" : "仅平台可见"}
             </div>
           </div>
           {onOpen ? (

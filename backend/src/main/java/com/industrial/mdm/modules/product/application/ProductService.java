@@ -48,10 +48,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductService {
 
-    private static final List<String> DEFAULT_UNIT_OPTIONS =
-            List.of("piece", "set", "unit", "kg", "m", "m2", "m3");
-    private static final List<String> DEFAULT_CERTIFICATIONS =
-            List.of("CE", "RoHS", "ISO9001", "FCC", "FDA", "Other");
     private static final List<HsSuggestionResponse> DEFAULT_HS_SUGGESTIONS =
             List.of(
                     new HsSuggestionResponse(
@@ -145,8 +141,6 @@ public class ProductService {
         return new EnterpriseProductEditorResponse(
                 product,
                 categoryService.listEnabledLeafPathNames(),
-                DEFAULT_UNIT_OPTIONS,
-                DEFAULT_CERTIFICATIONS,
                 DEFAULT_HS_SUGGESTIONS);
     }
 

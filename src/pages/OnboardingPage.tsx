@@ -6,7 +6,6 @@ import {
   onboardingBenefits,
   onboardingFaqs,
   onboardingHero,
-  onboardingIndustries,
   onboardingSteps,
 } from "@/mocks/onboarding";
 
@@ -67,7 +66,7 @@ export function OnboardingPage() {
           </div>
 
           <div className="lg:col-span-5">
-            <OnboardingForm industries={onboardingIndustries} />
+            <OnboardingForm />
           </div>
         </div>
       </div>

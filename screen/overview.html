@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MDM 页面截图总览</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        color: #172033;
+        background: #ffffff;
+      }
+
+      .page {
+        min-height: calc(297mm - 24mm);
+        page-break-after: always;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      .desc {
+        margin: 0 0 10mm;
+        font-size: 16px;
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      .image-wrap {
+        flex: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .image {
+        display: block;
+        width: 100%;
+        max-width: 186mm;
+        max-height: 245mm;
+        object-fit: contain;
+        object-position: top center;
+        border: 1px solid #d9dfeb;
+        border-radius: 6px;
+        background: #f8fafc;
+      }
+
+      .footer {
+        position: fixed;
+        right: 12mm;
+        bottom: 6mm;
+        font-size: 10px;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    
+        <section class="page">
+          <p class="desc">首页，展示平台核心入口、精选内容与整体形象。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/01_home.png" alt="01_home" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台介绍页，概览平台定位、能力与服务价值。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/02_platform.png" alt="02_platform" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业入驻页，说明入驻流程与平台支持内容。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/03_onboarding.png" alt="03_onboarding" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">产品展示页，用于浏览平台公开产品列表。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/04_products.png" alt="04_products" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">产品详情页，展示单个产品的详细信息与亮点。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/05_product_detail.png" alt="05_product_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务市场页，用于浏览平台公开服务与筛选条件。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/06_services.png" alt="06_services" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务详情页，展示单项服务的内容、报价与说明。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/07_service_detail.png" alt="07_service_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商列表页，用于浏览已入驻服务商信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/08_providers.png" alt="08_providers" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商详情页，展示服务商能力与服务范围。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/09_provider_detail.png" alt="09_provider_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商入驻申请页，用于提交服务商资料。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/10_provider_join.png" alt="10_provider_join" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">AI 工具页，展示平台 AI 能力与示例场景。</p>
+          <div class="image-wrap">
+            <img class="image" src="public/11_ai_tools.png" alt="11_ai_tools" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">登录页，用于输入账号密码进入系统。</p>
+          <div class="image-wrap">
+            <img class="image" src="auth/01_login.png" alt="01_login" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">注册页，用于提交新账号注册信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="auth/02_register.png" alt="02_register" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">账号激活页，用于完成账户激活流程。</p>
+          <div class="image-wrap">
+            <img class="image" src="auth/03_activate.png" alt="03_activate" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">忘记密码页，用于找回或重置登录密码。</p>
+          <div class="image-wrap">
+            <img class="image" src="auth/04_forgot_password.png" alt="04_forgot_password" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业工作台页，概览企业侧核心业务入口与提醒信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/01_dashboard.png" alt="01_dashboard" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业入驻申请页，用于企业提交入驻资料。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/02_onboarding_apply.png" alt="02_onboarding_apply" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业入驻提交结果页，用于展示申请提交状态。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/03_onboarding_submitted.png" alt="03_onboarding_submitted" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业资料页，用于维护企业基础信息与展示资料。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/04_profile.png" alt="04_profile" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业产品管理页，用于查看和维护产品列表。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/05_products.png" alt="05_products" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业新建产品页，用于录入新的产品信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/06_product_new.png" alt="06_product_new" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业产品预览页，用于查看单个产品展示效果。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/07_product_preview.png" alt="07_product_preview" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业产品编辑页，用于修改已存在的产品信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/08_product_edit.png" alt="08_product_edit" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业服务市场页，用于浏览和采购可用服务。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/09_services.png" alt="09_services" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业服务订单页，用于查看企业侧订单列表。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/10_orders.png" alt="10_orders" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业订单详情页，用于查看订单状态与处理信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/11_order_detail.png" alt="11_order_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业支付记录页，用于查看支付与回单信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/12_payments.png" alt="12_payments" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业交付管理页，用于跟踪服务交付进度。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/13_deliveries.png" alt="13_deliveries" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业产品推广页，用于查看推广服务与投放状态。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/14_product_promotion.png" alt="14_product_promotion" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业批量导入页，用于提交导入任务并查看结果。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/15_import.png" alt="15_import" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业消息中心页，用于查看通知与协同消息。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/16_messages.png" alt="16_messages" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业账号设置页，用于管理账户与安全配置。</p>
+          <div class="image-wrap">
+            <img class="image" src="enterprise/17_settings.png" alt="17_settings" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商工作台页，概览服务商侧业务入口与状态信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/01_dashboard.png" alt="01_dashboard" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商资料页，用于维护服务商公司信息与简介。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/02_profile.png" alt="02_profile" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商服务管理页，用于维护服务项目与报价内容。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/03_services.png" alt="03_services" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商订单管理页，用于查看待处理与执行中的订单。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/04_orders.png" alt="04_orders" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商订单详情页，用于查看单个订单的处理信息。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/05_order_detail.png" alt="05_order_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">服务商交付管理页，用于跟踪交付节点与协作内容。</p>
+          <div class="image-wrap">
+            <img class="image" src="provider/06_fulfillment.png" alt="06_fulfillment" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台运营概览页，用于查看平台整体运行情况。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/01_overview.png" alt="01_overview" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">用户管理页，用于查看和管理平台用户账号。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/02_users.png" alt="02_users" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台服务管理页，用于管理服务目录与服务内容。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/03_services.png" alt="03_services" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台服务订单管理页，用于查看全部服务订单。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/04_service_orders.png" alt="04_service_orders" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台支付管理页，用于查看支付记录与审核状态。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/05_payments.png" alt="05_payments" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台服务商管理页，用于查看服务商列表与状态。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/06_providers.png" alt="06_providers" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台服务商审核页，用于处理服务商审核任务。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/07_provider_reviews.png" alt="07_provider_reviews" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台交付管理页，用于查看整体交付执行情况。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/08_fulfillment.png" alt="08_fulfillment" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台市场发布页，用于管理市场发布相关内容。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/09_marketplace_publish.png" alt="09_marketplace_publish" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业审核列表页，用于查看待审核企业申请。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/10_company_reviews.png" alt="10_company_reviews" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业审核详情页，用于处理单个企业审核任务。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/11_company_review_detail.png" alt="11_company_review_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">企业管理页，用于查看和管理平台企业数据。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/12_companies.png" alt="12_companies" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">产品审核列表页，用于查看待审核产品。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/13_product_reviews.png" alt="13_product_reviews" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">产品审核详情页，用于处理单个产品审核任务。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/14_product_review_detail.png" alt="14_product_review_detail" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">平台产品管理页，用于查看和管理产品数据。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/15_products.png" alt="15_products" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">权限申请页，用于处理系统访问授权申请。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/16_access_grant_requests.png" alt="16_access_grant_requests" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">审核域分配页，用于管理审核域与审核员分配。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/17_review_domains.png" alt="17_review_domains" />
+          </div>
+        </section>
+      
+        <section class="page">
+          <p class="desc">基础类目配置页，用于维护平台类目结构。</p>
+          <div class="image-wrap">
+            <img class="image" src="admin/18_categories.png" alt="18_categories" />
+          </div>
+        </section>
+      
+    <div class="footer">生成时间：2026/3/30 15:07:10</div>
+  </body>
+</html>

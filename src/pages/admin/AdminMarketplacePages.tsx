@@ -26,24 +26,31 @@ import type {
   FulfillmentWorkspaceItem,
   MarketplacePublication,
   PaymentRecord,
+  ServiceCategory,
   ServiceDefinition,
   ServiceOrder,
   ServiceProvider,
   ServiceProviderApplication,
+  ServiceType,
 } from "@/types/marketplace";
 
 export function AdminServicesPage() {
   const [services, setServices] = useState<ServiceDefinition[]>([]);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string; code: string; description?: string | null; sortOrder: number; status: string }>>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
+  const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
   const [editing, setEditing] = useState<ServiceDefinition | null>(null);
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
   const load = async () => {
-    const result = await marketplaceService.listAdminServices();
-    setServices(result.data.items);
-    setCategories(result.data.categories);
+    const [serviceResult, serviceTypeResult] = await Promise.all([
+      marketplaceService.listAdminServices(),
+      marketplaceService.fetchServiceTypes(),
+    ]);
+    setServices(serviceResult.data.items);
+    setCategories(serviceResult.data.categories);
+    setServiceTypes(serviceTypeResult.data);
   };
 
   useEffect(() => {
@@ -51,6 +58,13 @@ export function AdminServicesPage() {
       setError(serviceError instanceof Error ? serviceError.message : "加载服务目录失败");
     });
   }, []);
+
+  const publishedCount = services.filter((service) => service.status === "published").length;
+  const draftCount = services.filter((service) => service.status === "draft").length;
+  const typedCount = services.filter(
+    (service) => Boolean(service.serviceTypeId) && Boolean(service.serviceSubTypeId),
+  ).length;
+  const providerOwnedCount = services.filter((service) => service.operatorType === "provider").length;
 
   return (
     <div className="space-y-8" data-testid="admin-services-page">
@@ -61,6 +75,26 @@ export function AdminServicesPage() {
         actions={<BackofficeButton onClick={() => { setEditing(null); setOpen(true); }}>新建平台服务</BackofficeButton>}
       />
       {error ? <div className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">{error}</div> : null}
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <MetricCard label="服务总数" value={String(services.length)} helper="平台当前统一维护中的服务条目" />
+        <MetricCard label="已发布" value={String(publishedCount)} helper="当前对外可见的服务数量" tone="success" />
+        <MetricCard label="草稿待完善" value={String(draftCount)} helper="仍需补齐内容或确认后发布" tone="warning" />
+        <MetricCard label="类型已维护" value={String(typedCount)} helper={`其中 ${providerOwnedCount} 项为第三方服务商服务`} />
+      </div>
+      <SectionCard
+        title="管理视图"
+        description="列表卡片已直接展示服务类型、服务子类型、状态和报价信息，平台运营可以先快速筛查，再进入编辑。"
+      >
+        <div className="flex flex-wrap gap-3">
+          <MarketplaceChip label="服务类型" tone="primary" />
+          <MarketplaceChip label="服务子类型" />
+          <MarketplaceChip label="已发布" tone="success" />
+          <MarketplaceChip label="草稿" tone="warning" />
+        </div>
+        <p className="mt-4 text-sm leading-7 text-ink-muted">
+          如果发现类型缺失或分类不准确，直接点击服务卡片右下角的“编辑服务”即可进入同一套维护弹窗修正。
+        </p>
+      </SectionCard>
       <div className="grid gap-6 xl:grid-cols-2">
         {services.map((service) => (
           <ServiceCard
@@ -76,6 +110,7 @@ export function AdminServicesPage() {
         open={open}
         title={editing ? "编辑平台服务" : "新建平台服务"}
         categories={categories}
+        serviceTypes={serviceTypes}
         service={editing}
         submitting={saving}
         onClose={() => { setOpen(false); setEditing(null); }}

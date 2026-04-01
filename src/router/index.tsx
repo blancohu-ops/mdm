@@ -21,12 +21,15 @@ import { AdminCategoryConfigPage } from "@/pages/admin/AdminCategoryConfigPage";
 import { AdminCompanyManagementPage } from "@/pages/admin/AdminCompanyManagementPage";
 import { AdminCompanyReviewDetailPage } from "@/pages/admin/AdminCompanyReviewDetailPage";
 import { AdminCompanyReviewListPage } from "@/pages/admin/AdminCompanyReviewListPage";
+import { AdminDictionaryPage } from "@/pages/admin/AdminDictionaryPage";
 import { AdminAccessGrantRequestsPage } from "@/pages/admin/AdminAccessGrantRequestsPage";
 import { AdminOverviewPage } from "@/pages/admin/AdminOverviewPage";
 import { AdminProductManagementPage } from "@/pages/admin/AdminProductManagementPage";
 import { AdminProductReviewDetailPage } from "@/pages/admin/AdminProductReviewDetailPage";
 import { AdminProductReviewListPage } from "@/pages/admin/AdminProductReviewListPage";
+import { AdminRegionPage } from "@/pages/admin/AdminRegionPage";
 import { AdminReviewDomainAssignmentsPage } from "@/pages/admin/AdminReviewDomainAssignmentsPage";
+import { AdminServiceTypePage } from "@/pages/admin/AdminServiceTypePage";
 import { AdminUserManagementPage } from "@/pages/admin/AdminUserManagementPage";
 import {
   AdminFulfillmentPage,
@@ -152,7 +155,11 @@ export const router = createBrowserRouter([
       { path: "products", element: <AdminProductManagementPage /> },
       { path: "iam/access-grant-requests", element: <AdminAccessGrantRequestsPage /> },
       { path: "iam/review-domains", element: <AdminReviewDomainAssignmentsPage /> },
-      { path: "categories", element: <AdminCategoryConfigPage /> },
+      { path: "categories", element: <Navigate replace to="/admin/base/categories" /> },
+      { path: "base/dictionaries", element: <AdminDictionaryPage /> },
+      { path: "base/regions", element: <AdminRegionPage /> },
+      { path: "base/categories", element: <AdminCategoryConfigPage /> },
+      { path: "base/service-types", element: <AdminServiceTypePage /> },
     ],
   },
 ]);

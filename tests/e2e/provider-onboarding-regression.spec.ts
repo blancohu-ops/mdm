@@ -30,7 +30,12 @@ test("public provider onboarding can be approved, reissued, activated, and signe
   await page.getByTestId("provider-join-contact").fill(contactName);
   await page.getByTestId("provider-join-phone").fill(phone);
   await page.getByTestId("provider-join-email").fill(email);
-  await page.getByTestId("provider-join-scope").fill("海外认证辅导、产品推广运营");
+  await expect
+    .poll(async () => await page.getByTestId("provider-join-scope").locator('input[type="checkbox"]').count())
+    .toBeGreaterThan(1);
+  const scopeField = page.getByTestId("provider-join-scope");
+  await scopeField.getByRole("checkbox", { name: "全国", exact: true }).check();
+  await scopeField.getByRole("checkbox", { name: "海外-欧洲", exact: true }).check();
   await page.getByTestId("provider-join-summary").fill("提供认证咨询、海外平台投放和交付协作支持。");
   await page.getByTestId("provider-join-agreement").check();
   await page.getByTestId("provider-join-submit").click();

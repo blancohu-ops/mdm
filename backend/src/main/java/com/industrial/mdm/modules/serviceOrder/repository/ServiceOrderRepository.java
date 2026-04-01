@@ -11,4 +11,8 @@ public interface ServiceOrderRepository extends JpaRepository<ServiceOrderEntity
     List<ServiceOrderEntity> findByEnterpriseIdOrderByCreatedAtDesc(UUID enterpriseId);
 
     List<ServiceOrderEntity> findByServiceProviderIdOrderByCreatedAtDesc(UUID serviceProviderId);
+
+    boolean existsByServiceId(UUID serviceId);
+
+    boolean existsByOfferId(UUID offerId);
 }

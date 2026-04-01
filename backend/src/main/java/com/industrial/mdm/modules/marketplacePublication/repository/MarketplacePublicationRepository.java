@@ -16,4 +16,8 @@ public interface MarketplacePublicationRepository extends JpaRepository<Marketpl
     List<MarketplacePublicationEntity> findByProductIdInOrderByCreatedAtDesc(List<UUID> productIds);
 
     List<MarketplacePublicationEntity> findByProductIdOrderByCreatedAtDesc(UUID productId);
+
+    boolean existsByServiceId(UUID serviceId);
+
+    boolean existsByOfferId(UUID offerId);
 }

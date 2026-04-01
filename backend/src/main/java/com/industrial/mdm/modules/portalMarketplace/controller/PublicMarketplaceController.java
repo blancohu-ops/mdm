@@ -55,9 +55,12 @@ public class PublicMarketplaceController {
     @GetMapping("/services")
     public ApiResponse<ServiceListResponse> listServices(
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String serviceType,
+            @RequestParam(required = false) String serviceSubType,
             @RequestParam(required = false) String targetResourceType) {
         return ApiResponse.success(
-                serviceCatalogService.listPublicServices(keyword, targetResourceType),
+                serviceCatalogService.listPublicServices(
+                        keyword, targetResourceType, serviceType, serviceSubType),
                 MDC.get(RequestIdFilter.REQUEST_ID));
     }
 

@@ -67,12 +67,12 @@ public class DevProductDataInitializer {
             enterpriseProfile.setName("Hangzhou Hengo Industrial Technology Co., Ltd.");
             enterpriseProfile.setShortName("Hengo Industrial");
             enterpriseProfile.setSocialCreditCode("91330100MA8Q42X21Y");
-            enterpriseProfile.setCompanyType("Manufacturing");
-            enterpriseProfile.setIndustry("Industrial Equipment");
-            enterpriseProfile.setMainCategories("Hydraulic Machinery,Automation Line");
-            enterpriseProfile.setProvince("Zhejiang");
-            enterpriseProfile.setCity("Hangzhou");
-            enterpriseProfile.setDistrict("Binjiang");
+            enterpriseProfile.setCompanyType("生产制造企业");
+            enterpriseProfile.setIndustry("机械设备");
+            enterpriseProfile.setMainCategories("机械设备,自动化与仪器仪表");
+            enterpriseProfile.setProvince("浙江省");
+            enterpriseProfile.setCity("杭州市");
+            enterpriseProfile.setDistrict("滨江区");
             enterpriseProfile.setAddress("No. 88 Xingye Road, Binjiang District");
             enterpriseProfile.setSummary(
                     "Focused on industrial transmission systems, hydraulic machinery and smart factory equipment.");
@@ -170,7 +170,7 @@ public class DevProductDataInitializer {
                         "Belt Conveyor System XG-900",
                         "XG-900",
                         "Hengo",
-                        "Automation / Conveyor Systems",
+                        "仓储物流设备 / 输送设备",
                         "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80",
                         List.of(
                                 "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=900&q=80"),
@@ -223,7 +223,7 @@ public class DevProductDataInitializer {
                         "High Precision Laser Distance Sensor",
                         "LDS-450",
                         "Hengo",
-                        "Electrical & Electronics / Industrial Sensors",
+                        "自动化与仪器仪表 / 传感器与检测仪表",
                         "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
                         List.of(
                                 "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"),
@@ -306,7 +306,7 @@ public class DevProductDataInitializer {
                         "Industrial Diesel Generator Unit",
                         "DG-500",
                         "Hengo Power",
-                        "Energy / Generator Set",
+                        "能源与环保设备 / 发电机组与电源设备",
                         "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80",
                         List.of(),
                         "Stable generator set for industrial sites and overseas engineering projects.",
@@ -371,7 +371,7 @@ public class DevProductDataInitializer {
                         "Precision Hydraulic Excavator Arm",
                         "HEX-220",
                         "Hengo Motion",
-                        "Industrial Equipment / Hydraulic Machinery",
+                        "机械设备 / 液压与气动设备",
                         "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=900&q=80",
                         List.of(),
                         "Hydraulic motion component for heavy-duty engineering equipment.",
@@ -451,7 +451,7 @@ public class DevProductDataInitializer {
                         "Industrial Servo Positioning Module",
                         "SPM-120",
                         "Hengo Motion",
-                        "Materials / Precision Components",
+                        "金属材料与零部件 / 精密加工件",
                         "https://images.unsplash.com/photo-1563770660941-10a636076d9d?auto=format&fit=crop&w=900&q=80",
                         List.of(),
                         "Servo positioning module for precision machining and assembly lines.",

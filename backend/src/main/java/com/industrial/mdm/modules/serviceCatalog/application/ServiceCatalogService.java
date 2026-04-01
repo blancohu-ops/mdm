@@ -16,12 +16,17 @@ import com.industrial.mdm.modules.serviceCatalog.dto.ServiceOfferRequest;
 import com.industrial.mdm.modules.serviceCatalog.dto.ServiceOfferResponse;
 import com.industrial.mdm.modules.serviceCatalog.dto.ServiceSaveRequest;
 import com.industrial.mdm.modules.serviceCatalog.dto.ServiceSummaryResponse;
+import com.industrial.mdm.modules.serviceCatalog.dto.ServiceTypeResponse;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceCategoryEntity;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceCategoryRepository;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceEntity;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceOfferEntity;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceOfferRepository;
 import com.industrial.mdm.modules.serviceCatalog.repository.ServiceRepository;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceSubTypeEntity;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceSubTypeRepository;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceTypeEntity;
+import com.industrial.mdm.modules.serviceCatalog.repository.ServiceTypeRepository;
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderEntity;
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderProfileEntity;
 import com.industrial.mdm.modules.serviceProvider.repository.ServiceProviderProfileRepository;
@@ -43,6 +48,8 @@ public class ServiceCatalogService {
     private final ServiceRepository serviceRepository;
     private final ServiceOfferRepository serviceOfferRepository;
     private final ServiceCategoryRepository serviceCategoryRepository;
+    private final ServiceTypeRepository serviceTypeRepository;
+    private final ServiceSubTypeRepository serviceSubTypeRepository;
     private final ServiceProviderRepository serviceProviderRepository;
     private final ServiceProviderProfileRepository serviceProviderProfileRepository;
 
@@ -51,19 +58,51 @@ public class ServiceCatalogService {
             ServiceRepository serviceRepository,
             ServiceOfferRepository serviceOfferRepository,
             ServiceCategoryRepository serviceCategoryRepository,
+            ServiceTypeRepository serviceTypeRepository,
+            ServiceSubTypeRepository serviceSubTypeRepository,
             ServiceProviderRepository serviceProviderRepository,
             ServiceProviderProfileRepository serviceProviderProfileRepository) {
         this.authorizationService = authorizationService;
         this.serviceRepository = serviceRepository;
         this.serviceOfferRepository = serviceOfferRepository;
         this.serviceCategoryRepository = serviceCategoryRepository;
+        this.serviceTypeRepository = serviceTypeRepository;
+        this.serviceSubTypeRepository = serviceSubTypeRepository;
         this.serviceProviderRepository = serviceProviderRepository;
         this.serviceProviderProfileRepository = serviceProviderProfileRepository;
     }
 
     @Transactional(readOnly = true)
-    public ServiceListResponse listPublicServices(String keyword, String targetResourceType) {
-        return buildListResponse(serviceRepository.findAllByOrderByUpdatedAtDesc(), keyword, targetResourceType, true);
+    public List<ServiceTypeResponse> listServiceTypes() {
+        Map<UUID, List<ServiceTypeResponse.ServiceSubTypeResponse>> subTypesByTypeId = new HashMap<>();
+        for (ServiceSubTypeEntity entity :
+                serviceSubTypeRepository.findByEnabledTrueOrderByServiceTypeIdAscSortOrderAscNameAsc()) {
+            subTypesByTypeId.computeIfAbsent(entity.getServiceTypeId(), key -> new ArrayList<>())
+                    .add(new ServiceTypeResponse.ServiceSubTypeResponse(
+                            entity.getId(), entity.getCode(), entity.getName()));
+        }
+        return serviceTypeRepository.findByEnabledTrueOrderBySortOrderAscNameAsc().stream()
+                .map(entity -> new ServiceTypeResponse(
+                        entity.getId(),
+                        entity.getCode(),
+                        entity.getName(),
+                        subTypesByTypeId.getOrDefault(entity.getId(), List.of())))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public ServiceListResponse listPublicServices(
+            String keyword,
+            String targetResourceType,
+            String serviceTypeCode,
+            String serviceSubTypeCode) {
+        return buildListResponse(
+                serviceRepository.findAllByOrderByUpdatedAtDesc(),
+                keyword,
+                targetResourceType,
+                serviceTypeCode,
+                serviceSubTypeCode,
+                true);
     }
 
     @Transactional(readOnly = true)
@@ -78,7 +117,13 @@ public class ServiceCatalogService {
                 currentUser,
                 PermissionCode.ENTERPRISE_SERVICE_READ,
                 "current account cannot read enterprise services");
-        return buildListResponse(serviceRepository.findAllByOrderByUpdatedAtDesc(), keyword, targetResourceType, true);
+        return buildListResponse(
+                serviceRepository.findAllByOrderByUpdatedAtDesc(),
+                keyword,
+                targetResourceType,
+                null,
+                null,
+                true);
     }
 
     @Transactional(readOnly = true)
@@ -97,7 +142,13 @@ public class ServiceCatalogService {
                 currentUser,
                 PermissionCode.ADMIN_SERVICE_LIST,
                 "current account cannot read admin service catalog");
-        return buildListResponse(serviceRepository.findAllByOrderByUpdatedAtDesc(), null, null, false);
+        return buildListResponse(
+                serviceRepository.findAllByOrderByUpdatedAtDesc(),
+                null,
+                null,
+                null,
+                null,
+                false);
     }
 
     @Transactional
@@ -137,6 +188,8 @@ public class ServiceCatalogService {
                         "current account cannot read provider services");
         return buildListResponse(
                 serviceRepository.findByServiceProviderIdOrderByUpdatedAtDesc(providerId),
+                null,
+                null,
                 null,
                 null,
                 false);
@@ -188,11 +241,38 @@ public class ServiceCatalogService {
     }
 
     private ServiceListResponse buildListResponse(
-            List<ServiceEntity> source, String keyword, String targetResourceType, boolean publishedOnly) {
+            List<ServiceEntity> source,
+            String keyword,
+            String targetResourceType,
+            String serviceTypeCode,
+            String serviceSubTypeCode,
+            boolean publishedOnly) {
+        UUID serviceTypeId = resolveServiceTypeId(serviceTypeCode);
+        if (hasActiveFilter(serviceTypeCode) && serviceTypeId == null) {
+            return new ServiceListResponse(List.of(), listEnabledCategories(), 0);
+        }
+        UUID serviceSubTypeId = resolveServiceSubTypeId(serviceSubTypeCode, serviceTypeId);
+        if (hasActiveFilter(serviceSubTypeCode) && serviceSubTypeId == null) {
+            return new ServiceListResponse(List.of(), listEnabledCategories(), 0);
+        }
+
+        Map<UUID, ServiceCategoryEntity> categoryCache = new HashMap<>();
+        Map<UUID, ServiceProviderEntity> providerCache = new HashMap<>();
+        Map<UUID, ServiceProviderProfileEntity> providerProfileCache = new HashMap<>();
+        Map<UUID, ServiceTypeEntity> serviceTypeCache = new HashMap<>();
+        Map<UUID, ServiceSubTypeEntity> serviceSubTypeCache = new HashMap<>();
+
         List<ServiceSummaryResponse> items = source.stream()
                 .filter(item -> !publishedOnly || item.getStatus() == ServiceStatus.PUBLISHED)
                 .filter(item -> matchesKeyword(item, keyword))
-                .map(this::toSummary)
+                .filter(item -> matchesServiceType(item, serviceTypeId, serviceSubTypeId))
+                .map(item -> toSummary(
+                        item,
+                        categoryCache,
+                        providerCache,
+                        providerProfileCache,
+                        serviceTypeCache,
+                        serviceSubTypeCache))
                 .filter(item -> matchesTarget(item, targetResourceType))
                 .sorted(Comparator.comparing(ServiceSummaryResponse::publishedAt, Comparator.nullsLast(Comparator.reverseOrder()))
                         .thenComparing(ServiceSummaryResponse::title))
@@ -210,6 +290,16 @@ public class ServiceCatalogService {
                 || entity.getDescription().toLowerCase().contains(normalized);
     }
 
+    private boolean matchesServiceType(ServiceEntity entity, UUID serviceTypeId, UUID serviceSubTypeId) {
+        if (serviceTypeId != null && !serviceTypeId.equals(entity.getServiceTypeId())) {
+            return false;
+        }
+        if (serviceSubTypeId != null && !serviceSubTypeId.equals(entity.getServiceSubTypeId())) {
+            return false;
+        }
+        return true;
+    }
+
     private boolean matchesTarget(ServiceSummaryResponse response, String targetResourceType) {
         if (targetResourceType == null || targetResourceType.isBlank() || "all".equalsIgnoreCase(targetResourceType)) {
             return true;
@@ -220,7 +310,11 @@ public class ServiceCatalogService {
 
     private void applyRequest(ServiceEntity entity, ServiceSaveRequest request, boolean providerOwned) {
         ServiceCategoryEntity category = loadCategory(request.categoryId());
+        ServiceTypeEntity serviceType = loadServiceType(request.serviceTypeId());
+        ServiceSubTypeEntity serviceSubType = loadServiceSubType(serviceType.getId(), request.serviceSubTypeId());
         entity.setCategoryId(category.getId());
+        entity.setServiceTypeId(serviceType.getId());
+        entity.setServiceSubTypeId(serviceSubType.getId());
         entity.setTitle(normalizeRequired(request.title(), "service title is required"));
         entity.setSummary(normalizeRequired(request.summary(), "service summary is required"));
         entity.setDescription(normalizeRequired(request.description(), "service description is required"));
@@ -290,16 +384,38 @@ public class ServiceCatalogService {
         Map<UUID, ServiceCategoryEntity> categories = new HashMap<>();
         Map<UUID, ServiceProviderEntity> providers = new HashMap<>();
         Map<UUID, ServiceProviderProfileEntity> providerProfiles = new HashMap<>();
-        return toSummary(entity, categories, providers, providerProfiles);
+        Map<UUID, ServiceTypeEntity> serviceTypes = new HashMap<>();
+        Map<UUID, ServiceSubTypeEntity> serviceSubTypes = new HashMap<>();
+        return toSummary(
+                entity,
+                categories,
+                providers,
+                providerProfiles,
+                serviceTypes,
+                serviceSubTypes);
     }
 
     private ServiceSummaryResponse toSummary(
             ServiceEntity entity,
             Map<UUID, ServiceCategoryEntity> categoryCache,
             Map<UUID, ServiceProviderEntity> providerCache,
-            Map<UUID, ServiceProviderProfileEntity> providerProfileCache) {
+            Map<UUID, ServiceProviderProfileEntity> providerProfileCache,
+            Map<UUID, ServiceTypeEntity> serviceTypeCache,
+            Map<UUID, ServiceSubTypeEntity> serviceSubTypeCache) {
         ServiceCategoryEntity category =
                 categoryCache.computeIfAbsent(entity.getCategoryId(), this::loadCategory);
+        ServiceTypeEntity serviceType =
+                entity.getServiceTypeId() == null
+                        ? null
+                        : serviceTypeCache.computeIfAbsent(
+                                entity.getServiceTypeId(),
+                                id -> serviceTypeRepository.findById(id).orElse(null));
+        ServiceSubTypeEntity serviceSubType =
+                entity.getServiceSubTypeId() == null
+                        ? null
+                        : serviceSubTypeCache.computeIfAbsent(
+                                entity.getServiceSubTypeId(),
+                                id -> serviceSubTypeRepository.findById(id).orElse(null));
         ServiceProviderEntity provider =
                 entity.getServiceProviderId() == null
                         ? null
@@ -331,6 +447,10 @@ public class ServiceCatalogService {
                 entity.getOperatorType().getCode(),
                 entity.getStatus().getCode(),
                 category.getName(),
+                serviceType == null ? null : serviceType.getId(),
+                serviceType == null ? null : serviceType.getName(),
+                serviceSubType == null ? null : serviceSubType.getId(),
+                serviceSubType == null ? null : serviceSubType.getName(),
                 provider == null ? null : provider.getId(),
                 providerProfile == null ? null : providerProfile.getCompanyName(),
                 entity.getPublishedAt(),
@@ -370,6 +490,49 @@ public class ServiceCatalogService {
         return serviceCategoryRepository
                 .findById(categoryId)
                 .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "service category not found"));
+    }
+
+    private ServiceTypeEntity loadServiceType(UUID serviceTypeId) {
+        if (serviceTypeId == null) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "service type is required");
+        }
+        return serviceTypeRepository
+                .findById(serviceTypeId)
+                .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "service type not found"));
+    }
+
+    private ServiceSubTypeEntity loadServiceSubType(UUID serviceTypeId, UUID serviceSubTypeId) {
+        if (serviceSubTypeId == null) {
+            throw new BizException(ErrorCode.INVALID_REQUEST, "service sub type is required");
+        }
+        return serviceSubTypeRepository
+                .findByIdAndServiceTypeId(serviceSubTypeId, serviceTypeId)
+                .orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "service sub type not found"));
+    }
+
+    private UUID resolveServiceTypeId(String serviceTypeCode) {
+        if (!hasActiveFilter(serviceTypeCode)) {
+            return null;
+        }
+        return serviceTypeRepository.findByCode(serviceTypeCode.trim()).map(ServiceTypeEntity::getId).orElse(null);
+    }
+
+    private UUID resolveServiceSubTypeId(String serviceSubTypeCode, UUID serviceTypeId) {
+        if (!hasActiveFilter(serviceSubTypeCode)) {
+            return null;
+        }
+        String normalized = serviceSubTypeCode.trim();
+        if (serviceTypeId != null) {
+            return serviceSubTypeRepository
+                    .findByCodeAndServiceTypeId(normalized, serviceTypeId)
+                    .map(ServiceSubTypeEntity::getId)
+                    .orElse(null);
+        }
+        return serviceSubTypeRepository.findByCode(normalized).map(ServiceSubTypeEntity::getId).orElse(null);
+    }
+
+    private boolean hasActiveFilter(String value) {
+        return value != null && !value.isBlank() && !"all".equalsIgnoreCase(value);
     }
 
     private ServiceStatus parseStatus(String value, boolean providerOwned) {

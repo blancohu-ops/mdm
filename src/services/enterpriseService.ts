@@ -57,13 +57,15 @@ type MessageListPayload = {
 type EditorPayload = {
   product?: BackendProduct;
   categories: string[];
-  unitOptions: string[];
-  certificationOptions: string[];
   hsSuggestions: Array<{
     code: string;
     name: string;
     note: string;
   }>;
+};
+
+type CategoryLeafOptionsPayload = {
+  items: string[];
 };
 
 type ImportTaskPayload = {
@@ -227,10 +229,18 @@ export const enterpriseService = {
       data: {
         product: result.data.product ? mapProduct(result.data.product) : undefined,
         categories: result.data.categories,
-        unitOptions: result.data.unitOptions,
-        certificationOptions: result.data.certificationOptions,
         hsSuggestions: result.data.hsSuggestions,
       },
+      message: result.message,
+    };
+  },
+
+  async fetchCategoryLeafOptions(): Promise<ApiResult<string[]>> {
+    const result = await apiRequest<CategoryLeafOptionsPayload>(
+      "/api/v1/enterprise/categories/leaf-options",
+    );
+    return {
+      data: result.data.items,
       message: result.message,
     };
   },

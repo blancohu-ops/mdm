@@ -147,10 +147,32 @@ const adminNavItems: BackofficeNavItem[] = [
     requiredPermissions: ["review_domain_assignment:manage"],
   },
   {
-    label: "基础类目",
-    path: "/admin/categories",
+    label: "字典管理",
+    path: "/admin/base/dictionaries",
+    icon: "menu_book",
+    group: "基础维护",
+    requiredPermissions: ["base_dict:read"],
+  },
+  {
+    label: "行政区划",
+    path: "/admin/base/regions",
+    icon: "location_city",
+    group: "基础维护",
+    requiredPermissions: ["base_region:read"],
+  },
+  {
+    label: "产品类目",
+    path: "/admin/base/categories",
     icon: "account_tree",
+    group: "基础维护",
     requiredPermissions: ["category:read"],
+  },
+  {
+    label: "服务类型",
+    path: "/admin/base/service-types",
+    icon: "category",
+    group: "基础维护",
+    requiredPermissions: ["base_service_type:read"],
   },
 ];
 
@@ -177,39 +199,6 @@ export const authHighlights = [
   "统一沉淀企业、产品、服务、订单与履约数据，形成可持续扩展的工业出海业务底座。",
   "企业端、平台端、服务商端共享稳定的权限、文件、消息与审核协同能力。",
   "围绕政策服务、推广展示、AI 工具和第三方服务协作，逐步形成完整服务市场。",
-];
-
-export const companyTypeOptions = [
-  "生产制造企业",
-  "工贸一体企业",
-  "品牌商 / 渠道商",
-  "工业服务企业",
-  "其他",
-];
-
-export const industryOptions = [
-  "机械设备",
-  "五金工具",
-  "电气电子",
-  "建材家居",
-  "纺织服装",
-  "化工材料",
-  "汽车零部件",
-  "仪器仪表",
-  "新能源装备",
-  "其他",
-];
-
-export const mainCategoryOptions = [
-  "工业装备",
-  "液压系统",
-  "自动化设备",
-  "工业传感器",
-  "电机与驱动",
-  "包装设备",
-  "机床与加工中心",
-  "电气控制柜",
-  "工业耗材",
 ];
 
 type StatusValue =

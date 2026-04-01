@@ -1,4 +1,4 @@
-import type { AiToolDemoInput, AiToolDemoResult } from "@/types/ai";
+import type { AiServiceIntro, AiToolDemoInput, AiToolDemoResult } from "@/types/ai";
 
 export const aiToolHero = {
   eyebrow: "政府补贴项目 / 智慧出海引擎",
@@ -12,6 +12,57 @@ export const aiBanner = {
   description:
     "一期官网对 AI 工具仅做演示交互，但页面将保留补贴说明、额度概念与后续服务扩展接口。",
 };
+
+export const aiServices: AiServiceIntro[] = [
+  {
+    id: "doc-recognition",
+    title: "智能单证识别",
+    icon: "DocumentScanner",
+    description: "自动识别和结构化提取各类贸易单证信息。",
+    features: [
+      "OCR+NLP 多语言解析",
+      "支持发票、装箱单、提单、原产地证",
+      "秒级识别，准确率可达 99%+",
+    ],
+    status: "coming_soon",
+  },
+  {
+    id: "email-processing",
+    title: "智能邮件处理",
+    icon: "Email",
+    description: "AI 驱动外贸邮件自动分类、翻译和回复建议。",
+    features: [
+      "自动分类询盘、订单确认、物流通知邮件",
+      "多语言实时翻译",
+      "一键生成专业回复模板",
+    ],
+    status: "coming_soon",
+  },
+  {
+    id: "smart-cs",
+    title: "智能客服",
+    icon: "SupportAgent",
+    description: "7x24 小时多语言智能客服，降低全球沟通成本。",
+    features: [
+      "支持 40+ 语言实时对话",
+      "产品知识库自动应答",
+      "无缝转接人工客服",
+    ],
+    status: "coming_soon",
+  },
+  {
+    id: "digital-worker",
+    title: "数字员工",
+    icon: "SmartToy",
+    description: "RPA+AI 融合处理重复性贸易流程任务。",
+    features: [
+      "自动填写报关单据",
+      "智能跟踪物流状态并预警",
+      "自动对账与数据同步",
+    ],
+    status: "coming_soon",
+  },
+];
 
 export const aiInput: AiToolDemoInput = {
   label: "输入产品原始信息",

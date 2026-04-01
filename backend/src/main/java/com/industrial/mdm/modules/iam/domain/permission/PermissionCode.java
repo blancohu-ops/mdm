@@ -118,6 +118,21 @@ public enum PermissionCode {
     ACCESS_GRANT_MANAGE("access_grant:manage", "Grant or revoke temporary access"),
     AUDIT_LOG_READ("audit_log:read", "Read audit log"),
 
+    BASE_DICT_READ("base_dict:read", "Read base dictionary"),
+    BASE_DICT_CREATE("base_dict:create", "Create dictionary item"),
+    BASE_DICT_UPDATE("base_dict:update", "Update dictionary item"),
+    BASE_DICT_DELETE("base_dict:delete", "Delete dictionary item"),
+
+    BASE_REGION_READ("base_region:read", "Read administrative regions"),
+    BASE_REGION_CREATE("base_region:create", "Create administrative region"),
+    BASE_REGION_UPDATE("base_region:update", "Update administrative region"),
+    BASE_REGION_DELETE("base_region:delete", "Delete administrative region"),
+
+    BASE_SERVICE_TYPE_READ("base_service_type:read", "Read service type configuration"),
+    BASE_SERVICE_TYPE_CREATE("base_service_type:create", "Create service type"),
+    BASE_SERVICE_TYPE_UPDATE("base_service_type:update", "Update service type"),
+    BASE_SERVICE_TYPE_DELETE("base_service_type:delete", "Delete service type"),
+
     AI_TOOL_ASK("ai_tool:ask_ai", "Use AI ask capability"),
     AI_TOOL_GENERATE("ai_tool:generate_ai", "Use AI generation capability"),
     AI_TOOL_EXPORT("ai_tool:export", "Export AI result"),

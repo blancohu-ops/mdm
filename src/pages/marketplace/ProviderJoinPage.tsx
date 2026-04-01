@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BackofficeButton, FormField, FormInput, FormTextarea } from "@/components/backoffice/BackofficePrimitives";
+import {
+  joinDelimitedNames,
+  splitDelimitedNames,
+  toggleSelection,
+} from "@/features/baseData/selectionUtils";
 import { PageHero } from "@/components/layout/PageHero";
+import { dictionaryService } from "@/services/dictionaryService";
 import { marketplaceService } from "@/services/marketplaceService";
+import type { DictItem } from "@/types/dictionary";
 
 type JoinForm = {
   companyName: string;
@@ -33,17 +40,52 @@ const initialForm: JoinForm = {
 
 export function ProviderJoinPage() {
   const [form, setForm] = useState<JoinForm>(initialForm);
+  const [scopeOptions, setScopeOptions] = useState<DictItem[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState<"" | "logo" | "license">("");
+  const [lookupError, setLookupError] = useState("");
 
+  useEffect(() => {
+    let active = true;
+
+    dictionaryService
+      .fetchEnabledDictItems("service_region")
+      .then((result) => {
+        if (!active) {
+          return;
+        }
+
+        setScopeOptions(result.data);
+        setLookupError("");
+      })
+      .catch((serviceError) => {
+        if (!active) {
+          return;
+        }
+
+        setLookupError(
+          serviceError instanceof Error ? serviceError.message : "服务范围选项加载失败",
+        );
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const selectedScopes = useMemo(
+    () => splitDelimitedNames(form.serviceScope),
+    [form.serviceScope],
+  );
+  const displayError = error || lookupError;
   const canSubmit = Boolean(
     form.companyName.trim() &&
       form.contactName.trim() &&
       form.phone.trim() &&
       form.email.trim() &&
-      form.serviceScope.trim() &&
+      selectedScopes.length > 0 &&
       form.summary.trim() &&
       form.acceptedAgreement &&
       !submitting,
@@ -109,9 +151,9 @@ export function ProviderJoinPage() {
               请填写公司名称、联系人与服务范围。审核通过后，平台会向联系人邮箱发送激活链接，完成账号创建。
             </p>
 
-            {error ? (
+            {displayError ? (
               <div className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                {error}
+                {displayError}
               </div>
             ) : null}
             {success ? (
@@ -140,7 +182,7 @@ export function ProviderJoinPage() {
                     phone: form.phone.trim(),
                     email: form.email.trim(),
                     website: form.website.trim() || undefined,
-                    serviceScope: form.serviceScope.trim(),
+                    serviceScope: joinDelimitedNames(selectedScopes),
                     summary: form.summary.trim(),
                     logoUrl: form.logoUrl || undefined,
                     licenseFileName: form.licenseFileName || undefined,
@@ -194,14 +236,43 @@ export function ProviderJoinPage() {
                     placeholder="例如 https://example.com"
                   />
                 </FormField>
-                <FormField label="服务范围" required>
-                  <FormInput
-                    data-testid="provider-join-scope"
-                    value={form.serviceScope}
-                    onChange={(event) => setForm((current) => ({ ...current, serviceScope: event.target.value }))}
-                    placeholder="例如：海外营销推广、欧盟合规辅导、政策申报支持"
-                  />
-                </FormField>
+                <div className="md:col-span-2">
+                  <FormField label="服务范围" required>
+                    <div className="grid gap-3 sm:grid-cols-2" data-testid="provider-join-scope">
+                      {scopeOptions.map((item) => {
+                        const selected = selectedScopes.includes(item.name);
+                        return (
+                          <label
+                            key={item.id}
+                            className={[
+                              "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm",
+                              selected ? "bg-primary text-white" : "bg-[#f7f9fc] text-ink",
+                            ].join(" ")}
+                          >
+                            <input
+                              aria-label={item.name}
+                              type="checkbox"
+                              checked={selected}
+                              onChange={(event) =>
+                                setForm((current) => ({
+                                  ...current,
+                                  serviceScope: joinDelimitedNames(
+                                    toggleSelection(
+                                      splitDelimitedNames(current.serviceScope),
+                                      item.name,
+                                      event.target.checked,
+                                    ),
+                                  ),
+                                }))
+                              }
+                            />
+                            <span>{item.name}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </FormField>
+                </div>
               </div>
 
               <FormField label="服务简介" required>

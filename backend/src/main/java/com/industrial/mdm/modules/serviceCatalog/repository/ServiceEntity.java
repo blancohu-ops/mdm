@@ -28,6 +28,12 @@ public class ServiceEntity extends AuditableEntity {
     @Column(name = "category_id", nullable = false)
     private UUID categoryId;
 
+    @Column(name = "service_type_id")
+    private UUID serviceTypeId;
+
+    @Column(name = "service_sub_type_id")
+    private UUID serviceSubTypeId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "operator_type", nullable = false, length = 32)
     private ServiceOperatorType operatorType;
@@ -75,6 +81,22 @@ public class ServiceEntity extends AuditableEntity {
 
     public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public UUID getServiceTypeId() {
+        return serviceTypeId;
+    }
+
+    public void setServiceTypeId(UUID serviceTypeId) {
+        this.serviceTypeId = serviceTypeId;
+    }
+
+    public UUID getServiceSubTypeId() {
+        return serviceSubTypeId;
+    }
+
+    public void setServiceSubTypeId(UUID serviceSubTypeId) {
+        this.serviceSubTypeId = serviceSubTypeId;
     }
 
     public ServiceOperatorType getOperatorType() {

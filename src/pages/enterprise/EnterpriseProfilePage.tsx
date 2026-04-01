@@ -12,20 +12,16 @@ import {
   SectionCard,
   StatusBadge,
 } from "@/components/backoffice/BackofficePrimitives";
-import {
-  companyTypeOptions,
-  industryOptions,
-  mainCategoryOptions,
-} from "@/constants/backoffice";
+import { toggleSelection } from "@/features/baseData/selectionUtils";
 import { useUnsavedChangesGuard } from "@/hooks/useUnsavedChangesGuard";
 import {
   createCompanyProfilePayloadSnapshot,
   hasUploadedLicense,
-  splitListValue,
   toCompanyProfileFormState,
   toCompanyProfileSavePayload,
   type CompanyProfileFormState,
 } from "@/features/enterprise/companyProfileForm";
+import { useCompanyProfileBaseData } from "@/features/enterprise/useCompanyProfileBaseData";
 import { enterpriseService } from "@/services/enterpriseService";
 import type { CompanyProfile } from "@/types/backoffice";
 
@@ -42,6 +38,15 @@ export function EnterpriseProfilePage() {
   const [info, setInfo] = useState("");
   const [lastSavedSnapshot, setLastSavedSnapshot] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
+  const {
+    companyTypes,
+    industries,
+    mainCategories,
+    provinces,
+    cities,
+    districts,
+    error: baseDataError,
+  } = useCompanyProfileBaseData(form);
 
   const loadProfile = async () => {
     setLoading(true);
@@ -94,6 +99,8 @@ export function EnterpriseProfilePage() {
     return createCompanyProfilePayloadSnapshot(form) !== lastSavedSnapshot;
   }, [form, lastSavedSnapshot]);
   useUnsavedChangesGuard(hasUnsavedChanges && !working);
+
+  const displayError = error || baseDataError;
 
   const saveDraft = async () => {
     if (!form || working) {
@@ -237,9 +244,9 @@ export function EnterpriseProfilePage() {
         actions={statusActions}
       />
 
-      {error ? (
+      {displayError ? (
         <div className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
-          {error}
+          {displayError}
         </div>
       ) : null}
 
@@ -283,9 +290,9 @@ export function EnterpriseProfilePage() {
                   onChange={(event) => setForm({ ...form, companyType: event.target.value })}
                 >
                   <option value="">请选择企业类型</option>
-                  {companyTypeOptions.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
+                  {companyTypes.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
                     </option>
                   ))}
                 </FormSelect>
@@ -297,46 +304,104 @@ export function EnterpriseProfilePage() {
                   onChange={(event) => setForm({ ...form, industry: event.target.value })}
                 >
                   <option value="">请选择所属行业</option>
-                  {industryOptions.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
+                  {industries.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
                     </option>
                   ))}
                 </FormSelect>
               </FormField>
-              <FormField label="主营产品类目（逗号、顿号或换行分隔）" required>
-                <FormInput
+              <FormField label="主营产品类目" required hint="最多选择 3 项">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {mainCategories.map((item) => {
+                    const selected = form.mainCategories.includes(item);
+                    const disabled = !editing || (!selected && form.mainCategories.length >= 3);
+
+                    return (
+                      <label
+                        key={item}
+                        className={[
+                          "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm",
+                          selected ? "bg-primary text-white" : "bg-[#f7f9fc] text-ink",
+                          disabled ? "opacity-70" : "",
+                        ].join(" ")}
+                      >
+                        <input
+                          type="checkbox"
+                          disabled={disabled}
+                          checked={selected}
+                          onChange={(event) =>
+                            setForm({
+                              ...form,
+                              mainCategories: toggleSelection(
+                                form.mainCategories,
+                                item,
+                                event.target.checked,
+                                3,
+                              ),
+                            })
+                          }
+                        />
+                        <span>{item}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </FormField>
+              <FormField label="省份" required>
+                <FormSelect
                   disabled={!editing}
-                  value={form.mainCategories.join("、")}
+                  value={form.province}
                   onChange={(event) =>
                     setForm({
                       ...form,
-                      mainCategories: splitListValue(event.target.value).slice(0, 3),
+                      province: event.target.value,
+                      city: "",
+                      district: "",
                     })
                   }
-                  placeholder={mainCategoryOptions.join("、")}
-                />
-              </FormField>
-              <FormField label="省份" required>
-                <FormInput
-                  disabled={!editing}
-                  value={form.province}
-                  onChange={(event) => setForm({ ...form, province: event.target.value })}
-                />
+                >
+                  <option value="">请选择省份</option>
+                  {provinces.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </FormSelect>
               </FormField>
               <FormField label="城市" required>
-                <FormInput
-                  disabled={!editing}
+                <FormSelect
+                  disabled={!editing || !form.province}
                   value={form.city}
-                  onChange={(event) => setForm({ ...form, city: event.target.value })}
-                />
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      city: event.target.value,
+                      district: "",
+                    })
+                  }
+                >
+                  <option value="">{form.province ? "请选择城市" : "请先选择省份"}</option>
+                  {cities.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </FormSelect>
               </FormField>
               <FormField label="区县" required>
-                <FormInput
-                  disabled={!editing}
+                <FormSelect
+                  disabled={!editing || !form.city}
                   value={form.district}
                   onChange={(event) => setForm({ ...form, district: event.target.value })}
-                />
+                >
+                  <option value="">{form.city ? "请选择区县" : "请先选择城市"}</option>
+                  {districts.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </FormSelect>
               </FormField>
               <FormField label="详细地址" required>
                 <FormInput

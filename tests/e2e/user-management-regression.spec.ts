@@ -18,10 +18,15 @@ async function submitPublicOnboarding(
   await page.getByPlaceholder("请输入联系人姓名").fill(contactName);
   await page.getByPlaceholder("13800000000").fill(phone);
   await page.getByPlaceholder("work@company.com").fill(email);
-  await page.locator("select").last().selectOption({ index: 1 });
+  await expect
+    .poll(async () => await page.getByTestId("public-onboarding-industry").locator("option").count())
+    .toBeGreaterThan(1);
+  await page.getByTestId("public-onboarding-industry").selectOption({ index: 1 });
   await page.locator('label:has(input[type="checkbox"])').click();
-  await page.getByRole("button", { name: "提交入驻申请" }).click();
-  await expect(page.locator("body")).toContainText("入驻申请已提交");
+  await page.getByTestId("public-onboarding-submit").click();
+  await expect(page.getByTestId("public-onboarding-feedback")).toContainText("入驻申请已提交", {
+    timeout: 60000,
+  });
 }
 
 async function login(page: Page, account: string, password: string) {

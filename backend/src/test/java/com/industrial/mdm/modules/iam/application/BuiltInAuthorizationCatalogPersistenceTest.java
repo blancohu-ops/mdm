@@ -50,6 +50,10 @@ class BuiltInAuthorizationCatalogPersistenceTest {
     void builtInCatalogEntriesExistInDatabase() {
         assertThat(permissionCatalogRepository.findByCode(PermissionCode.FILE_ASSET_UPLOAD.getCode()))
                 .isPresent();
+        assertThat(permissionCatalogRepository.findByCode(PermissionCode.BASE_DICT_READ.getCode()))
+                .isPresent();
+        assertThat(permissionCatalogRepository.findByCode(PermissionCode.BASE_REGION_READ.getCode()))
+                .isPresent();
         assertThat(
                         capabilityCatalogRepository.findByCode(
                                 CapabilityCode.AI_ADVANCED.getCode()))

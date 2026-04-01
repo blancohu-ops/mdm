@@ -207,8 +207,6 @@ export type EnterpriseMessagesResponse = {
 export type EnterpriseProductEditorResponse = {
   product?: ProductRecord;
   categories: string[];
-  unitOptions: string[];
-  certificationOptions: string[];
   hsSuggestions: HsSuggestion[];
 };
 

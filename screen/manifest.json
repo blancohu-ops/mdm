@@ -1,0 +1,456 @@
+{
+  "baseUrl": "http://localhost:5273",
+  "capturedAt": "2026-03-30T06:54:58.803Z",
+  "total": 56,
+  "warnings": [],
+  "shots": [
+    {
+      "section": "public",
+      "name": "01_home",
+      "route": "/",
+      "finalUrl": "http://localhost:5273/",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/01_home.png"
+    },
+    {
+      "section": "public",
+      "name": "02_platform",
+      "route": "/platform",
+      "finalUrl": "http://localhost:5273/platform",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/02_platform.png"
+    },
+    {
+      "section": "public",
+      "name": "03_onboarding",
+      "route": "/onboarding",
+      "finalUrl": "http://localhost:5273/onboarding",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/03_onboarding.png"
+    },
+    {
+      "section": "public",
+      "name": "04_products",
+      "route": "/products",
+      "finalUrl": "http://localhost:5273/products",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/04_products.png"
+    },
+    {
+      "section": "public",
+      "name": "05_product_detail",
+      "route": "/products/a3dddb54-864f-4196-af98-9a25a0af4e59",
+      "finalUrl": "http://localhost:5273/products/a3dddb54-864f-4196-af98-9a25a0af4e59",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/05_product_detail.png"
+    },
+    {
+      "section": "public",
+      "name": "06_services",
+      "route": "/services",
+      "finalUrl": "http://localhost:5273/services",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/06_services.png"
+    },
+    {
+      "section": "public",
+      "name": "07_service_detail",
+      "route": "/services/68d2a061-3e67-4965-aa3c-7ae0b19d4ce7",
+      "finalUrl": "http://localhost:5273/services/68d2a061-3e67-4965-aa3c-7ae0b19d4ce7",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/07_service_detail.png"
+    },
+    {
+      "section": "public",
+      "name": "08_providers",
+      "route": "/providers",
+      "finalUrl": "http://localhost:5273/providers",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/08_providers.png"
+    },
+    {
+      "section": "public",
+      "name": "09_provider_detail",
+      "route": "/providers/ef8abc6a-95a2-49c5-943e-938862252b51",
+      "finalUrl": "http://localhost:5273/providers/ef8abc6a-95a2-49c5-943e-938862252b51",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/09_provider_detail.png"
+    },
+    {
+      "section": "public",
+      "name": "10_provider_join",
+      "route": "/providers/join",
+      "finalUrl": "http://localhost:5273/providers/join",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/10_provider_join.png"
+    },
+    {
+      "section": "public",
+      "name": "11_ai_tools",
+      "route": "/ai-tools",
+      "finalUrl": "http://localhost:5273/ai-tools",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/public/11_ai_tools.png"
+    },
+    {
+      "section": "auth",
+      "name": "01_login",
+      "route": "/auth/login",
+      "finalUrl": "http://localhost:5273/auth/login",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/auth/01_login.png"
+    },
+    {
+      "section": "auth",
+      "name": "02_register",
+      "route": "/auth/register",
+      "finalUrl": "http://localhost:5273/auth/register",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/auth/02_register.png"
+    },
+    {
+      "section": "auth",
+      "name": "03_activate",
+      "route": "/auth/activate",
+      "finalUrl": "http://localhost:5273/auth/activate",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/auth/03_activate.png"
+    },
+    {
+      "section": "auth",
+      "name": "04_forgot_password",
+      "route": "/auth/forgot-password",
+      "finalUrl": "http://localhost:5273/auth/forgot-password",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/auth/04_forgot_password.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "01_dashboard",
+      "route": "/enterprise/dashboard",
+      "finalUrl": "http://localhost:5273/enterprise/dashboard",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/01_dashboard.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "02_onboarding_apply",
+      "route": "/enterprise/onboarding/apply",
+      "finalUrl": "http://localhost:5273/enterprise/onboarding/apply",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/02_onboarding_apply.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "03_onboarding_submitted",
+      "route": "/enterprise/onboarding/submitted",
+      "finalUrl": "http://localhost:5273/enterprise/onboarding/submitted",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/03_onboarding_submitted.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "04_profile",
+      "route": "/enterprise/profile",
+      "finalUrl": "http://localhost:5273/enterprise/profile",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/04_profile.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "05_products",
+      "route": "/enterprise/products",
+      "finalUrl": "http://localhost:5273/enterprise/products",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/05_products.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "06_product_new",
+      "route": "/enterprise/products/new",
+      "finalUrl": "http://localhost:5273/enterprise/products/new",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/06_product_new.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "07_product_preview",
+      "route": "/enterprise/products/1130008b-92ee-4400-8af8-bfe4213c7c7e",
+      "finalUrl": "http://localhost:5273/enterprise/products/1130008b-92ee-4400-8af8-bfe4213c7c7e",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/07_product_preview.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "08_product_edit",
+      "route": "/enterprise/products/1130008b-92ee-4400-8af8-bfe4213c7c7e/edit",
+      "finalUrl": "http://localhost:5273/enterprise/products/1130008b-92ee-4400-8af8-bfe4213c7c7e/edit",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/08_product_edit.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "09_services",
+      "route": "/enterprise/services",
+      "finalUrl": "http://localhost:5273/enterprise/services",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/09_services.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "10_orders",
+      "route": "/enterprise/orders",
+      "finalUrl": "http://localhost:5273/enterprise/orders",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/10_orders.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "11_order_detail",
+      "route": "/enterprise/orders/2be25d91-b1fb-4f3c-890d-9d1231c61ed1",
+      "finalUrl": "http://localhost:5273/enterprise/orders/2be25d91-b1fb-4f3c-890d-9d1231c61ed1",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/11_order_detail.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "12_payments",
+      "route": "/enterprise/payments",
+      "finalUrl": "http://localhost:5273/enterprise/payments",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/12_payments.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "13_deliveries",
+      "route": "/enterprise/deliveries",
+      "finalUrl": "http://localhost:5273/enterprise/deliveries",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/13_deliveries.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "14_product_promotion",
+      "route": "/enterprise/product-promotion",
+      "finalUrl": "http://localhost:5273/enterprise/product-promotion",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/14_product_promotion.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "15_import",
+      "route": "/enterprise/import",
+      "finalUrl": "http://localhost:5273/enterprise/import",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/15_import.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "16_messages",
+      "route": "/enterprise/messages",
+      "finalUrl": "http://localhost:5273/enterprise/messages",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/16_messages.png"
+    },
+    {
+      "section": "enterprise",
+      "name": "17_settings",
+      "route": "/enterprise/settings",
+      "finalUrl": "http://localhost:5273/enterprise/settings",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/enterprise/17_settings.png"
+    },
+    {
+      "section": "provider",
+      "name": "01_dashboard",
+      "route": "/provider/dashboard",
+      "finalUrl": "http://localhost:5273/provider/dashboard",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/01_dashboard.png"
+    },
+    {
+      "section": "provider",
+      "name": "02_profile",
+      "route": "/provider/profile",
+      "finalUrl": "http://localhost:5273/provider/profile",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/02_profile.png"
+    },
+    {
+      "section": "provider",
+      "name": "03_services",
+      "route": "/provider/services",
+      "finalUrl": "http://localhost:5273/provider/services",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/03_services.png"
+    },
+    {
+      "section": "provider",
+      "name": "04_orders",
+      "route": "/provider/orders",
+      "finalUrl": "http://localhost:5273/provider/orders",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/04_orders.png"
+    },
+    {
+      "section": "provider",
+      "name": "05_order_detail",
+      "route": "/provider/orders/1b31bf07-f185-462a-af88-2e71c4dc4087",
+      "finalUrl": "http://localhost:5273/provider/orders/1b31bf07-f185-462a-af88-2e71c4dc4087",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/05_order_detail.png"
+    },
+    {
+      "section": "provider",
+      "name": "06_fulfillment",
+      "route": "/provider/fulfillment",
+      "finalUrl": "http://localhost:5273/provider/fulfillment",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/provider/06_fulfillment.png"
+    },
+    {
+      "section": "admin",
+      "name": "01_overview",
+      "route": "/admin/overview",
+      "finalUrl": "http://localhost:5273/admin/overview",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/01_overview.png"
+    },
+    {
+      "section": "admin",
+      "name": "02_users",
+      "route": "/admin/users",
+      "finalUrl": "http://localhost:5273/admin/users",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/02_users.png"
+    },
+    {
+      "section": "admin",
+      "name": "03_services",
+      "route": "/admin/services",
+      "finalUrl": "http://localhost:5273/admin/services",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/03_services.png"
+    },
+    {
+      "section": "admin",
+      "name": "04_service_orders",
+      "route": "/admin/service-orders",
+      "finalUrl": "http://localhost:5273/admin/service-orders",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/04_service_orders.png"
+    },
+    {
+      "section": "admin",
+      "name": "05_payments",
+      "route": "/admin/payments",
+      "finalUrl": "http://localhost:5273/admin/payments",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/05_payments.png"
+    },
+    {
+      "section": "admin",
+      "name": "06_providers",
+      "route": "/admin/providers",
+      "finalUrl": "http://localhost:5273/admin/providers",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/06_providers.png"
+    },
+    {
+      "section": "admin",
+      "name": "07_provider_reviews",
+      "route": "/admin/provider-reviews",
+      "finalUrl": "http://localhost:5273/admin/provider-reviews",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/07_provider_reviews.png"
+    },
+    {
+      "section": "admin",
+      "name": "08_fulfillment",
+      "route": "/admin/fulfillment",
+      "finalUrl": "http://localhost:5273/admin/fulfillment",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/08_fulfillment.png"
+    },
+    {
+      "section": "admin",
+      "name": "09_marketplace_publish",
+      "route": "/admin/marketplace-publish",
+      "finalUrl": "http://localhost:5273/admin/marketplace-publish",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/09_marketplace_publish.png"
+    },
+    {
+      "section": "admin",
+      "name": "10_company_reviews",
+      "route": "/admin/reviews/companies",
+      "finalUrl": "http://localhost:5273/admin/reviews/companies",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/10_company_reviews.png"
+    },
+    {
+      "section": "admin",
+      "name": "11_company_review_detail",
+      "route": "/admin/reviews/companies/27ac3693-1605-4b90-b8b0-3b4c3555a829",
+      "finalUrl": "http://localhost:5273/admin/reviews/companies/27ac3693-1605-4b90-b8b0-3b4c3555a829",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/11_company_review_detail.png"
+    },
+    {
+      "section": "admin",
+      "name": "12_companies",
+      "route": "/admin/companies",
+      "finalUrl": "http://localhost:5273/admin/companies",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/12_companies.png"
+    },
+    {
+      "section": "admin",
+      "name": "13_product_reviews",
+      "route": "/admin/reviews/products",
+      "finalUrl": "http://localhost:5273/admin/reviews/products",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/13_product_reviews.png"
+    },
+    {
+      "section": "admin",
+      "name": "14_product_review_detail",
+      "route": "/admin/reviews/products/ecbec11a-e2d5-4ca7-a355-8f528ed52444",
+      "finalUrl": "http://localhost:5273/admin/reviews/products/ecbec11a-e2d5-4ca7-a355-8f528ed52444",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/14_product_review_detail.png"
+    },
+    {
+      "section": "admin",
+      "name": "15_products",
+      "route": "/admin/products",
+      "finalUrl": "http://localhost:5273/admin/products",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/15_products.png"
+    },
+    {
+      "section": "admin",
+      "name": "16_access_grant_requests",
+      "route": "/admin/iam/access-grant-requests",
+      "finalUrl": "http://localhost:5273/admin/iam/access-grant-requests",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/16_access_grant_requests.png"
+    },
+    {
+      "section": "admin",
+      "name": "17_review_domains",
+      "route": "/admin/iam/review-domains",
+      "finalUrl": "http://localhost:5273/admin/iam/review-domains",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/17_review_domains.png"
+    },
+    {
+      "section": "admin",
+      "name": "18_categories",
+      "route": "/admin/categories",
+      "finalUrl": "http://localhost:5273/admin/categories",
+      "title": "工业企业出海主数据平台",
+      "file": "screen/admin/18_categories.png"
+    }
+  ]
+}

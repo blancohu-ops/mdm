@@ -1,27 +1,56 @@
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { publicService } from "@/services/publicService";
+import { dictionaryService } from "@/services/dictionaryService";
+import type { DictItem } from "@/types/dictionary";
 
-type OnboardingFormProps = {
-  industries: string[];
-};
-
-export function OnboardingForm({ industries }: OnboardingFormProps) {
+export function OnboardingForm() {
   const [form, setForm] = useState({
     company: "",
     contact: "",
     phone: "",
     email: "",
-    industry: industries[0] ?? "",
+    industry: "",
     accepted: false,
   });
+  const [industries, setIndustries] = useState<DictItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
+  const [lookupError, setLookupError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    dictionaryService
+      .fetchEnabledDictItems("industry")
+      .then((result) => {
+        if (!active) {
+          return;
+        }
+
+        setIndustries(result.data);
+        setLookupError("");
+      })
+      .catch((serviceError) => {
+        if (!active) {
+          return;
+        }
+
+        setLookupError(
+          serviceError instanceof Error ? serviceError.message : "行业选项加载失败",
+        );
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const phoneValid = /^1\d{10}$/.test(form.phone.trim());
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
+  const displayError = error || lookupError;
   const canSubmit = useMemo(
     () =>
       Boolean(
@@ -44,14 +73,17 @@ export function OnboardingForm({ industries }: OnboardingFormProps) {
       </p>
 
       {feedback ? (
-        <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        <div
+          className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700"
+          data-testid="public-onboarding-feedback"
+        >
           {feedback}
         </div>
       ) : null}
 
-      {error ? (
+      {displayError ? (
         <div className="mt-6 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-          {error}
+          {displayError}
         </div>
       ) : null}
 
@@ -134,12 +166,14 @@ export function OnboardingForm({ industries }: OnboardingFormProps) {
         <Field label="所属行业">
           <select
             className="w-full rounded-xl border-none bg-slate-100 px-5 py-4 text-base text-ink outline-none transition focus:bg-slate-50 focus:ring-2 focus:ring-primary/15"
+            data-testid="public-onboarding-industry"
             value={form.industry}
             onChange={(event) => setForm({ ...form, industry: event.target.value })}
           >
+            <option value="">请选择所属行业</option>
             {industries.map((industry) => (
-              <option key={industry} value={industry}>
-                {industry}
+              <option key={industry.id} value={industry.name}>
+                {industry.name}
               </option>
             ))}
           </select>
@@ -157,6 +191,7 @@ export function OnboardingForm({ industries }: OnboardingFormProps) {
 
         <button
           className="w-full rounded-xl bg-industrial-gradient px-6 py-4 text-base font-bold text-white shadow-soft transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+          data-testid="public-onboarding-submit"
           disabled={!canSubmit}
         >
           {submitting ? "提交中..." : submitted ? "已提交申请" : "提交入驻申请"}

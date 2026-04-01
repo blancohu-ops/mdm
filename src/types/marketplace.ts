@@ -26,6 +26,19 @@ export type ServiceCategory = {
   status: string;
 };
 
+export type ServiceSubType = {
+  id: string;
+  code: string;
+  name: string;
+};
+
+export type ServiceType = {
+  id: string;
+  code: string;
+  name: string;
+  subTypes: ServiceSubType[];
+};
+
 export type ServiceOffer = {
   id: string;
   name: string;
@@ -49,6 +62,10 @@ export type ServiceDefinition = {
   operatorType: ServiceOperatorType;
   status: ServiceStatus;
   categoryName: string;
+  serviceTypeId?: string | null;
+  serviceTypeName?: string | null;
+  serviceSubTypeId?: string | null;
+  serviceSubTypeName?: string | null;
   providerId?: string | null;
   providerName?: string | null;
   publishedAt?: string | null;
